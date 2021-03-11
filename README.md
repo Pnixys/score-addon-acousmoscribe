@@ -22,6 +22,7 @@ Mac:
 test
 test2
 test3
+test4
 * Generate new uuids
 
     perl -pi -e 'chomp(my $uidgen = `uuidgen`);s|00000000-0000-0000-0000-000000000000|$uidgen|gi' **/*.{hpp,cpp}
