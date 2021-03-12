@@ -102,10 +102,18 @@ void View::paint_impl(QPainter* p) const
      QPointF(10.0, 80.0), //bas gauche
      QPointF(10.0, 10.0), //haut gauche
      QPointF(50.0, 10.0), //haut droite
-     QPointF(90.0, 80.0)  //bas droite
+     QPointF(90.0, 80.0),  //bas droite
+ };
+
+ static const QPointF points_signe[4] = {
+     QPointF(25.0, 25.0), //bas gauche
+     QPointF(35.0, 35.0), //haut gauche
+     QPointF(45.0, 25.0), //haut droite
+     QPointF(55.0, 35.0),  //bas droite
  };
  
  p->drawPolygon(points, 4);
+ p->drawPolygon(points_signe, 4);
 }
 
 int View::visibleCount() const
