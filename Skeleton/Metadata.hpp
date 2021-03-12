@@ -13,11 +13,7 @@ PROCESS_METADATA(
     Process::ProcessCategory::Other,              // Category
     "Other",                                      // Category
     "Description",                                // Description
-    "Daugaron,
-     Deynoux,
-     Gaudry,
-     Heurtel,
-     Larchiver",                                     // Author
+    "Author",                                     // Author
     (QStringList{"Put", "Your", "Tags", "Here"}), // Tags
     {},                                           // Inputs
     {},                                           // Outputs
