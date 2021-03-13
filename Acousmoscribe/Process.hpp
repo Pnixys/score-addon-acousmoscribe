@@ -2,6 +2,7 @@
 #include <Process/GenericProcessFactory.hpp>
 #include <Process/Process.hpp>
 
+//#include <Acousmoscribe/Model/Sign.hpp>
 #include <Acousmoscribe/Metadata.hpp>
 
 namespace Acousmoscribe
@@ -25,6 +26,12 @@ public:
 
   ~Model() override;
 
+  //score::EntityMap<Sign> signs;
+
+public:
+  void signsNeedUpdate() W_SIGNAL(signsNeedUpdate);
+  void signsChanged() W_SIGNAL(signsChanged);
+
 private:
   QString prettyName() const noexcept override;
 
@@ -35,3 +42,4 @@ private:
 
 using ProcessFactory = Process::ProcessFactory_T<Acousmoscribe::Model>;
 }
+
