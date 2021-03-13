@@ -4,16 +4,16 @@
 
 #include <score/command/Dispatchers/CommandDispatcher.hpp>
 
-#include <Skeleton/Process.hpp>
+#include <Acousmoscribe/Process.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 class InspectorWidget final
-    : public Process::InspectorWidgetDelegate_T<Skeleton::Model>
+    : public Process::InspectorWidgetDelegate_T<Acousmoscribe::Model>
 {
 public:
   explicit InspectorWidget(
-      const Skeleton::Model& object, const score::DocumentContext& context,
+      const Acousmoscribe::Model& object, const score::DocumentContext& context,
       QWidget* parent);
   ~InspectorWidget() override;
 

@@ -2,14 +2,14 @@
 #include <Process/GenericProcessFactory.hpp>
 #include <Process/Process.hpp>
 
-#include <Skeleton/Metadata.hpp>
+#include <Acousmoscribe/Metadata.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 class Model final : public Process::ProcessModel
 {
   SCORE_SERIALIZE_FRIENDS
-  PROCESS_METADATA_IMPL(Skeleton::Model)
+  PROCESS_METADATA_IMPL(Acousmoscribe::Model)
   W_OBJECT(Model)
 
 public:
@@ -33,5 +33,5 @@ private:
   void setDurationAndShrink(const TimeVal& newDuration) noexcept override;
 };
 
-using ProcessFactory = Process::ProcessFactory_T<Skeleton::Model>;
+using ProcessFactory = Process::ProcessFactory_T<Acousmoscribe::Model>;
 }

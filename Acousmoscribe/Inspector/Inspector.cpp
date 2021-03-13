@@ -10,10 +10,10 @@
 #include <QComboBox>
 #include <QRadioButton>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 InspectorWidget::InspectorWidget(
-    const Skeleton::Model& object, const score::DocumentContext& context,
+    const Acousmoscribe::Model& object, const score::DocumentContext& context,
     QWidget* parent)
     : InspectorWidgetDelegate_T{object, parent}
     , m_dispatcher{context.commandStack}

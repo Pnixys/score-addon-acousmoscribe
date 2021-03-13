@@ -12,7 +12,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 View::View(QGraphicsItem* parent) : Process::LayerView{parent}
 {

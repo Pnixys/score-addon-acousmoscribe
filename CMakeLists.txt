@@ -1,31 +1,31 @@
-project(score_addon_skeleton LANGUAGES CXX)
+project(score_addon_acousmoscribe LANGUAGES CXX)
 
 # General initialization
 score_common_setup()
 
 # Source files
 set(HDRS
-    Skeleton/Executor.hpp
-    Skeleton/Inspector.hpp
-    Skeleton/LocalTree.hpp
-    Skeleton/Metadata.hpp
-    Skeleton/Presenter.hpp
-    Skeleton/Process.hpp
-    Skeleton/View.hpp
-    Skeleton/Layer.hpp
-    Skeleton/CommandFactory.hpp
+    Acousmoscribe/Executor.hpp
+    Acousmoscribe/Inspector/Inspector.hpp
+    Acousmoscribe/LocalTree.hpp
+    Acousmoscribe/Metadata.hpp
+    Acousmoscribe/Presenter.hpp
+    Acousmoscribe/Process.hpp
+    Acousmoscribe/View.hpp
+    Acousmoscribe/Layer.hpp
+    Acousmoscribe/CommandFactory.hpp
 
-    score_addon_skeleton.hpp
+    score_addon_acousmoscribe.hpp
 )
 set(SRCS
-    Skeleton/Executor.cpp
-    Skeleton/Inspector.cpp
-    Skeleton/LocalTree.cpp
-    Skeleton/Presenter.cpp
-    Skeleton/Process.cpp
-    Skeleton/View.cpp
+    Acousmoscribe/Executor.cpp
+    Acousmoscribe/Inspector/Inspector.cpp
+    Acousmoscribe/LocalTree.cpp
+    Acousmoscribe/Presenter.cpp
+    Acousmoscribe/Process.cpp
+    Acousmoscribe/View.cpp
 
-    score_addon_skeleton.cpp
+    score_addon_acousmoscribe.cpp
 )
 
 

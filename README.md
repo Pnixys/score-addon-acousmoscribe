@@ -1,23 +1,23 @@
-## A skeleton of process add-on for score.
+## A acousmoscribe of process add-on for score.
 
 ## Usage
 
-* Rename skeleton by whatever name you wish: 
+* Rename acousmoscribe by whatever name you wish: 
 
 Linux:
 
     # perl-rename on Arch Linux & derivatives
     # rename on Debian, Ubuntu, Mint & derivatives
     shopt -s globstar # on bash only
-    perl-rename 's/skeleton/mystuff/' **/*.{hpp,cpp}
-    sed -i 's/skeleton/mystuff/g' **/*.{hpp,cpp}
+    perl-rename 's/acousmoscribe/mystuff/' **/*.{hpp,cpp}
+    sed -i 's/acousmoscribe/mystuff/g' **/*.{hpp,cpp}
 
 Mac:
 
     brew install rename gnu-sed
     shopt -s globstar # on bash only
-    rename 's/skeleton/mystuff/' **/*
-    gsed -i 's/skeleton/mystuff/g' **/*
+    rename 's/acousmoscribe/mystuff/' **/*
+    gsed -i 's/acousmoscribe/mystuff/g' **/*
 
 * Generate new uuids
 

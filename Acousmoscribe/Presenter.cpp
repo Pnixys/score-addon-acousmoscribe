@@ -1,10 +1,10 @@
 #include <score/command/Dispatchers/CommandDispatcher.hpp>
 
-#include <Skeleton/Presenter.hpp>
-#include <Skeleton/Process.hpp>
-#include <Skeleton/View.hpp>
+#include <Acousmoscribe/Presenter.hpp>
+#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/View.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 Presenter::Presenter(
     const Model& layer, View* view,

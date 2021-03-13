@@ -4,8 +4,8 @@
 
 #include <ossia/dataflow/port.hpp>
 
-#include <Skeleton/Process.hpp>
-namespace Skeleton
+#include <Acousmoscribe/Process.hpp>
+namespace Acousmoscribe
 {
 class node final : public ossia::nonowning_graph_node
 {
@@ -21,18 +21,18 @@ public:
 
   std::string label() const noexcept override
   {
-    return "skeleton";
+    return "acousmoscribe";
   }
 
 private:
 };
 
 ProcessExecutorComponent::ProcessExecutorComponent(
-    Skeleton::Model& element, const Execution::Context& ctx,
+    Acousmoscribe::Model& element, const Execution::Context& ctx,
     const Id<score::Component>& id, QObject* parent)
-    : ProcessComponent_T{element, ctx, id, "SkeletonExecutorComponent", parent}
+    : ProcessComponent_T{element, ctx, id, "AcousmoscribeExecutorComponent", parent}
 {
-  auto n = std::make_shared<Skeleton::node>();
+  auto n = std::make_shared<Acousmoscribe::node>();
   this->node = n;
   m_ossia_process = std::make_shared<ossia::node_process>(n);
 
@@ -42,7 +42,7 @@ ProcessExecutorComponent::ProcessExecutorComponent(
    * connect(&element.metadata(), &score::ModelMetadata::ColorChanged,
    *         this, [=] (const QColor& c) {
    *
-   *   in_exec([c,n=std::dynamic_pointer_cast<Skeleton::node>(this->node)] {
+   *   in_exec([c,n=std::dynamic_pointer_cast<Acousmoscribe::node>(this->node)] {
    *     n->set_color(c);
    *   });
    *

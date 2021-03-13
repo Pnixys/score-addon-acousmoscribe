@@ -2,7 +2,7 @@
 #include <LocalTree/LocalTreeComponent.hpp>
 #include <LocalTree/ProcessComponent.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 class Model;
 
@@ -13,7 +13,7 @@ class LocalTreeProcessComponent : public LocalTree::ProcessComponent_T<Model>
 public:
   LocalTreeProcessComponent(
       const Id<score::Component>& id, ossia::net::node_base& parent,
-      Skeleton::Model& scenario, const score::DocumentContext& doc,
+      Acousmoscribe::Model& scenario, const score::DocumentContext& doc,
       QObject* parent_obj);
 
   ~LocalTreeProcessComponent() override;

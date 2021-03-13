@@ -13,15 +13,15 @@
 #include <utility>
 #include <vector>
 
-class score_addon_skeleton final : public score::Plugin_QtInterface,
+class score_addon_acousmoscribe final : public score::Plugin_QtInterface,
                                    public score::FactoryInterface_QtInterface,
                                    public score::CommandFactory_QtInterface
 {
   SCORE_PLUGIN_METADATA(1, "00000000-0000-0000-0000-000000000000")
 
 public:
-  score_addon_skeleton();
-  ~score_addon_skeleton() override;
+  score_addon_acousmoscribe();
+  ~score_addon_acousmoscribe() override;
 
 private:
   std::vector<std::unique_ptr<score::InterfaceBase>> factories(

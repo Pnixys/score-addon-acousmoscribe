@@ -5,7 +5,7 @@
 
 #include <score/model/Identifier.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 class Model;
 class View;

@@ -1,11 +1,11 @@
 #pragma once
 #include <score/command/Command.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 inline const CommandGroupKey& CommandFactoryName()
 {
-  static const CommandGroupKey key{"Skeleton"};
+  static const CommandGroupKey key{"Acousmoscribe"};
   return key;
 }
 }

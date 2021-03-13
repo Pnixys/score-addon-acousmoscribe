@@ -1,5 +1,5 @@
 #pragma once
-#include <Skeleton/Process.hpp>
+#include <Acousmoscribe/Process.hpp>
 #include <Process/LayerView.hpp>
 
 #include <QPainter>
@@ -7,7 +7,7 @@
 
 #include <Process/LayerView.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 class View final : public Process::LayerView
 {

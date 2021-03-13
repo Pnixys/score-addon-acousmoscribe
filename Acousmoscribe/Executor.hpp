@@ -3,12 +3,12 @@
 
 #include <ossia/dataflow/node_process.hpp>
 
-namespace Skeleton
+namespace Acousmoscribe
 {
 class Model;
 class ProcessExecutorComponent final
     : public Execution::ProcessComponent_T<
-          Skeleton::Model, ossia::node_process>
+          Acousmoscribe::Model, ossia::node_process>
 {
   COMPONENT_METADATA("00000000-0000-0000-0000-000000000000")
 public:
