@@ -7,7 +7,7 @@ class Model;
 }
 
 PROCESS_METADATA(
-    , Skeleton::Model, "00000000-0000-0000-0000-000000000000",
+    , Skeleton::Model, "35f91fde-f536-4b9b-a579-89e3dd3231e6",
     "Acousmoscribe",                                   // Internal name
     "Acousmoscribe",                                   // Pretty name
     Process::ProcessCategory::Other,              // Category
