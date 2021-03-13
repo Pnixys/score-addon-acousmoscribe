@@ -17,5 +17,5 @@ PROCESS_METADATA(
     (QStringList{"Put", "Your", "Tags", "Here"}), // Tags
     {},                                           // Inputs
     {},                                           // Outputs
-    Process::ProcessFlags::SupportsAll            // Flags
+    Process::ProcessFlags::SupportsTemporal | Process::ProcessFlags::PutInNewSlot            // Flags
 )
