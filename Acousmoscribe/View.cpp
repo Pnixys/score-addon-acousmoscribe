@@ -4,6 +4,8 @@
 
 #include <score/graphics/GraphicsItem.hpp>
 
+#include "Inspector/Inspector.hpp"
+
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>

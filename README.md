@@ -11,13 +11,13 @@ Si vous voulez tester notre addon dans l'état, il faut installer Ossia. Voici l
 
 `$ git clone --recursive https://github.com/ossia/score.git`
 
-* Il faut ensuite se déplacer dans le dossier score puis ensuite contruire une première fois le répertoire build ainsi que les fichiers nécessaires pour la suite (Ce build ne fonctionne pas et c'est normal) :
+* Il faut ensuite se déplacer dans le dossier score puis ensuite construire une première fois le répertoire build ainsi que les fichiers nécessaires pour la suite (Ce build ne fonctionne pas et c'est normal) :
 
 `$ ./build.sh `
 
 * Il faut aller dans le dossier build puis il faut lancer ici la compilation du programme :
 
-`$ cmake .  -DCMAKE_BUILD_TYPE=Debug`
+`$ cmake . -DCMAKE_BUILD_TYPE=Debug`
 
 * Il faut retourner dans le dossier score et build une dernière fois :
 
@@ -38,7 +38,7 @@ Pour faciliter notre travail sur l'addon nous avons mis en place un submodule da
 
 Ainsi, pour récupérer les sources, il suffit d'exécuter :
 
-`$ git submodule --remote`
+`$ git submodule update --remote`
 
 
 # Architecture
@@ -59,4 +59,3 @@ En premier lieu, nous avons modifié les métadonnées afin de pouvoir “glisse
 
 Au début, l’addon apparaissait sous forme de “scénario”, c’est-à-dire d’une boîte contenant un rectangle nommé “acousmoscribe”, et nous étions limités à ce rectangle pour notre interface graphique. Nous avons ensuite ajouté un flag “SupportsTemporal” dans les métadonnées (Metadata.hpp), ce qui nous permet de modifier l’interface graphique de la boîte entière.
 
-Nous avons
