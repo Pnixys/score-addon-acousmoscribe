@@ -13,6 +13,15 @@
 
 namespace Acousmoscribe
 {
+    
+//Dynamic Profile :
+typedef struct{
+    double attack; //attack duration
+    double release; //release duration
+    float volumeStart;
+    float volumeEnd;
+}DynamicProfile;
+
 struct SignData
 {
 SignData() = default;
@@ -20,17 +29,22 @@ SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, Rhyt
     : m_start{s}, m_duration{d}, m_grain{g}, m_dynamicProfile{dp}, m_melodicProfile{mp}, m_rhythmicProfile{rp}
 {
 }
-
     double start() const { return m_start; }
     double duration() const { return m_duration; }
     double end() const { return m_start + m_duration; }
 
+    DynamicProfile dynamicProfile() { return m_dynamicProfile; }
+    MelodicProfile melodicProfile() { return m_melodicProfile; }
+    RhythmicProfile rythmicProfile() { return m_rythmicProfile; }
+    Grain grain() { return m_grain; }
+
     void setStart(double s) { m_start = s; }
     void setDuration(double s) { m_duration = s; }
-    
+
     void setDynamicProfile(DynamicProfile dp) {m_dynamicProfile = dp; }
     void setMelodicProfile(MelodicProfile mp) {m_melodicProfile = mp; }
     void setRhythmicProfile(RhythmicProfile rp) {m_rhythmicProfile = rp; }
+    void setGrain(Grain g) {m_grain = g}
 
     double m_start{};
     double m_duration{};
@@ -64,6 +78,16 @@ public:
 
     double end() const noexcept { return m_start + m_duration; }
 
+    DynamicProfile dynamicProfile() noexcept;
+
+    MelodicProfile melodicProfile() noexcept;
+
+    RhythmicProfile rythmicProfile() noexcept;
+
+    Grain grain() noexcept;
+
+    SignData signData() const noexcept;
+
     void scale(double s) noexcept;
 
     void setStart(double s) noexcept;
@@ -76,7 +100,7 @@ public:
 
     void setRhythmicProfile(RhythmicProfile d) noexcept;
 
-    SignData signData() const noexcept;
+    void setGrain(Grain g) noexcept;
 
     void setData(SignData d) noexcept;
 
