@@ -76,15 +76,15 @@ La partie menu déroulant est une autre version du choix.
 
 Voici des captures d'écran de l'interface : 
 
-<a href="https://ibb.co/Rvg6wSN"><img src="https://i.ibb.co/Rvg6wSN/Score-15-03.png" alt="Score-15-03" border="0"></a>
+<a href="https://ibb.co/Rvg6wSN"><img src="https://i.ibb.co/gjrWK7d/Score-15-03.png" alt="Score-15-03" border="0"></a>
 
-<a href="https://ibb.co/Srxb8T4"><img src="https://i.ibb.co/Srxb8T4/Score-15-03-2.png" alt="Score-15-03-2" border="0"></a>
+<a href="https://ibb.co/Srxb8T4"><img src="https://i.ibb.co/9tv6LXk/Score-15-03-2.png" alt="Score-15-03-2" border="0"></a>
 
 Ici voici deux zooms de la partie de la sélection des clés (avant et après avoir sélectionné clé spectrale hybride):
 
-<a href="https://ibb.co/QcLRXwN"><img src="https://i.ibb.co/QcLRXwN/Cle-spectrale2.png" alt="Cle-spectrale2" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/H26sX8z/Cle-spectrale2.png" alt="Cle-spectrale2" border="0"></a>
 
-<a href="https://ibb.co/DG5PzKY"><img src="https://i.ibb.co/DG5PzKY/Cle-spectral.png" alt="Cle-spectral" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/CJhpm06/Cle-spectral.png" alt="Cle-spectral" border="0"></a>
 
 
 ## Presenter
