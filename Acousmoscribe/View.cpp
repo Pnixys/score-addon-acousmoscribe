@@ -4,8 +4,6 @@
 
 #include <score/graphics/GraphicsItem.hpp>
 
-#include "Inspector/Inspector.hpp"
-
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
@@ -13,9 +11,6 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QPainter>
-#include <QPushButton>
-
-QPushButton *r_hybrid;
 
 namespace Acousmoscribe
 {
@@ -61,7 +56,6 @@ void View::paint_impl(QPainter* p) const
  
  p->drawPolygon(points, 4);
  p->drawPolygon(points_signe, 4);
- //connect(r_hybrid, SIGNAL(toggled(bool)), p, SLOT(setVisible(bool)));
 }
 
 int View::visibleCount() const
