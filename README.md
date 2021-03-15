@@ -55,7 +55,7 @@ Il existe également d’autres classes :
 
 # Travail réalisé
 
-## Interface graphique
+## Ajout de l'addon dans la timeline
 
 En premier lieu, nous avons modifié les métadonnées afin de pouvoir “glisser&déposer” notre addon depuis le volet de gauche sur la timeline Ossia. 
 
@@ -64,9 +64,33 @@ De base, l’addon apparaissait sous forme de “scénario”, c’est-à-dire d
 Nous avons ensuite ajouté un flag “SupportsTemporal” dans les métadonnées, ce qui nous permet non seulement de modifier l’interface graphique de la boîte entière, mais aussi de donner aux Signes un instant de début et une certaine durée, ce qui est primordial pour un addon de partition. A long terme, on pourra également récupérer les informations du signe traversé par le curseur de lecture, ce qui sera utile pour relier notre partition à un VST afin de la jouer.
 
 
+## View
+
+En ouvrant Ossia, nous pouvons choisir d’afficher les fichiers à l’aide de  l’icône correspondante. En allant dans la partie Other, nous pouvons déposer une piste sur la fenêtre en y faisant glisser la partie Acousmoscribe . Il est possible d’en ajouter en dessous à l’aide de l’icône ‘+’ ou d’en faire glisser d’autres directement. Les pistes sont étirables pour le moment aussi bien verticalement qu’horizontalement. En début de chaque piste nous avons affiché deux rectangles qui contiendront chacun une clé.
+
+En cliquant sur “Acousmoscribe Process”, un menu s’affiche à droite avec la possibilité de sélectionner des clés. 
+L’utilisateur ne peut sélectionner qu’un critère parmi les suivants : tonique, inharmonique et bruit. S’il en sélectionne deux, le premier se déselectionne automatiquement. Il en est de même pour les trois critères pauvre, riche et hybride.
+S’il décide de sélectionner une clé hybride, trois nouveaux boutons s’affichent pour choisir son paramètre complémentaire. 
+La partie menu déroulant est une autre version du choix. 
+
+
+Voici des captures d'écran de l'interface : 
+
+https://ibb.co/Rvg6wSN
+
+https://ibb.co/Srxb8T4
+
+Ici voici deux zooms de la partie de la sélection des clés (avant et après avoir sélectionné clé spectrale hybride):
+
+https://ibb.co/QcLRXwN
+
+https://ibb.co/DG5PzKY
+
+
 ## Presenter
 
-Etant donné que le Presenter découle en grande partie de la View, nous n’avons pas pu commencer à le développer. Cependant, nous avons déjà établi une liste des méthodes qu’il contiendra, dont la plupart sont en réalités des Commandes (qui feront le lien entre le presenter et le model). La liste de commandes n’est pas encore fixe, car elle dépend de l’implémentation du model, ainsi nous ne la précisons pas pour le moment.
+Étant donné que le Presenter découle en grande partie de la View, nous n’avons pas pu commencer à le développer. Cependant, nous avons déjà établi une liste des méthodes qu’il contiendra, dont la plupart sont en réalités des Commandes (qui feront le lien entre le presenter et le model). La liste de commandes n’est pas encore fixée, car elle dépend de l’implémentation du model, ainsi nous ne la précisons pas pour le moment.
+
 
 ## Model
 
@@ -77,3 +101,4 @@ La classe Sign contient toutes les caractéristiques d’un signe : RythmicProfi
 Le fichier Sign.cpp contient également une structure “SignData” qui comprend toutes les caractéristiques d’un signe. Plus tard, nous nous servirons de cette structure pour exécuter certaines commandes.
 
 Etant donné que la classe Sign est centrale et s’apparente à la classe MidiNote du plugin midi (dans le sens où un signe peut-être déplacé, changé de taille, etc.), nous nous sommes inspirés de l’existant pour cette classe. Ainsi, les fonctions de sérialisation sont déjà implémentées.
+
