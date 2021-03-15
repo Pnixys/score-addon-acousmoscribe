@@ -1,4 +1,5 @@
 #include "Inspector.hpp"
+//#include "../View.hpp" 
 
 #include <score/document/DocumentContext.hpp>
 
@@ -10,6 +11,7 @@
 #include <QComboBox>
 #include <QRadioButton>
 #include <QButtonGroup>
+
 
 namespace Acousmoscribe
 {
