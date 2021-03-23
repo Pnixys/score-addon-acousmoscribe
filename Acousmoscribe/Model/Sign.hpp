@@ -78,13 +78,13 @@ public:
 
     double end() const noexcept { return m_start + m_duration; }
 
-    DynamicProfile dynamicProfile() noexcept;
+    DynamicProfile dynamicProfile() const noexcept;
 
-    MelodicProfile melodicProfile() noexcept;
+    MelodicProfile melodicProfile() const noexcept;
 
-    RhythmicProfile rythmicProfile() noexcept;
+    RhythmicProfile rythmicProfile() const noexcept;
 
-    Grain grain() noexcept;
+    Grain grain() const noexcept;
 
     SignData signData() const noexcept;
 
@@ -112,9 +112,9 @@ private:
     double m_start{};
     double m_duration{};
     Grain _grain;
-    DynamicProfile _dynamicProf;
-    MelodicProfile _melodicProf;
-    RhythmicProfile _rhythmicProf;
+    DynamicProfile _dynamicProfile;
+    MelodicProfile _melodicProfile;
+    RhythmicProfile _rhythmicProfile;
 };
 
 }

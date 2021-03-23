@@ -12,6 +12,9 @@ enum Dyn
 class DynamicProfile{
 public:
     DynamicProfile(Dyn d);
+    ~DynamicProfile();
+
+    void setDynamic(Dyn dyn) noexcept;
 private:
     Dyn m_dyn;
 };

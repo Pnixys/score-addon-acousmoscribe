@@ -22,6 +22,9 @@ enum Variation
 class MelodicProfile{
 public:
     MelodicProfile(Pitch pitch, Variation var);
+    ~MelodicProfile();
+    void setPitch(Pitch pitch) noexcept;
+    void setVariation(Variation variation) noexcept;
 
 private:
     Pitch m_pitch;

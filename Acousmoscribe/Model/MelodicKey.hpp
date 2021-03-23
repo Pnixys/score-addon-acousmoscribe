@@ -17,8 +17,8 @@ public:
     Pitch pitch() const noexcept { return m_pitch; }
     Range range() const noexcept { return m_range; }
 
-    void setPitch(Pitch p) noexcept;
-    void setRange(Range r) noexcept;
+    void setPitch(Pitch pitch) noexcept;
+    void setRange(Range range) noexcept;
 
 private:
     Pitch m_pitch;

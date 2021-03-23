@@ -22,14 +22,14 @@ class RhythmicProfile {
 
 public:
     RhythmicProfile(Speed rythmVar, Acceleration acceleration, bool random);
-
+    ~RhythmicProfile();
     Speed speed() const noexcept { return m_speed; }
     Acceleration acceleration() const noexcept { return m_acceleration; } 
     bool isRandom() const noexcept { return m_isRandom; }
 
-    void setSpeed(Speed s) noexcept;
-    void setAcceleration(Acceleration a) noexcept;
-    void setIsRandom(bool r) noexcept;
+    void setSpeed(Speed speed) noexcept;
+    void setAcceleration(Acceleration acceleration) noexcept;
+    void setIsRandom(bool rand) noexcept;
 
 private:
     Speed m_speed{};
