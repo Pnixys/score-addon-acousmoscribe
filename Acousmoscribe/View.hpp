@@ -9,14 +9,17 @@
 
 namespace Acousmoscribe
 {
+class SpectralKeyView;
 class View final : public Process::LayerView
 {
+    W_OBJECT(View)
 public:
   explicit View(QGraphicsItem* parent);
   ~View() override;
   int visibleCount() const;
 
 private:
+  struct SK spectralkey();
   bool canEdit() const;
   void paint_impl(QPainter*) const override;
 
