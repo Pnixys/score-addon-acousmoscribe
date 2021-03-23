@@ -1,11 +1,11 @@
-#ifndef RYTHM_DEFINE
-#define RYTHM_DEFINE
+#ifndef RHYTHM_DEFINE
+#define RHYTHM_DEFINE
 
 #include <iostream>
 
 enum Speed
 {
-    continuous = 0, //no rythm
+    continuous = 0, //no rhythm
     slow,
     medium,
     fast
@@ -21,7 +21,7 @@ enum Acceleration
 class RhythmicProfile {
 
 public:
-    RhythmicProfile(Speed rythmVar, Acceleration acceleration, bool random);
+    RhythmicProfile(Speed rhythmVar, Acceleration acceleration, bool random);
     ~RhythmicProfile();
     Speed speed() const noexcept { return m_speed; }
     Acceleration acceleration() const noexcept { return m_acceleration; } 
