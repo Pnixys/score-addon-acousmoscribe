@@ -11,7 +11,9 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QPainter>
+#include <wobjectimpl.h>
 
+W_OBJECT_IMPL(Acousmoscribe::View)
 namespace Acousmoscribe
 {
 View::View(QGraphicsItem* parent) : Process::LayerView{parent}
@@ -37,10 +39,10 @@ bool View::canEdit() const
 
 void View::paint_impl(QPainter* p) const
 {
-  p->drawRect(30, 50, 30, 50);
+  //p->drawRect(30, 50, 30, 50);
 
   /* rectangle/triangle */
-  static const QPointF points[4] = {
+  /*static const QPointF points[4] = {
      QPointF(10.0, 80.0), //bas gauche
      QPointF(10.0, 10.0), //haut gauche
      QPointF(50.0, 10.0), //haut droite
@@ -55,7 +57,9 @@ void View::paint_impl(QPainter* p) const
  };
  
  p->drawPolygon(points, 4);
- p->drawPolygon(points_signe, 4);
+ p->drawPolygon(points_signe, 4);*/
+    p->drawRect(0,0,40,90);
+    p->drawRect(40,0,40,90);
 }
 
 int View::visibleCount() const
