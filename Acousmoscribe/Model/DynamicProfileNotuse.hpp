@@ -1,5 +1,9 @@
 #include <iostream>
 
+#include <verdigris>
+
+namespace Acousmoscribe{
+    
 enum Dyn
 {
     flat = 0,
@@ -9,12 +13,15 @@ enum Dyn
     supp
 };
 
+
 class DynamicProfile{
 public:
     DynamicProfile(Dyn d);
     ~DynamicProfile();
 
-    void setDynamic(Dyn dyn) noexcept;
+    void setDynamic(Dyn dyn);
 private:
     Dyn m_dyn;
 };
+
+}

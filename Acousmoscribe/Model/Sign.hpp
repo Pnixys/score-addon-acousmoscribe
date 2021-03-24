@@ -6,12 +6,12 @@
 #include <iostream>
 
 #include "Grain.hpp"
-#include "DynamicProfile.hpp"
+//#include "DynamicProfile.hpp"
 #include "MelodicProfile.hpp"
 #include "RhythmicProfile.hpp"
 
 
-namespace Acousmoscribe
+namespace Model
 {
     
 //Dynamic Profile :
@@ -35,7 +35,7 @@ SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, Rhyt
 
     DynamicProfile dynamicProfile() { return m_dynamicProfile; }
     MelodicProfile melodicProfile() { return m_melodicProfile; }
-    RhythmicProfile rythmicProfile() { return m_rythmicProfile; }
+    RhythmicProfile rythmicProfile() { return m_rhythmicProfile; }
     Grain grain() { return m_grain; }
 
     void setStart(double s) { m_start = s; }
@@ -44,7 +44,7 @@ SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, Rhyt
     void setDynamicProfile(DynamicProfile dp) {m_dynamicProfile = dp; }
     void setMelodicProfile(MelodicProfile mp) {m_melodicProfile = mp; }
     void setRhythmicProfile(RhythmicProfile rp) {m_rhythmicProfile = rp; }
-    void setGrain(Grain g) {m_grain = g}
+    void setGrain(Grain g) {m_grain = g; }
 
     double m_start{};
     double m_duration{};
@@ -78,15 +78,15 @@ public:
 
     double end() const noexcept { return m_start + m_duration; }
 
-    DynamicProfile dynamicProfile() const noexcept;
+    DynamicProfile dynamicProfile() const;
 
-    MelodicProfile melodicProfile() const noexcept;
+    MelodicProfile melodicProfile() const;
 
-    RhythmicProfile rythmicProfile() const noexcept;
+    RhythmicProfile rythmicProfile() const;
 
-    Grain grain() const noexcept;
+    Grain grain() const;
 
-    SignData signData() const noexcept;
+    SignData signData() const;
 
     void scale(double s) noexcept;
 
@@ -94,15 +94,15 @@ public:
 
     void setDuration(double s) noexcept;
 
-    void setDynamicProfile(DynamicProfile d) noexcept;
+    void setDynamicProfile(DynamicProfile d);
 
-    void setMelodicProfile(MelodicProfile d) noexcept;
+    void setMelodicProfile(MelodicProfile d);
 
-    void setRhythmicProfile(RhythmicProfile d) noexcept;
+    void setRhythmicProfile(RhythmicProfile d);
 
-    void setGrain(Grain g) noexcept;
+    void setGrain(Grain g);
 
-    void setData(SignData d) noexcept;
+    void setData(SignData d);
 
 public:
     void signChanged() W_SIGNAL(signChanged);

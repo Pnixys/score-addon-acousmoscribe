@@ -1,5 +1,9 @@
 #include <iostream>
 
+//#include <verdigris>
+
+namespace Model{
+
 enum Pitch
 {
     very_high = 0,
@@ -21,12 +25,15 @@ enum Variation
 
 class MelodicProfile{
 public:
+    MelodicProfile(){}
     MelodicProfile(Pitch pitch, Variation var);
     ~MelodicProfile();
-    void setPitch(Pitch pitch) noexcept;
-    void setVariation(Variation variation) noexcept;
+    void setPitch(Pitch pitch);
+    void setVariation(Variation variation);
 
 private:
     Pitch m_pitch;
     Variation m_var;
 };
+
+}

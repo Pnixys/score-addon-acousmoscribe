@@ -1,5 +1,11 @@
 #include "MelodicProfile.hpp"
 
+//#include <wobjectimpl.h>
+
+//W_OBJECT_IMPL(Acousmoscribe::MelodicProfile)
+
+namespace Model {
+
 MelodicProfile::MelodicProfile(Pitch pitch, Variation var) : m_pitch(pitch), m_var(var) {};
 
 MelodicProfile::~MelodicProfile(){}
@@ -10,4 +16,6 @@ void MelodicProfile::setPitch(Pitch pitch) {
 
 void MelodicProfile::setVariation(Variation variation) {
     m_var = variation;
+}
+
 }

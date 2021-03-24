@@ -1,5 +1,11 @@
+#ifndef test
+#define test
 #include <iostream>
 #include "MelodicProfile.hpp"
+
+//#include <verdigris>
+
+namespace Model {
 
 enum Range{
     weak = 0,
@@ -17,10 +23,12 @@ public:
     Pitch pitch() const noexcept { return m_pitch; }
     Range range() const noexcept { return m_range; }
 
-    void setPitch(Pitch pitch) noexcept;
-    void setRange(Range range) noexcept;
+    void setPitch(Pitch pitch);
+    void setRange(Range range);
 
 private:
     Pitch m_pitch;
     Range m_range;
 };
+}
+#endif

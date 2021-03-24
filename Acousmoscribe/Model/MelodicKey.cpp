@@ -1,4 +1,5 @@
 #include "MelodicKey.hpp"
+namespace Model{
 
 MelodicKey::MelodicKey(Pitch pitch, Range range): m_pitch(pitch), m_range(range) {};
 
@@ -10,4 +11,5 @@ void MelodicKey::setPitch(Pitch pitch) {
 
 void MelodicKey::setRange(Range range) {
     m_range = range;
+}
 }

@@ -1,3 +1,7 @@
+#include <verdigris>
+
+namespace Model{
+
 enum Grain
 {
     smooth = 0,
@@ -5,3 +9,4 @@ enum Grain
     sharp,
     big
 };
+}

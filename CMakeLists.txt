@@ -15,6 +15,15 @@ set(HDRS
     Acousmoscribe/Layer.hpp
     Acousmoscribe/CommandFactory.hpp
 
+    #Model
+    #Acousmoscribe/Model/DynamicProfile.hpp
+    Acousmoscribe/Model/Grain.hpp
+    Acousmoscribe/Model/MelodicProfile.hpp
+    Acousmoscribe/Model/MelodicKey.hpp
+    Acousmoscribe/Model/RhythmicProfile.hpp
+    Acousmoscribe/Model/SpectralKey.hpp
+    Acousmoscribe/Model/Sign.hpp
+
     score_addon_acousmoscribe.hpp
 )
 set(SRCS
@@ -25,6 +34,14 @@ set(SRCS
     Acousmoscribe/Process.cpp
     Acousmoscribe/View.cpp
 
+    #Model
+    #Acousmoscribe/Model/DynamicProfile.cpp
+    Acousmoscribe/Model/MelodicProfile.cpp
+    Acousmoscribe/Model/MelodicKey.cpp
+    Acousmoscribe/Model/RhythmicProfile.cpp
+    Acousmoscribe/Model/SpectralKey.cpp
+    Acousmoscribe/Model/Sign.cpp
+    
     score_addon_acousmoscribe.cpp
 )
 

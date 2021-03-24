@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+#include <verdigris>
+
+namespace Model{
 enum Speed
 {
     continuous = 0, //no rhythm
@@ -21,15 +24,16 @@ enum Acceleration
 class RhythmicProfile {
 
 public:
+    RhythmicProfile(){}
     RhythmicProfile(Speed rhythmVar, Acceleration acceleration, bool random);
     ~RhythmicProfile();
     Speed speed() const noexcept { return m_speed; }
     Acceleration acceleration() const noexcept { return m_acceleration; } 
     bool isRandom() const noexcept { return m_isRandom; }
 
-    void setSpeed(Speed speed) noexcept;
-    void setAcceleration(Acceleration acceleration) noexcept;
-    void setIsRandom(bool rand) noexcept;
+    void setSpeed(Speed speed);
+    void setAcceleration(Acceleration acceleration);
+    void setIsRandom(bool rand);
 
 private:
     Speed m_speed{};
@@ -37,4 +41,5 @@ private:
     bool m_isRandom{false};
 };
 
+}
 #endif

@@ -1,47 +1,49 @@
 #include "Sign.hpp"
 
 #include <wobjectimpl.h>
-W_OBJECT_IMPL(Sign::Sign)
+W_OBJECT_IMPL(Model::Sign)
 
-namespace Sign
+namespace Model
 {
-Sign::Sign(const Id<Sign>& id, QOject* parent)
-    : IdentifiedObject<Sign>(id, QStringLiteral("Sign"), parent){}
+
+Sign::Sign(const Id<Sign>& id, QObject* parent)
+    : IdentifiedObject<Sign>(id, QStringLiteral("Sign"), parent)
+    {}
 
 Sign::Sign(const Id<Sign>& id, SignData s, QObject* parent)
     : IdentifiedObject<Sign>(id, QStringLiteral("Sign"), parent)
-    , m_start{s.m_start}
-    , m_duration{s.m_duration}
+    , m_start(s.m_start)
+    , m_duration(s.m_duration)
     , _grain(s.m_grain)
-    , _dynamicProfile(s.m_dynamicProfile)
     , _melodicProfile(s.m_melodicProfile)
-    , _rhythmicProfile(s.m_rhytmicProfile)
+    , _dynamicProfile(s.m_dynamicProfile)
+    , _rhythmicProfile(s.m_rhythmicProfile)
     {}
 
 /*
  * Getter de sign sur les profiles
  */
-DynamicProfile Sign::dynamicProfile() const noexcept{
+DynamicProfile Sign::dynamicProfile() const {
     return _dynamicProfile;
 }
 
-MelodicProfile Sign::melodicProfile() const noexcept{
+MelodicProfile Sign::melodicProfile() const {
     return _melodicProfile;
 }
 
-RhythmicProfile Sign::rythmicProfile() const noexcept{
-    return _rhytmicProfile;
+RhythmicProfile Sign::rythmicProfile() const {
+    return _rhythmicProfile;
 }
 
-Grain Sign::grain() const noexcept{
+Grain Sign::grain() const {
     return _grain;
 }
 
 /*
  * Getter de signData
  */
-SignData Sign::signData() const noexcept {
-    return SignData{m_start, m_duration, _grain, _dunamicProfile, _melodicProfile, _rhytmicProfile};
+SignData Sign::signData() const {
+    return SignData{m_start, m_duration, _grain, _dynamicProfile, _melodicProfile, _rhythmicProfile};
 }
 
 
@@ -58,7 +60,7 @@ void Sign::scale(double s) noexcept
   }
 }
 
-void Sign::setStart(double s) noexcept
+/* void Sign::setStart(double s) noexcept
 {
   if (m_start != s)
   {
@@ -67,41 +69,41 @@ void Sign::setStart(double s) noexcept
   }
 }
 
-void Sign::setDuration(double s) noexcept
+void Sign::setDuration(double s) 
 {
   if (m_duration != s)
   {
     m_duration = s;
     signChanged();
   }
-}
+} 
 
-void Sign::setDynamicProfile(DynamicProfile d) noexcept {
+void Sign::setDynamicProfile(DynamicProfile d)  {
     _dynamicProfile = d;
     signChanged();
 }
 
-void Sign::setMelodicProfile(MelodicProfile d) noexcept{
+void Sign::setMelodicProfile(MelodicProfile d) {
     _melodicProfile = d;
     signChanged();
 }
 
-void Sign::setRhythmicProfile(RhythmicProfile d) noexcept{
-    _rhytmicProfile = d;
+void Sign::setRhythmicProfile(RhythmicProfile d) {
+    _rhythmicProfile = d;
     signChanged();
 }
 
-void Sign::setGrain(Grain g) noexcept {
+void Sign::setGrain(Grain g)  {
     _grain = g;
-    signChanged();
+    signChanged(); 
 }
-
-void Sign::setData(SignData d) noexcept {
+*/
+void Sign::setData(SignData d)  {
     m_start = d.m_start;
     m_duration = d.m_duration;
-    _dynamicProfile = d.m_dynamucProfile;
+    _dynamicProfile = d.m_dynamicProfile;
     _melodicProfile = d.m_melodicProfile;
-    _rhytmicProfile = d.m_rhytmicProfile;
+    _rhythmicProfile = d.m_rhythmicProfile;
     _grain = d.m_grain;
     signChanged();
 }

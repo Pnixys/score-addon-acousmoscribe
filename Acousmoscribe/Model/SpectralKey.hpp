@@ -4,6 +4,7 @@
 
 #include <verdigris>
 
+namespace Model {
 
 enum Nature
 {
@@ -13,11 +14,46 @@ enum Nature
     noise
 };
 
+
+ struct SpectralKeyData
+{
+    SpectralKeyData() = default;
+    SpectralKeyData(Nature nature, bool isHybrid, bool isRich)
+        : m_nature(nature), m_isHybrid(isHybrid), m_isRich(isRich)
+        {
+            if(m_isRich)
+                m_nature2 = nature;
+            else
+                m_nature2 = none;
+        }
+
+    Nature getNature() { return m_nature; }
+    bool isHybrid() { return m_isHybrid; }
+    bool isRich() { return m_isRich; }
+
+    void changeNature(Nature nature) {
+        m_nature = nature;
+        if(m_isRich)
+            m_nature2 = nature;
+    }
+
+    void changeHybrid(bool h) { m_isHybrid = h;}
+    void changeRich(bool r) {m_isRich = r;}
+
+    Nature m_nature;
+    Nature m_nature2;
+    bool m_isHybrid{false};
+    bool m_isRich{false};
+}; 
+
 class SpectralKey final : public IdentifiedObject<SpectralKey>{
 
 public:
-    SpectralKey(Nature nature, bool isHybrid, bool isRich);
-    ~SpectralKey();
+    SpectralKey(const Id<SpectralKey>& id, QObject* parent);
+    SpectralKey(const Id<SpectralKey>& id, SpectralKeyData n, QObject* parent);
+
+   /*  SpectralKey(Nature nature, bool isHybrid, bool isRich);
+    ~SpectralKey(); */
 
     Nature nature() const noexcept { return m_nature; }
     Nature nature2() const noexcept { return m_nature2; }
@@ -32,7 +68,7 @@ private:
     Nature m_nature;
     Nature m_nature2;
     bool m_isHybrid{false};
-    bool m_isRich;
+    bool m_isRich{false};
 };
 
-#endif
+}
