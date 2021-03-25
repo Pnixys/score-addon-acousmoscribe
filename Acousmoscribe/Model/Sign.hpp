@@ -11,7 +11,7 @@
 #include "RhythmicProfile.hpp"
 
 
-namespace Model
+namespace Acousmoscribe
 {
     
 //Dynamic Profile :

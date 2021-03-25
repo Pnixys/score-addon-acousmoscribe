@@ -5,7 +5,7 @@
 
 #include <verdigris>
 
-namespace Model{
+namespace Acousmoscribe{
 enum Speed
 {
     continuous = 0, //no rhythm

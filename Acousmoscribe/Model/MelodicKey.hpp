@@ -1,11 +1,9 @@
-#ifndef test
-#define test
 #include <iostream>
 #include "MelodicProfile.hpp"
 
 //#include <verdigris>
 
-namespace Model {
+namespace Acousmoscribe {
 
 enum Range{
     weak = 0,
@@ -31,4 +29,3 @@ private:
     Range m_range;
 };
 }
-#endif

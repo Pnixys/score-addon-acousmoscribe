@@ -23,15 +23,28 @@ QString Model::prettyName() const noexcept
   return tr("Acousmoscribe Process");
 }
 
-void Model::setDurationAndScale(const TimeVal& newDuration) noexcept
+void Model::setDurationAndScale(const TimeVal& newDuration) noexcept 
 {
+  signsChanged();
+  setDuration(newDuration);
 }
 
-void Model::setDurationAndGrow(const TimeVal& newDuration) noexcept
+void Model::setDurationAndGrow(const TimeVal& newDuration) noexcept 
 {
+  if(duration() == newDuration)
+    return;
+  if(newDuration == TimeVal::zero())
+    return;
+  auto ratio = double(duration().impl) / newDuration.impl;
+
+  for (auto& sgn : signs)
+    sgn.scale(ratio);
+
+  signsChanged();
+  setDuration(newDuration);
 }
 
-void Model::setDurationAndShrink(const TimeVal& newDuration) noexcept
+void Model::setDurationAndShrink(const TimeVal& newDuration) noexcept 
 {
 }
 }

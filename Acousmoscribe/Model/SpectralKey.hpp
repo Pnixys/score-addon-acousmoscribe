@@ -4,7 +4,7 @@
 
 #include <verdigris>
 
-namespace Model {
+namespace Acousmoscribe {
 
 enum Nature
 {

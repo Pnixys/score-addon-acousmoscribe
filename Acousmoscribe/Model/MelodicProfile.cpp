@@ -4,7 +4,7 @@
 
 //W_OBJECT_IMPL(Acousmoscribe::MelodicProfile)
 
-namespace Model {
+namespace Acousmoscribe {
 
 MelodicProfile::MelodicProfile(Pitch pitch, Variation var) : m_pitch(pitch), m_var(var) {};
 

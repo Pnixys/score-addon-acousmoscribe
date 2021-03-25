@@ -11,10 +11,10 @@ PROCESS_METADATA(
     "Acousmoscribe",                                   // Internal name
     "Acousmoscribe",                                   // Pretty name
     Process::ProcessCategory::Other,              // Category
-    "Other",                                      // Category
-    "Description",                                // Description
-    "Author",                                     // Author
-    (QStringList{"Put", "Your", "Tags", "Here"}), // Tags
+    "Acousmoscribe",                                      // Category
+    "Système de notation Acousmoscribe",                                // Description
+    "Elodie Gaudry, Loïc Lachiver, Thomas Heurtel, Antoine Deynoux, Julien Daugaron",                                     // Author
+    (QStringList{"Acousmoscribe", "Notation", "Di-Santo", "Narbel"}), // Tags
     {},                                           // Inputs
     {},                                           // Outputs
     Process::ProcessFlags::SupportsTemporal | Process::ProcessFlags::PutInNewSlot            // Flags

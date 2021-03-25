@@ -5,7 +5,7 @@
 
 //W_OBJECT_IMPL(Acousmoscribe::RhythmicProfile)
 
-namespace Model {
+namespace Acousmoscribe {
 
 RhythmicProfile::RhythmicProfile(Speed rhythmVar,  Acceleration acceleration, bool random) :
     m_speed(rhythmVar), m_acceleration(acceleration), m_isRandom(random) {};

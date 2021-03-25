@@ -1,9 +1,9 @@
 #include "Sign.hpp"
 
 #include <wobjectimpl.h>
-W_OBJECT_IMPL(Model::Sign)
+W_OBJECT_IMPL(Acousmoscribe::Sign)
 
-namespace Model
+namespace Acousmoscribe
 {
 
 Sign::Sign(const Id<Sign>& id, QObject* parent)

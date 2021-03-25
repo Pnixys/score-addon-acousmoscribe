@@ -3,7 +3,7 @@
 #include <wobjectimpl.h>
 //W_OBJECT_IMPL(Acousmoscribe::SpectralKey)
 
-namespace Model
+namespace Acousmoscribe
 {
 /* 
 

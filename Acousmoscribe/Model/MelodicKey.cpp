@@ -1,5 +1,5 @@
 #include "MelodicKey.hpp"
-namespace Model{
+namespace Acousmoscribe{
 
 MelodicKey::MelodicKey(Pitch pitch, Range range): m_pitch(pitch), m_range(range) {};
 
