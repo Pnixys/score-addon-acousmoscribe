@@ -60,7 +60,7 @@ void Sign::scale(double s) noexcept
   }
 }
 
-/* void Sign::setStart(double s) noexcept
+void Sign::setStart(double s) noexcept
 {
   if (m_start != s)
   {
@@ -69,7 +69,7 @@ void Sign::scale(double s) noexcept
   }
 }
 
-void Sign::setDuration(double s) 
+void Sign::setDuration(double s) noexcept 
 {
   if (m_duration != s)
   {
@@ -97,7 +97,7 @@ void Sign::setGrain(Grain g)  {
     _grain = g;
     signChanged(); 
 }
-*/
+
 void Sign::setData(SignData d)  {
     m_start = d.m_start;
     m_duration = d.m_duration;

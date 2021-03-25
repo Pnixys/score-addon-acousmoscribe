@@ -38,8 +38,8 @@ SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, Rhyt
     RhythmicProfile rythmicProfile() { return m_rhythmicProfile; }
     Grain grain() { return m_grain; }
 
-    void setStart(double s) { m_start = s; }
-    void setDuration(double s) { m_duration = s; }
+    void setStart(double s) noexcept { m_start = s; }
+    void setDuration(double s) noexcept { m_duration = s; }
 
     void setDynamicProfile(DynamicProfile dp) {m_dynamicProfile = dp; }
     void setMelodicProfile(MelodicProfile mp) {m_melodicProfile = mp; }
