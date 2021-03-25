@@ -54,17 +54,22 @@ public:
   void on_signvolumeEndChanged(volume ?);
   void on_signvolumeEndChangeFinished(volume ?);*/
 
-private:
+private:  
+  void updateSpectralKey(SpectralKeyView&);
   void on_spectralKeyAdded(const SpectralKey&);
   void on_spectralKeyRemoving(const SpectralKey&);
 
+  void updateMelodicKey(MelodicKeyView&);
   void on_melodicKeyAdded(const MelodicKey&);
   void on_melodicKeyRemoving(const MelodicKey&);
 
+  void updateSign(SignView&);
   void on_SignAdded(const Sign&);
   void on_SignRemoving(const Sign&);
 
   const Model& m_model;
   View* m_view{};
+  std::vector<SignView*> m_signs;
+
 };
 }
