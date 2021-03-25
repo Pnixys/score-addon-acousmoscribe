@@ -26,6 +26,7 @@ public:
 
   void parentGeometryChanged() override;
 
+/*
   //void on_spectralKeyChanged(SpectralKeyView& sKey);
   void on_spectralKeyNature1Changed(Nature& nature1);
   void on_spectralKeyNature2Changed(Nature& nature2);
@@ -48,14 +49,10 @@ public:
   void on_signMelodicProfileChanged(MelodicProfile& melP);
   void on_signRhythmicProfileChanged(RhythmicProfile& rhyP);
   void on_signGrainChanged(Grain& grain);
-
-  /*void on_signvolumeStartChanged(volume ?);
-  void on_signvolumeStartChangeFinished(volume ?);
-  void on_signvolumeEndChanged(volume ?);
-  void on_signvolumeEndChangeFinished(volume ?);*/
+*/
 
 private:  
-  void updateSpectralKey(SpectralKeyView&);
+  /*void updateSpectralKey(SpectralKeyView&);
   void on_spectralKeyAdded(const SpectralKey&);
   void on_spectralKeyRemoving(const SpectralKey&);
 
@@ -65,11 +62,11 @@ private:
 
   void updateSign(SignView&);
   void on_SignAdded(const Sign&);
-  void on_SignRemoving(const Sign&);
+  void on_SignRemoving(const Sign&);*/
 
   const Model& m_model;
   View* m_view{};
-  std::vector<SignView*> m_signs;
+  //std::vector<SignView*> m_signs;
 
 };
 }
