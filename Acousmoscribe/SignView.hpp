@@ -17,7 +17,7 @@ struct Sign
 {
   Sign() = default;
 };
-  SignView(const Note& n, Presenter& presenter, QGraphicsItem* parent);
+  SignView(const Sign& n, Presenter& presenter, QGraphicsItem* parent);
   Sign Sign() const noexcept;
 
   void setWidth(qreal w) noexcept
@@ -42,7 +42,7 @@ struct Sign
   void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
   QRectF computeRect() const noexcept;
-  QPointF closestPos(QPointF note) const noexcept;
+  QPointF closestPos(QPointF sign) const noexcept;
 
 private:
   bool canEdit() const;
