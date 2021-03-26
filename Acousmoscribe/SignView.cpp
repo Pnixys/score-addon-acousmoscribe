@@ -23,6 +23,9 @@ SignView::SignView(QGraphicsItem* parent)
     this->setAcceptHoverEvents(true);
 }
 
+void SignView::paint(QPainter* p) const
+{
+}
 /*void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
   static const MidiStyle s;
