@@ -4,6 +4,7 @@
 
 #include <Acousmoscribe/Model/Sign.hpp>
 #include <Acousmoscribe/Metadata.hpp>
+#include <score/tools/Clamp.hpp>
 
 namespace Acousmoscribe
 {

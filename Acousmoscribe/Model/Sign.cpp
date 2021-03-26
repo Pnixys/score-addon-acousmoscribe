@@ -1,5 +1,8 @@
 #include "Sign.hpp"
 
+#include <score/serialization/DataStreamVisitor.hpp>
+#include <score/serialization/JSONVisitor.hpp>
+
 #include <wobjectimpl.h>
 W_OBJECT_IMPL(Acousmoscribe::Sign)
 
@@ -84,6 +87,7 @@ void Sign::setDynamicProfile(DynamicProfile d)  {
 }
 
 void Sign::setMelodicProfile(MelodicProfile d) {
+
     _melodicProfile = d;
     signChanged();
 }
@@ -108,4 +112,26 @@ void Sign::setData(SignData d)  {
     signChanged();
 }
 
+}
+
+template <>
+void DataStreamReader::read(const Acousmoscribe::Sign& e)
+{
+  insertDelimiter();
+}
+
+template <>
+void DataStreamWriter::write(Acousmoscribe::Sign& e)
+{
+  checkDelimiter();
+}
+
+template <>
+void JSONReader::read(const Acousmoscribe::Sign& e)
+{
+}
+
+template <>
+void JSONWriter::write(Acousmoscribe::Sign& e)
+{
 }
