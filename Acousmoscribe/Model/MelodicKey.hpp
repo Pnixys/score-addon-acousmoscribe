@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "MelodicProfile.hpp"
 
@@ -7,7 +8,7 @@ namespace Acousmoscribe {
 
 enum Range{
     weak = 0,
-    medium,
+    normal,
     strong
 };
 

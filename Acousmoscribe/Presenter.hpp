@@ -5,6 +5,18 @@
 
 #include <score/model/Identifier.hpp>
 
+#include <Acousmoscribe/Model/Sign.hpp>
+#include <Acousmoscribe/Model/Grain.hpp>
+#include <Acousmoscribe/Model/MelodicKey.hpp>
+#include <Acousmoscribe/Model/SpectralKey.hpp>
+#include <Acousmoscribe/Model/RhythmicProfile.hpp>
+#include <Acousmoscribe/Model/MelodicProfile.hpp>
+//#include <Acousmoscribe/Model/DynamicProfileNotuse.hpp>
+
+#include "SignView.hpp"
+#include "SpectralKeyView.hpp"
+#include "MelodicKeyView.hpp"
+
 namespace Acousmoscribe
 {
 class Model;
@@ -26,33 +38,36 @@ public:
 
   void parentGeometryChanged() override;
 
-/*
-  //void on_spectralKeyChanged(SpectralKeyView& sKey);
+
+  void on_spectralKeyChanged(SpectralKeyView& sKey);
+  /*
   void on_spectralKeyNature1Changed(Nature& nature1);
   void on_spectralKeyNature2Changed(Nature& nature2);
   void on_spectralKeyIsRichChanged(bool& isRich);
   void on_spectralKeyIsHybridChanged(bool& isHybrid);
+  */
 
-  //void on_melodicKeyChanged(MelodicKeyView& mKey);
+  void on_melodicKeyChanged(MelodicKeyView& mKey);
+  /*
   void on_melodicKeyPitchChanged(Pitch& pitch);
   void on_melodicKeyRangeChanged(Range& range);
+  */
 
   void on_deselectOtherSigns();
   void on_signDuplicate();
   void on_signScaled(const Sign&, double newScale);
-  //void on_signChanged(SignView& sign);
-  void on_signAttackChanged(Dyn& attack);
-  void on_signAttackChangeFinished(Dyn& attack);
-  void on_signReleaseChanged(Dyn& release);
-  void on_signReleaseChangeFinished(Dyn& release);
-  //void on_signDynamicProfileChanged(DynamicProfile& dynP);
+  void on_signChanged(SignView& sign); 
+  /*
+  void on_signDynamicProfileChanged(DynamicProfile& dynP);
+  void on_signDynamicProfileChangeFinished(DynamicProfile& dynP);
   void on_signMelodicProfileChanged(MelodicProfile& melP);
   void on_signRhythmicProfileChanged(RhythmicProfile& rhyP);
   void on_signGrainChanged(Grain& grain);
-*/
+  */
+
 
 private:  
-  /*void updateSpectralKey(SpectralKeyView&);
+  void updateSpectralKey(SpectralKeyView&);
   void on_spectralKeyAdded(const SpectralKey&);
   void on_spectralKeyRemoving(const SpectralKey&);
 
@@ -62,11 +77,11 @@ private:
 
   void updateSign(SignView&);
   void on_SignAdded(const Sign&);
-  void on_SignRemoving(const Sign&);*/
+  void on_SignRemoving(const Sign&);
 
   const Model& m_model;
   View* m_view{};
-  //std::vector<SignView*> m_signs;
+  std::vector<SignView*> m_signs;
 
 };
 }

@@ -4,9 +4,9 @@
 
 namespace Acousmoscribe
 {
-struct MelodicKey
+/*struct MelodicKey
 {
-};
+};*/
 
 class MelodicKeyView final : public QGraphicsItem
 {

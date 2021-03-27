@@ -8,7 +8,7 @@ namespace Acousmoscribe {
 
 enum Nature
 {
-    none = 0,
+    null = 0,
     tonic,
     inharmonic,
     noise
@@ -24,7 +24,7 @@ enum Nature
             if(m_isRich)
                 m_nature2 = nature;
             else
-                m_nature2 = none;
+                m_nature2 = null;
         }
 
     Nature getNature() { return m_nature; }
