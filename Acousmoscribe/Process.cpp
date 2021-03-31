@@ -4,6 +4,11 @@
 #include <score/model/EntitySerialization.hpp>
 #include <score/model/EntityMapSerialization.hpp>
 
+#include <score/serialization/DataStreamVisitor.hpp>
+#include <score/serialization/JSONVisitor.hpp>
+
+#include <Process/Dataflow/Port.hpp>
+
 #include <wobjectimpl.h>
 
 W_OBJECT_IMPL(Acousmoscribe::Model)
@@ -80,10 +85,50 @@ void Model::setDurationAndShrink(const TimeVal& newDuration) noexcept
 }
 }
 
-/**
- * Serialization avec le structure data
- **/
-/*
+
+// PARTIE SERIALIZATION
+
+// SERIALIZATION AVEC SIGNDATA
+template <>
+void DataStreamReader::read(const Acousmoscribe::SignData& sd)
+{
+  m_stream << sd.m_start << sd.m_duration << sd.m_grain << sd.m_dynamicProfile << sd.m_melodicProfile << sd.m_rhythmicProfile;
+  insertDelimiter();
+} 
+
+template <>
+void DataStreamWriter::write(Acousmoscribe::SignData& sd)
+{
+  m_stream >> sd.m_start >> sd.m_duration >> sd.m_grain >> sd.m_dynamicProfile >> sd.m_melodicProfile >> sd.m_rhythmicProfile;
+  checkDelimiter();
+}
+ 
+template <>
+void JSONReader::read(const Acousmoscribe::SignData& sd)
+{
+  stream.StartArray();
+  stream.Double(sd.m_start);
+  stream.Double(sd.m_duration);
+  stream.Int(sd.m_grain);
+  JSONReader::read(sd.m_dynamicProfile);
+  JSONReader::read(sd.m_melodicProfile);
+  JSONReader::read(sd.m_rhythmicProfile);
+  stream.EndArray();
+} 
+
+template <>
+void JSONWriter::write(Acousmoscribe::SignData& sd)
+{
+  const auto& arr = base.GetArray();
+  sd.m_start = arr[0].GetDouble();
+  sd.m_duration = arr[1].GetDouble();
+  sd.m_grain = (Acousmoscribe::Grain) arr[2].GetInt();
+  JSONWriter::write(sd.m_dynamicProfile); 
+  JSONWriter::write(sd.m_melodicProfile);
+  JSONWriter::write(sd.m_rhythmicProfile);
+}
+
+// SERIALIZATION AVEC SIGN
 template <>
 void DataStreamReader::read(const Acousmoscribe::Sign& s)
 {
@@ -103,14 +148,16 @@ void DataStreamWriter::write(Acousmoscribe::Sign& s)
 template <>
 void JSONReader::read(const Acousmoscribe::Sign& s)
 {
-  /* stream.Key("Note");
+  stream.Key("Sign");
   stream.StartArray();
-  stream.Double(n.m_start);
-  stream.Double(n.m_duration);
-  stream.Int(n.m_pitch);
-  stream.Int(n.m_velocity);
-  stream.EndArray(); 
-}
+  stream.Double(s.m_start);
+  stream.Double(s.m_duration);
+  stream.Int(s._grain);
+  JSONReader::read(s._dynamicProfile);
+  JSONReader::read(s._melodicProfile);
+  JSONReader::read(s._rhythmicProfile);
+  stream.EndArray();
+} 
 
 
 
@@ -118,17 +165,18 @@ void JSONReader::read(const Acousmoscribe::Sign& s)
 template <>
 void JSONWriter::write(Acousmoscribe::Sign& s)
 {
-  /* const auto& arr = obj["Note"].toArray();
-  n.m_start = arr[0].GetDouble();
-  n.m_duration = arr[1].GetDouble();
-  n.m_pitch = arr[2].GetInt();
-  n.m_velocity = arr[3].GetInt(); 
+  const auto& arr = obj["Sign"].toArray();
+  s.m_start = arr[0].GetDouble();
+  s.m_duration = arr[1].GetDouble();
+  s._grain = (Acousmoscribe::Grain) arr[2].GetInt();
+  JSONWriter::write(s._dynamicProfile); 
+  JSONWriter::write(s._melodicProfile);
+  JSONWriter::write(s._rhythmicProfile);
 }
 
- */
-/**
- * Serialization Avec le model en paramètre
- **/
+
+
+//SERIALIZATION AVEC LE MODEL
 template <>
 void DataStreamReader::read(const Acousmoscribe::Model& proc)
 {
@@ -169,6 +217,3 @@ void JSONWriter::write(Acousmoscribe::Model& proc)
     proc.signs.add(new Acousmoscribe::Sign{deserializer, &proc});
   }
 }
-
-
-

@@ -31,6 +31,9 @@ public:
     ~MelodicProfile();
     void setPitch(Pitch pitch);
     void setVariation(Variation variation);
+    Pitch getPitch() const;
+    Variation getVariation() const;
+
 
 private:
     Pitch m_pitch;

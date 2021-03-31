@@ -3,6 +3,10 @@
 #include <score/serialization/DataStreamVisitor.hpp>
 #include <score/serialization/JSONVisitor.hpp>
 
+#include <score/plugins/SerializableHelpers.hpp>
+#include <score/model/EntitySerialization.hpp>
+#include <score/model/EntityMapSerialization.hpp>
+
 #include <wobjectimpl.h>
 W_OBJECT_IMPL(Acousmoscribe::Sign)
 
@@ -114,24 +118,38 @@ void Sign::setData(SignData d)  {
 
 }
 
+
 template <>
-void DataStreamReader::read(const Acousmoscribe::Sign& e)
+void DataStreamReader::read(const Acousmoscribe::DynamicProfile& dp)
 {
+  m_stream << dp.attack << dp.release << dp.volumeStart << dp.volumeEnd;
   insertDelimiter();
-}
+} 
 
 template <>
-void DataStreamWriter::write(Acousmoscribe::Sign& e)
+void DataStreamWriter::write(Acousmoscribe::DynamicProfile& dp)
 {
+  m_stream >> dp.attack >> dp.release >> dp.volumeStart >> dp.volumeEnd;
   checkDelimiter();
+} 
+
+template <>
+void JSONReader::read(const Acousmoscribe::DynamicProfile& dp)
+{
+  stream.StartArray();
+  stream.Double(dp.attack);
+  stream.Double(dp.release);
+  stream.Double(dp.volumeStart);
+  stream.Double(dp.volumeEnd);
+  stream.EndArray();
 }
 
 template <>
-void JSONReader::read(const Acousmoscribe::Sign& e)
+void JSONWriter::write(Acousmoscribe::DynamicProfile& dp)
 {
-}
-
-template <>
-void JSONWriter::write(Acousmoscribe::Sign& e)
-{
+  const auto& arr = base.GetArray();
+  dp.attack = arr[0].GetDouble();
+  dp.release = arr[1].GetDouble();
+  dp.volumeStart = arr[2].GetDouble();
+  dp.volumeEnd = arr[3].GetDouble();
 }
