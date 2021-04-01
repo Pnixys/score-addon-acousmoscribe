@@ -78,7 +78,7 @@ void ReplaceSigns::redo(const score::DocumentContext& ctx) const
   for (auto& Sign : m_new)
     model.signs.add(new Acousmoscribe::Sign{Sign.first, Sign.second, &model});
 }
-}
+
 
 void ReplaceSigns::serializeImpl(DataStreamInput& s) const
 {
@@ -89,4 +89,5 @@ void ReplaceSigns::deserializeImpl(DataStreamOutput& s)
 {
   s >> m_model >> m_old >> m_olddur >> m_newdur;
 }
+
 }

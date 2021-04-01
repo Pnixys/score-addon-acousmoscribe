@@ -1,7 +1,8 @@
 #include "View.hpp"
 
 #include <Process/Style/ScenarioStyle.hpp>
-
+#include <Acousmoscribe/SpectralKeyView.hpp>
+#include <Acousmoscribe/MelodicKeyView.hpp>
 #include <score/graphics/GraphicsItem.hpp>
 
 #include <QApplication>
@@ -39,27 +40,9 @@ bool View::canEdit() const
 
 void View::paint_impl(QPainter* p) const
 {
-  //p->drawRect(30, 50, 30, 50);
-
-  /* rectangle/triangle */
-  /*static const QPointF points[4] = {
-     QPointF(10.0, 80.0), //bas gauche
-     QPointF(10.0, 10.0), //haut gauche
-     QPointF(50.0, 10.0), //haut droite
-     QPointF(90.0, 80.0),  //bas droite
- };
-
- static const QPointF points_signe[4] = {
-     QPointF(25.0, 25.0), //bas gauche
-     QPointF(35.0, 35.0), //haut gauche
-     QPointF(45.0, 25.0), //haut droite
-     QPointF(55.0, 35.0),  //bas droite
- };
- 
- p->drawPolygon(points, 4);
- p->drawPolygon(points_signe, 4);*/
-    p->drawRect(0,0,40,90);
-    p->drawRect(40,0,40,90);
+  
+    m_spectralkey->SpectralKeyView::paint(p);
+    //m_melodickey->MelodicKeyView::paint(p);
 }
 
 int View::visibleCount() const
