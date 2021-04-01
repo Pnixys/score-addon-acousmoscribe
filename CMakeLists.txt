@@ -14,6 +14,10 @@ set(HDRS
     Acousmoscribe/View.hpp
     Acousmoscribe/Layer.hpp
 
+    #View
+    Acousmoscribe/SpectralKeyView.hpp
+    Acousmoscribe/MelodicKeyView.hpp
+    
     #Commands
     Acousmoscribe/Commands/CommandFactory.hpp
     Acousmoscribe/Commands/AddSign.hpp
@@ -36,6 +40,10 @@ set(SRCS
     Acousmoscribe/Presenter.cpp
     Acousmoscribe/Process.cpp
     Acousmoscribe/View.cpp
+    
+    #View
+    Acousmoscribe/SpectralKeyView.cpp
+    Acousmoscribe/MelodicKeyView.cpp
     
     #Commands
     Acousmoscribe/Commands/AddSign.cpp
