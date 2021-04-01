@@ -10,6 +10,7 @@
 namespace Acousmoscribe
 {
 class SpectralKeyView;
+class MelodicKeyView;
 class View final : public Process::LayerView
 {
     W_OBJECT(View)
@@ -22,6 +23,9 @@ private:
   struct SK spectralkey();
   bool canEdit() const;
   void paint_impl(QPainter*) const override;
+
+  SpectralKeyView *m_spectralkey;
+  MelodicKeyView *m_melodickey;
 
   QPainterPath m_selectArea;
   double m_defaultW; // Covers the [ 0; 1 ] area
