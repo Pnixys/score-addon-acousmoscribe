@@ -12,5 +12,6 @@ class MelodicKeyView final : public QGraphicsItem
 {
 public:
   MelodicKeyView(QGraphicsItem* parent);
+  void paint(QPainter* painter);
 };
 }

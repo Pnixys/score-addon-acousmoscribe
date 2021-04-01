@@ -98,7 +98,7 @@ MelodicProfile Sign::melodicProfile() const {
     return _melodicProfile;
 }
 
-RhythmicProfile Sign::rythmicProfile() const {
+RhythmicProfile Sign::rhythmicProfile() const {
     return _rhythmicProfile;
 }
 

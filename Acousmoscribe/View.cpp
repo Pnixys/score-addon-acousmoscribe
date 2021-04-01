@@ -42,7 +42,7 @@ void View::paint_impl(QPainter* p) const
 {
   
     m_spectralkey->SpectralKeyView::paint(p);
-    //m_melodickey->MelodicKeyView::paint(p);
+    m_melodickey->MelodicKeyView::paint(p);
 }
 
 int View::visibleCount() const

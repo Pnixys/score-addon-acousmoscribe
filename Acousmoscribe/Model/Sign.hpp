@@ -79,7 +79,7 @@ public:
 
     MelodicProfile melodicProfile() const;
 
-    RhythmicProfile rythmicProfile() const;
+    RhythmicProfile rhythmicProfile() const;
 
     Grain grain() const;
 

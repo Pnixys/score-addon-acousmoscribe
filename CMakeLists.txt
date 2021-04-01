@@ -22,6 +22,7 @@ set(HDRS
     Acousmoscribe/Commands/CommandFactory.hpp
     Acousmoscribe/Commands/AddSign.hpp
     Acousmoscribe/Commands/MoveSigns.hpp
+    Acousmoscribe/Commands/RemoveSigns.hpp
 
     #Model
     #Acousmoscribe/Model/DynamicProfile.hpp
@@ -49,6 +50,7 @@ set(SRCS
     #Commands
     Acousmoscribe/Commands/AddSign.cpp
     Acousmoscribe/Commands/MoveSigns.cpp
+    Acousmoscribe/Commands/RemoveSigns.cpp
 
     #Model
     #Acousmoscribe/Model/DynamicProfile.cpp
