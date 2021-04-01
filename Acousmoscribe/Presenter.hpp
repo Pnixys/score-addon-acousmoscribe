@@ -56,14 +56,20 @@ public:
   void on_deselectOtherSigns();
   void on_signDuplicate();
   void on_signScaled(const Sign&, double newScale);
-  void on_signChanged(SignView& sign); 
-  /*
-  void on_signDynamicProfileChanged(DynamicProfile& dynP);
-  void on_signDynamicProfileChangeFinished(DynamicProfile& dynP);
-  void on_signMelodicProfileChanged(MelodicProfile& melP);
-  void on_signRhythmicProfileChanged(RhythmicProfile& rhyP);
-  void on_signGrainChanged(Grain& grain);
-  */
+  void on_signMoved(SignView& s); 
+  void on_signMoveFinished(SignView& s); 
+
+  // Dynamic Profile :
+  void on_signAttackChanged(const Sign&, double newAttack);
+  void on_signReleaseChanged(const Sign&, double newRelease);
+  void on_signVolumeInChanged(const Sign&, double newVolIn);
+  void on_signVolumeOutChanged(const Sign&, double newVolOut);
+  void on_signVolumeChanged(const Sign&, double newVol);
+
+  // Other profiles
+  void on_signMelodicProfileChanged(SignView& s);
+  void on_signRhythmicProfileChanged(SignView& s);
+  void on_signGrainChanged(SignView& s);
 
 
 private:  
