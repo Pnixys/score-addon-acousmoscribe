@@ -13,7 +13,10 @@ set(HDRS
     Acousmoscribe/Process.hpp
     Acousmoscribe/View.hpp
     Acousmoscribe/Layer.hpp
-    Acousmoscribe/CommandFactory.hpp
+
+    #Commands
+    Acousmoscribe/Commands/CommandFactory.hpp
+    Acousmoscribe/Commands/AddSign.hpp
 
     #Model
     #Acousmoscribe/Model/DynamicProfile.hpp
@@ -33,6 +36,9 @@ set(SRCS
     Acousmoscribe/Presenter.cpp
     Acousmoscribe/Process.cpp
     Acousmoscribe/View.cpp
+    
+    #Commands
+    Acousmoscribe/Commands/AddSign.cpp
 
     #Model
     #Acousmoscribe/Model/DynamicProfile.cpp

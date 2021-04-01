@@ -2,7 +2,7 @@
 
 #include <score/plugins/FactorySetup.hpp>
 
-#include <Acousmoscribe/CommandFactory.hpp>
+#include <Acousmoscribe/Commands/CommandFactory.hpp>
 #include <Acousmoscribe/Executor.hpp>
 #include <Acousmoscribe/Inspector/Inspector.hpp>
 #include <Acousmoscribe/Layer.hpp>
