@@ -27,9 +27,9 @@ public:
     RhythmicProfile(){}
     RhythmicProfile(Speed rhythmVar, Acceleration acceleration, bool random);
     ~RhythmicProfile();
-    Speed speed() const noexcept { return m_speed; }
-    Acceleration acceleration() const noexcept { return m_acceleration; } 
-    bool isRandom() const noexcept { return m_isRandom; }
+    Speed speed() const noexcept;
+    Acceleration acceleration() const noexcept;
+    bool isRandom() const noexcept;
 
     void setSpeed(Speed speed);
     void setAcceleration(Acceleration acceleration);
