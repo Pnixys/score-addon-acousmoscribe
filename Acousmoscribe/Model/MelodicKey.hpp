@@ -19,8 +19,8 @@ public:
     MelodicKey(Pitch pitch, Range range);
     ~MelodicKey();
 
-    Pitch pitch() const noexcept { return m_pitch; }
-    Range range() const noexcept { return m_range; }
+    Pitch getPitch() const noexcept;
+    Range getRange() const noexcept;
 
     void setPitch(Pitch pitch);
     void setRange(Range range);

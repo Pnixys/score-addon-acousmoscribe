@@ -19,6 +19,18 @@ RhythmicProfile::RhythmicProfile(Speed rhythmVar,  Acceleration acceleration, bo
 
 RhythmicProfile::~RhythmicProfile(){}
 
+Speed RhythmicProfile::speed() const noexcept { 
+    return m_speed;
+}
+
+Acceleration RhythmicProfile::acceleration() const noexcept { 
+    return m_acceleration; 
+} 
+
+bool RhythmicProfile::isRandom() const noexcept {
+    return m_isRandom;
+}
+
 void RhythmicProfile::setSpeed(Speed speed) {
     m_speed = speed;
 }

@@ -13,6 +13,54 @@ W_OBJECT_IMPL(Acousmoscribe::Sign)
 namespace Acousmoscribe
 {
 
+/*********************
+ * PARTIE SIGN DATA
+ *********************/
+SignData::SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, RhythmicProfile rp)
+    : m_start{s}, m_duration{d}, m_grain{g}, m_dynamicProfile{dp}, m_melodicProfile{mp}, m_rhythmicProfile{rp}
+{
+}
+
+double SignData::start() const {
+  return m_start;
+}
+
+double SignData::duration() const {
+  return m_duration;
+}
+
+double SignData::end() const {
+  return m_start + m_duration;
+}
+
+DynamicProfile SignData::dynamicProfile() const {
+  return m_dynamicProfile;
+}
+
+MelodicProfile SignData::melodicProfile() const {
+  return m_melodicProfile;
+}
+
+RhythmicProfile SignData::rhythmicProfile() const {
+  return m_rhythmicProfile;
+}
+
+Grain SignData::grain() const {
+  return m_grain;
+}
+
+
+void SignData::setStart(double s) noexcept { m_start = s; }
+void SignData::setDuration(double s) noexcept { m_duration = s; }
+void SignData::setDynamicProfile(DynamicProfile dp) {m_dynamicProfile = dp; }
+void SignData::setMelodicProfile(MelodicProfile mp) {m_melodicProfile = mp; }
+void SignData::setRhythmicProfile(RhythmicProfile rp) {m_rhythmicProfile = rp; }
+void SignData::setGrain(Grain g) {m_grain = g; }
+
+
+/*********************
+ * PARTIE SIGN
+ *********************/
 Sign::Sign(const Id<Sign>& id, QObject* parent)
     : IdentifiedObject<Sign>(id, QStringLiteral("Sign"), parent)
     {}
@@ -26,6 +74,18 @@ Sign::Sign(const Id<Sign>& id, SignData s, QObject* parent)
     , _dynamicProfile(s.m_dynamicProfile)
     , _rhythmicProfile(s.m_rhythmicProfile)
     {}
+
+double Sign::start() const noexcept {
+  return m_start;
+}
+
+double Sign::duration() const noexcept {
+  return m_duration;
+}
+
+double Sign::end() const noexcept {
+  return m_start + m_duration;
+}
 
 /*
  * Getter de sign sur les profiles
@@ -52,7 +112,6 @@ Grain Sign::grain() const {
 SignData Sign::signData() const {
     return SignData{m_start, m_duration, _grain, _dynamicProfile, _melodicProfile, _rhythmicProfile};
 }
-
 
 /*
  * Liste de tous les setters
@@ -118,7 +177,9 @@ void Sign::setData(SignData d)  {
 
 }
 
-
+/***********************
+ * Partie SERIALISATION
+ ***********************/
 template <>
 void DataStreamReader::read(const Acousmoscribe::DynamicProfile& dp)
 {

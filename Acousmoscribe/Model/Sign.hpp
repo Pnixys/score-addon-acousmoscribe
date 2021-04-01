@@ -24,27 +24,24 @@ typedef struct{
 
 struct SignData
 {
-SignData() = default;
-SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, RhythmicProfile rp)
-    : m_start{s}, m_duration{d}, m_grain{g}, m_dynamicProfile{dp}, m_melodicProfile{mp}, m_rhythmicProfile{rp}
-{
-}
-    double start() const { return m_start; }
-    double duration() const { return m_duration; }
-    double end() const { return m_start + m_duration; }
+    SignData() = default;
+    SignData(double s, double d, Grain g, DynamicProfile dp, MelodicProfile mp, RhythmicProfile rp);
+    double start() const;
+    double duration() const;
+    double end() const;
 
-    DynamicProfile dynamicProfile() { return m_dynamicProfile; }
-    MelodicProfile melodicProfile() { return m_melodicProfile; }
-    RhythmicProfile rythmicProfile() { return m_rhythmicProfile; }
-    Grain grain() { return m_grain; }
+    DynamicProfile dynamicProfile() const;
+    MelodicProfile melodicProfile() const;
+    RhythmicProfile rhythmicProfile() const;
+    Grain grain() const;
 
-    void setStart(double s) noexcept { m_start = s; }
-    void setDuration(double s) noexcept { m_duration = s; }
+    void setStart(double s) noexcept;
+    void setDuration(double s) noexcept;
 
-    void setDynamicProfile(DynamicProfile dp) {m_dynamicProfile = dp; }
-    void setMelodicProfile(MelodicProfile mp) {m_melodicProfile = mp; }
-    void setRhythmicProfile(RhythmicProfile rp) {m_rhythmicProfile = rp; }
-    void setGrain(Grain g) {m_grain = g; }
+    void setDynamicProfile(DynamicProfile dp);
+    void setMelodicProfile(MelodicProfile mp);
+    void setRhythmicProfile(RhythmicProfile rp);
+    void setGrain(Grain g);
 
     double m_start{};
     double m_duration{};
@@ -72,11 +69,11 @@ public:
         vis.writeTo(*this);
     }
 
-    double start() const noexcept { return m_start; }
+    double start() const noexcept;
 
-    double duration() const noexcept { return m_duration; }
+    double duration() const noexcept;
 
-    double end() const noexcept { return m_start + m_duration; }
+    double end() const noexcept;
 
     DynamicProfile dynamicProfile() const;
 
