@@ -22,6 +22,7 @@ void MelodicKeyView::paint(QPainter* painter)
     painter->setPen(p);
     painter->setBrush(Qt::white);
     painter->drawRect(QRect(35,0,35,70));
+    
     enum Pitch
     {
         very_high = 0,
@@ -33,42 +34,144 @@ void MelodicKeyView::paint(QPainter* painter)
         very_low
     };
 
-    Pitch m_pitch = very_high;
+    enum Range{
+        weak = 0,
+        normal,
+        strong
+    };
 
-    /* MELODIQUE */
-    p.setWidth(3);
+    Range m_range = weak;
+    Pitch m_pitch = mid_high;
+
+    /* RANGE */
+    p.setWidth(1);
     p.setStyle(Qt::SolidLine);
     painter->setPen(p);
     painter->drawPoint(QPoint(42, 8));
     painter->drawPoint(QPoint(42, 17));
     painter->drawPoint(QPoint(42, 25));
-    painter->drawPoint(QPoint(42, 33));
-    painter->drawPoint(QPoint(42, 41));
-    painter->drawPoint(QPoint(42, 49));
-    painter->drawPoint(QPoint(42, 58));
+    p.setWidth(2);
+    painter->setPen(p);
+    painter->drawPoint(QPoint(42, 34));
+    p.setWidth(1);
+    painter->setPen(p);
+    painter->drawPoint(QPoint(42, 43));
+    painter->drawPoint(QPoint(42, 52));
+    painter->drawPoint(QPoint(42, 61));
 
+    /* VERY HIGH */
     if(m_pitch == very_high){
-        painter->drawPoint(QPoint(53, 8)); //1st point
-        painter->drawPoint(QPoint(63, 8));
+
+        /* DIFFERENCES */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 8), QPoint(63, 8));
+
+    /* HIGH */
     }else if(m_pitch == high){
-        painter->drawPoint(QPoint(53, 17)); //2nd point
-        painter->drawPoint(QPoint(63, 17));
+
+        /* DIFFERENCES */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 17), QPoint(63, 17));
+
+    /* MID HIGH */
     }else if(m_pitch == mid_high){
-        painter->drawPoint(QPoint(53, 25)); //3d point
-        painter->drawPoint(QPoint(63, 25));
+
+        /* DIFFERENCES */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 25), QPoint(63, 25));
+
+    /* MID */
     }else if(m_pitch == mid){
-        painter->drawPoint(QPoint(53, 33)); //4th point
-        painter->drawPoint(QPoint(63, 33));
+
+        /* DIFFERENCES */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 34), QPoint(63, 33));
+
+    /* MID LOW */
     }else if(m_pitch == mid_low){
-        painter->drawPoint(QPoint(53, 41)); //5th point
-        painter->drawPoint(QPoint(63, 41));
+
+        /* DIFFERENCES */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 43), QPoint(63, 43));
+
+    /* LOW */
     }else if(m_pitch == low){
-        painter->drawPoint(QPoint(53, 49)); //6th point
-        painter->drawPoint(QPoint(63, 49));
+
+        /* DIFFERENCES */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 52), QPoint(63, 52));
+
+    /* VERY LOW */
     }else if(m_pitch == very_low){
-    painter->drawPoint(QPoint(53, 58)); //7th point
-    painter->drawPoint(QPoint(63, 58));
+
+        /* DIFFERENCE */
+        if(m_range == weak){
+            p.setStyle(Qt::DotLine);
+
+        }else if(m_range == normal){
+            p.setStyle(Qt::DashDotLine);
+
+        }else if(m_range == strong)
+            p.setStyle(Qt::SolidLine);
+
+        painter->setPen(p);
+        painter->drawLine(QPoint(42, 61), QPoint(63, 61));
     }
+
 }
 
 }
