@@ -75,9 +75,10 @@ MelodicKeyData MelodicKey::melodicKeyData() const {
 
 void MelodicKey::setPitch(Pitch pitch) {
     m_pitch = pitch;
+    
 }
 
-void MelodicKey::setRange(Range range) {
+void MelodicKey::setRange(Range range) noexcept {
     m_range = range;
 }
 

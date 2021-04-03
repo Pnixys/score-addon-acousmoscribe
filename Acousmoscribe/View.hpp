@@ -19,6 +19,8 @@ public:
   ~View() override;
   int visibleCount() const;
 
+  std::pair<int, int> range() const { return {m_min, m_max}; }
+
 private:
   struct SK spectralkey();
   bool canEdit() const;

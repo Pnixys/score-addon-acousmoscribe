@@ -29,6 +29,9 @@ public:
 
   ~Model() override;
 
+  std::pair<int, int> range() const { return m_range; }
+
+
   score::EntityMap<Sign> signs;
   score::EntityMap<SpectralKey> spectralkey;
   score::EntityMap<MelodicKey> melodickeys;
@@ -49,6 +52,9 @@ private:
   void setDurationAndScale(const TimeVal& newDuration) noexcept override;
   void setDurationAndGrow(const TimeVal& newDuration) noexcept override;
   void setDurationAndShrink(const TimeVal& newDuration) noexcept override;
+
+  std::pair<int, int> m_range{0, 127};
+
 };
 
 using ProcessFactory = Process::ProcessFactory_T<Acousmoscribe::Model>;

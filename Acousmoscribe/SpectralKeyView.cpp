@@ -22,6 +22,11 @@ SpectralKeyView::SpectralKeyView(View* parent)
 
 void SpectralKeyView::paint(QPainter* painter)
 {
+
+   /* if(m_spectralkey->getNature() == null){
+
+    }*/
+
     //TODO RENDRE RECT INVISIBLE
     /*static const MidiStyle s;
 

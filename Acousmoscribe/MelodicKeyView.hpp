@@ -1,17 +1,64 @@
 #pragma once
-#include <Acousmoscribe/View.hpp>
 #include <QGraphicsItem>
+
+#include <Acousmoscribe/Model/MelodicKey.hpp>
+#include <Acousmoscribe/Presenter.hpp>
+#include <Acousmoscribe/View.hpp>
 
 namespace Acousmoscribe
 {
-/*struct MelodicKey
+class Presenter;
+class View;
+class MelodicKeyView final
+   : public QGraphicsItem
 {
-};*/
-
-class MelodicKeyView final : public QGraphicsItem
-{
+  Q_INTERFACES(QGraphicsItem)
 public:
-  MelodicKeyView(QGraphicsItem* parent);
-  void paint(QPainter* painter);
+  MelodicKey& melodicKey;
+
+  MelodicKeyView(MelodicKey& mk, Presenter& presenter, View* parent);
+
+  void setWidth(qreal w) noexcept
+  {
+    if (m_width != w)
+    {
+      prepareGeometryChange();
+      m_width = w;
+    }
+  }
+
+  void setHeight(qreal h) noexcept
+  {
+    if (m_height != h)
+    {
+      prepareGeometryChange();
+      m_height = h;
+    }
+  }
+
+  QRectF boundingRect() const override { return {0, 0, m_width, m_height}; }
+  //void paint(QPainter* painter);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+
+
+  QRectF computeRect() const noexcept;
+  // QPointF closestPos(QPointF note) const noexcept;
+
+private:
+  bool canEdit() const;
+  void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+
+  Presenter& m_presenter;
+
+  float m_width{35};
+  float m_height{70};
+
+  enum Action
+  {
+    None,
+    ChangePitch,
+    ChangeRange
+  } m_action{};
 };
 }
