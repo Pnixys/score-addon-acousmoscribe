@@ -100,7 +100,7 @@ private:
 
   const Model& m_model;
   View* m_view{};
-  MelodicKeyView *m_melodicKeyView;
+  MelodicKeyView* m_melodicKeyView;
   std::vector<SignView*> m_signs;
 
 };

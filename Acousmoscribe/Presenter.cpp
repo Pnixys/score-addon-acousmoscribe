@@ -19,6 +19,12 @@ Presenter::Presenter(
     , m_model{layer}
     , m_view{view}
 {
+  MelodicKeyData mkData;
+  mkData.setPitch(high);
+  mkData.setRange(weak);
+  const Id<MelodicKey> id;
+  MelodicKey& mk = new MelodicKey(id, mkData, m_model);
+  m_melodicKeyView = new MelodicKeyView(mk, *this, m_view);
 }
 
 void Presenter::setWidth(qreal val, qreal defaultWidth)
