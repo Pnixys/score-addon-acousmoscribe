@@ -177,9 +177,9 @@ void Sign::setData(SignData d)  {
 
 }
 
-/***********************
- * Partie SERIALISATION
- ***********************/
+/***************************************
+ * Partie SERIALISATION DYNAMIC PROFILE
+ ***************************************/
 template <>
 void DataStreamReader::read(const Acousmoscribe::DynamicProfile& dp)
 {

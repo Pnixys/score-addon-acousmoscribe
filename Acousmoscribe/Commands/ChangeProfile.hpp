@@ -2,6 +2,7 @@
 #include "CommandFactory.hpp"
 #include <Acousmoscribe/Model/Sign.hpp>
 #include <Process/TimeValue.hpp>
+#include <QVector>
 
 #include <score/model/path/Path.hpp>
 
@@ -9,16 +10,14 @@ namespace Acousmoscribe
 {
 class Model;
 
-class AddSign final : public score::Command
+class ChangeDynamicProfile final : public score::Command
 {
-  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), AddSign, "Add a sign")
-
+  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeDynamicProfile, "Change a Sign's Dynamic Profile")
 public:
-  AddSign(const Model& model, const SignData& sign);
+  ChangeDynamicProfile(const Model& model, const Id<Sign>& to_change, DynamicProfile dyn);
 
   void undo(const score::DocumentContext& ctx) const override;
   void redo(const score::DocumentContext& ctx) const override;
-
 
 protected:
   void serializeImpl(DataStreamInput& s) const override;
@@ -26,7 +25,7 @@ protected:
 
 private:
   Path<Model> m_model;
-  Id<Sign> m_id;
-  SignData m_sign;
+  Id<Sign> m_toChange;
+  DynamicProfile m_dynBefore, m_dynAfter;
 };
 }
