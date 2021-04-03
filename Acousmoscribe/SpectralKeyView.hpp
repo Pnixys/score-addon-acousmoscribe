@@ -7,6 +7,7 @@
 namespace Acousmoscribe
 {
 class View;
+class SpectralKey;
 class SpectralKeyView final
     : public QGraphicsItem
 {
@@ -32,13 +33,14 @@ public:
     }
   }
 
-  QRectF boundingRect() const override { return {0, 0, m_width, m_height}; }
+  QRectF boundingRect() const override { return {0, 0, 35, 70}; }
   void paint(QPainter* painter);
 
 
 private:
   QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
+  SpectralKey *m_spectralkey;
 
 
   float m_width{};

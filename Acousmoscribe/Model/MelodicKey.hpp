@@ -19,14 +19,15 @@ public:
     MelodicKey(Pitch pitch, Range range);
     ~MelodicKey();
 
-    Pitch getPitch() const noexcept;
-    Range getRange() const noexcept;
+    Pitch getPitch() noexcept;
+    Range getRange() noexcept;
 
-    void setPitch(Pitch pitch);
-    void setRange(Range range);
+    void setPitch(Pitch pitch) noexcept;
+    void setRange(Range range) noexcept;
+    
 
 private:
-    Pitch m_pitch;
-    Range m_range;
+    Pitch m_pitch{};
+    Range m_range{};
 };
 }
