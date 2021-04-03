@@ -200,6 +200,13 @@ void DataStreamReader::read(const Acousmoscribe::Model& proc)
     readFrom(speck);
   }
 
+  m_stream << (int32_t)proc.melodickeys.size();
+
+  for (const auto& melok : proc.melodickeys)
+  {
+    readFrom(melok);
+  }
+
   insertDelimiter();
 }
 
@@ -212,7 +219,18 @@ void DataStreamWriter::write(Acousmoscribe::Model& proc)
   for(; sign_count-- > 0;)
     proc.signs.add(new Acousmoscribe::Sign{*this, &proc});
   
+  int32_t speck_count;
+  m_stream >> speck_count;
+
+  for(; speck_count-- >0;)
+    proc.spectralkey.add(new Acousmoscribe::SpectralKey{*this, &proc});
   
+  int32_t melok_count;
+  m_stream >> melok_count;
+
+  for(; speck_count-- >0;)
+    proc.melodickeys.add(new Acousmoscribe::MelodicKey{*this, &proc});
+
   checkDelimiter();
 }
 
@@ -231,9 +249,9 @@ void JSONWriter::write(Acousmoscribe::Model& proc)
   }
 }
 
-/******************************
- * SERIALISATION SPECTRAL KEY
- *****************************/
+/**********************************
+ * SERIALISATION SPECTRAL KEY DATA
+ **********************************/
 
 template <>
 void DataStreamReader::read(const Acousmoscribe::SpectralKeyData& skd)
@@ -298,6 +316,10 @@ void JSONWriter::write(Acousmoscribe::SpectralKeyData& skd)
   skd.setRich2(arr[4].GetBool());
 }
 
+/****************************
+ * SERIALISATION SPECTRAL KEY
+ ****************************/
+
 template <>
 void DataStreamReader::read(const Acousmoscribe::SpectralKey& sk)
 {
@@ -353,4 +375,121 @@ void JSONWriter::write(Acousmoscribe::SpectralKey& sk)
   sk.setIsHybrid(arr[2].GetBool());
   sk.setIsRich(arr[3].GetBool());
   sk.setIsRich2(arr[4].GetBool());
+}
+
+
+/*********************************
+ * SERIALISATION MELODIC KEY DATA
+ *********************************/
+template <>
+void DataStreamReader::read(const Acousmoscribe::MelodicKeyData& mkd)
+{
+  m_stream << mkd.getPitch() << mkd.getRange();
+  insertDelimiter();
+} 
+
+template <>
+void DataStreamWriter::write(Acousmoscribe::MelodicKeyData& mkd)
+{
+  Acousmoscribe::Pitch p;
+  Acousmoscribe::Range r;
+  m_stream >> p >> r;
+  mkd.setPitch(p);
+  mkd.setRange(r);
+  checkDelimiter();
+} 
+
+template <>
+void JSONReader::read(const Acousmoscribe::MelodicKeyData& mkd)
+{
+  stream.StartArray();
+  stream.Int(mkd.getPitch());
+  stream.Int(mkd.getRange());
+  stream.EndArray();
+}
+
+template <>
+void JSONWriter::write(Acousmoscribe::MelodicKeyData& mkd)
+{
+  const auto& arr = base.GetArray();
+  Acousmoscribe::Pitch p;
+  switch (arr[0].GetInt())
+  {
+  case 1: p = Acousmoscribe::high; break;
+  case 2: p = Acousmoscribe::mid_high; break;
+  case 3: p = Acousmoscribe::mid; break;
+  case 4: p = Acousmoscribe::mid_low; break;
+  case 5: p = Acousmoscribe::low; break;
+  case 6: p = Acousmoscribe::very_low; break;
+  default: p = Acousmoscribe::very_high;
+    break;
+  }
+  mkd.setPitch(p);
+
+  Acousmoscribe::Range r;
+  switch (arr[1].GetInt())
+  {
+  case 1: r = Acousmoscribe::normal; break;
+  case 2: r = Acousmoscribe::strong; break;
+  default: r = Acousmoscribe::weak;
+    break;
+  }
+  mkd.setRange(r);
+}
+
+/****************************
+ * SERIALISATION MELODIC KEY
+ ****************************/
+template <>
+void DataStreamReader::read(const Acousmoscribe::MelodicKey& mk)
+{
+  m_stream << mk.melodicKeyData();
+  insertDelimiter();
+} 
+
+template <>
+void DataStreamWriter::write(Acousmoscribe::MelodicKey& mk)
+{
+  Acousmoscribe::MelodicKeyData mkd;
+  m_stream >> mkd;
+  mk.setData(mkd);
+  checkDelimiter();
+} 
+
+template <>
+void JSONReader::read(const Acousmoscribe::MelodicKey& mk)
+{
+  stream.StartArray();
+  stream.Int(mk.getPitch());
+  stream.Int(mk.getRange());
+  stream.EndArray();
+}
+
+template <>
+void JSONWriter::write(Acousmoscribe::MelodicKey& mk)
+{
+  const auto& arr = base.GetArray();
+  Acousmoscribe::Pitch p;
+  switch (arr[0].GetInt())
+  {
+  case 1: p = Acousmoscribe::high; break;
+  case 2: p = Acousmoscribe::mid_high; break;
+  case 3: p = Acousmoscribe::mid; break;
+  case 4: p = Acousmoscribe::mid_low; break;
+  case 5: p = Acousmoscribe::low; break;
+  case 6: p = Acousmoscribe::very_low; break;
+  default: p = Acousmoscribe::very_high;
+    break;
+  }
+  mk.setPitch(p);
+
+  Acousmoscribe::Range r;
+  switch (arr[1].GetInt())
+  {
+  case 1: r = Acousmoscribe::normal; break;
+  case 2: r = Acousmoscribe::strong; break;
+  default: r = Acousmoscribe::weak;
+    break;
+  }
+  mk.setRange(r);
 }
