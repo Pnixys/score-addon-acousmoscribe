@@ -3,6 +3,7 @@
 #include <Process/Process.hpp>
 
 #include <Acousmoscribe/Model/Sign.hpp>
+#include <Acousmoscribe/Model/SpectralKey.hpp>
 #include <Acousmoscribe/Metadata.hpp>
 #include <score/tools/Clamp.hpp>
 
@@ -28,10 +29,14 @@ public:
   ~Model() override;
 
   score::EntityMap<Sign> signs;
+  score::EntityMap<SpectralKey> spectralkey;
 
 public:
   void signsNeedUpdate() W_SIGNAL(signsNeedUpdate);
   void signsChanged() W_SIGNAL(signsChanged);
+
+  void spectralKeyNeedUpdate() W_SIGNAL(spectralKeyNeedUpdate);
+  void spectralKeyChanged() W_SIGNAL(spectralKeyChanged);
 
 private:
   QString prettyName() const noexcept override;

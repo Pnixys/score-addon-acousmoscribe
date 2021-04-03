@@ -1,7 +1,18 @@
 #include "SpectralKey.hpp"
 
 #include <wobjectimpl.h>
-//W_OBJECT_IMPL(Acousmoscribe::SpectralKey)
+
+#include <score/plugins/SerializableHelpers.hpp>
+#include <score/model/EntitySerialization.hpp>
+#include <score/model/EntityMapSerialization.hpp>
+
+#include <score/serialization/DataStreamVisitor.hpp>
+#include <score/serialization/JSONVisitor.hpp>
+
+#include <Process/Dataflow/Port.hpp>
+
+#include <wobjectimpl.h>
+W_OBJECT_IMPL(Acousmoscribe::SpectralKey)
 
 namespace Acousmoscribe
 {
@@ -18,24 +29,32 @@ SpectralKeyData::SpectralKeyData(Nature nature, bool isHybrid, bool isRich, bool
                 m_nature2 = null;
         }
 
-Nature SpectralKeyData::getNature() { 
+Nature SpectralKeyData::getNature() const{ 
     return m_nature; 
 }
-bool SpectralKeyData::isHybrid() { 
+
+Nature SpectralKeyData::getNature2() const {
+    return m_nature2;
+}
+
+bool SpectralKeyData::isHybrid() const{ 
     return m_isHybrid; 
 }
-bool SpectralKeyData::isRich() { 
+
+bool SpectralKeyData::isRich() const{ 
     return m_isRich; 
 }
 
-bool SpectralKeyData::isRich2() { 
+bool SpectralKeyData::isRich2() const{ 
     return m_isRich2; 
 }
 
 void SpectralKeyData::setNature(Nature nature) {
     m_nature = nature;
-    if(m_isRich)
-        m_nature2 = nature;
+}
+
+void SpectralKeyData::setNature2(Nature nature) {
+    m_nature2 = m_nature;
 }
 
 void SpectralKeyData::setHybrid(bool h) { 
@@ -86,6 +105,10 @@ bool SpectralKey::isRich2() const noexcept {
     return m_isRich2;
 }
 
+SpectralKeyData SpectralKey::spectralKeyData() const {
+    return SpectralKeyData{m_nature, m_isHybrid, m_isRich, m_isRich2};
+}
+
 void SpectralKey::setNature(Nature nature){
     m_nature = nature;
 }
@@ -104,6 +127,14 @@ void SpectralKey::setIsRich(bool isRich){
 
 void SpectralKey::setIsRich2(bool isRich){
     m_isRich2 = isRich;
+}
+
+void SpectralKey::setData(SpectralKeyData sd){
+    m_nature = sd.getNature();
+    m_nature2 = sd.getNature2();
+    m_isHybrid = sd.isHybrid();
+    m_isRich = sd.isRich();
+    m_isRich2 = sd.isRich2();
 }
 
 }

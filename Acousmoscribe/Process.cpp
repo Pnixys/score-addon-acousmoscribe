@@ -88,7 +88,9 @@ void Model::setDurationAndShrink(const TimeVal& newDuration) noexcept
 
 // PARTIE SERIALIZATION
 
-// SERIALIZATION AVEC SIGNDATA
+/************************************
+ * SERIALISATION SIGN AVEC SIGN DATA
+ ************************************/
 template <>
 void DataStreamReader::read(const Acousmoscribe::SignData& sd)
 {
@@ -128,7 +130,9 @@ void JSONWriter::write(Acousmoscribe::SignData& sd)
   JSONWriter::write(sd.m_rhythmicProfile);
 }
 
-// SERIALIZATION AVEC SIGN
+/*******************************
+ * SERIALISATION SIGN AVEC SIGN
+ ******************************/
 template <>
 void DataStreamReader::read(const Acousmoscribe::Sign& s)
 {
@@ -176,7 +180,9 @@ void JSONWriter::write(Acousmoscribe::Sign& s)
 
 
 
-//SERIALIZATION AVEC LE MODEL
+/***********************************
+ * SERIALISATION SIGN AVEC LE MODEL
+ ***********************************/
 template <>
 void DataStreamReader::read(const Acousmoscribe::Model& proc)
 {
@@ -186,6 +192,13 @@ void DataStreamReader::read(const Acousmoscribe::Model& proc)
   {
     readFrom(sign);
   } 
+
+  m_stream << (int32_t)proc.spectralkey.size();
+
+  for (const auto& speck : proc.spectralkey)
+  {
+    readFrom(speck);
+  }
 
   insertDelimiter();
 }
@@ -216,4 +229,128 @@ void JSONWriter::write(Acousmoscribe::Model& proc)
     JSONObject::Deserializer deserializer{json_vref};
     proc.signs.add(new Acousmoscribe::Sign{deserializer, &proc});
   }
+}
+
+/******************************
+ * SERIALISATION SPECTRAL KEY
+ *****************************/
+
+template <>
+void DataStreamReader::read(const Acousmoscribe::SpectralKeyData& skd)
+{
+  m_stream << skd.getNature() << skd.getNature2() << skd.isHybrid() << skd.isRich() << skd.isRich2();
+  insertDelimiter();
+} 
+
+template <>
+void DataStreamWriter::write(Acousmoscribe::SpectralKeyData& skd)
+{
+    Acousmoscribe::Nature nat;
+    Acousmoscribe::Nature nat2;
+    bool hyb, rich, rich2;
+    m_stream >> nat >> nat2 >> hyb >> rich >> rich2;
+    skd.setNature(nat);
+    skd.setNature2(nat2);
+    skd.setHybrid(hyb);
+    skd.setRich(rich);
+    skd.setRich2(rich2);
+    checkDelimiter();
+} 
+
+template <>
+void JSONReader::read(const Acousmoscribe::SpectralKeyData& skd)
+{
+  stream.StartArray();
+  stream.Int(skd.getNature());
+  stream.Int(skd.getNature2());
+  stream.Bool(skd.isHybrid());
+  stream.Bool(skd.isRich());
+  stream.Bool(skd.isRich2());
+  stream.EndArray();
+}
+
+template <>
+void JSONWriter::write(Acousmoscribe::SpectralKeyData& skd)
+{
+  const auto& arr = base.GetArray();
+  Acousmoscribe::Nature n;
+  switch (arr[0].GetInt())
+  {
+  case 1: n = Acousmoscribe::tonic; break;
+  case 2: n = Acousmoscribe::inharmonic; break;
+  case 3: n = Acousmoscribe::noise; break;
+  default: n = Acousmoscribe::null;
+    break;
+  }
+  skd.setNature(n);
+
+  switch (arr[1].GetInt())
+  {
+  case 1: n = Acousmoscribe::tonic; break;
+  case 2: n = Acousmoscribe::inharmonic; break;
+  case 3: n = Acousmoscribe::noise; break;
+  default: n = Acousmoscribe::null;
+    break;
+  }
+  skd.setNature2(n);
+  skd.setHybrid(arr[2].GetBool());
+  skd.setRich(arr[3].GetBool());
+  skd.setRich2(arr[4].GetBool());
+}
+
+template <>
+void DataStreamReader::read(const Acousmoscribe::SpectralKey& sk)
+{
+  m_stream << sk.spectralKeyData();
+  insertDelimiter();
+} 
+
+template <>
+void DataStreamWriter::write(Acousmoscribe::SpectralKey& sk)
+{
+    Acousmoscribe::SpectralKeyData sd;
+    m_stream >> sd;
+    sk.setData(sd);
+    checkDelimiter();
+} 
+
+template <>
+void JSONReader::read(const Acousmoscribe::SpectralKey& sk)
+{
+  stream.StartArray();
+  stream.Int(sk.getNature());
+  stream.Int(sk.getNature2());
+  stream.Bool(sk.isHybrid());
+  stream.Bool(sk.isRich());
+  stream.Bool(sk.isRich2());
+  stream.EndArray();
+}
+
+template <>
+void JSONWriter::write(Acousmoscribe::SpectralKey& sk)
+{
+  const auto& arr = base.GetArray();
+  Acousmoscribe::Nature n;
+  switch (arr[0].GetInt())
+  {
+  case 1: n = Acousmoscribe::tonic; break;
+  case 2: n = Acousmoscribe::inharmonic; break;
+  case 3: n = Acousmoscribe::noise; break;
+  default: n = Acousmoscribe::null;
+    break;
+  }
+  sk.setNature(n);
+
+  switch (arr[1].GetInt())
+  {
+  case 1: n = Acousmoscribe::tonic; break;
+  case 2: n = Acousmoscribe::inharmonic; break;
+  case 3: n = Acousmoscribe::noise; break;
+  default: n = Acousmoscribe::null;
+    break;
+  }
+  sk.setNature2(n);
+  sk.setIsHybrid(arr[2].GetBool());
+  sk.setIsRich(arr[3].GetBool());
+  sk.setIsRich2(arr[4].GetBool());
 }
