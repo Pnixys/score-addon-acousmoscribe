@@ -193,16 +193,16 @@ void DataStreamReader::read(const Acousmoscribe::Model& proc)
     readFrom(sign);
   } 
 
-  m_stream << (int32_t)proc.spectralkey.size();
+  m_stream << (int32_t)proc.spectralKey.size();
 
-  for (const auto& speck : proc.spectralkey)
+  for (const auto& speck : proc.spectralKey)
   {
     readFrom(speck);
   }
 
-  m_stream << (int32_t)proc.melodickeys.size();
+  m_stream << (int32_t)proc.melodicKeys.size();
 
-  for (const auto& melok : proc.melodickeys)
+  for (const auto& melok : proc.melodicKeys)
   {
     readFrom(melok);
   }
@@ -223,13 +223,13 @@ void DataStreamWriter::write(Acousmoscribe::Model& proc)
   m_stream >> speck_count;
 
   for(; speck_count-- >0;)
-    proc.spectralkey.add(new Acousmoscribe::SpectralKey{*this, &proc});
+    proc.spectralKey.add(new Acousmoscribe::SpectralKey{*this, &proc});
   
   int32_t melok_count;
   m_stream >> melok_count;
 
   for(; speck_count-- >0;)
-    proc.melodickeys.add(new Acousmoscribe::MelodicKey{*this, &proc});
+    proc.melodicKeys.add(new Acousmoscribe::MelodicKey{*this, &proc});
 
   checkDelimiter();
 }

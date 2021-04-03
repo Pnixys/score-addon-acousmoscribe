@@ -40,7 +40,7 @@ public:
 private:
   QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
-  SpectralKey *m_spectralkey;
+  SpectralKey *m_spectralKey;
 
 
   float m_width{};

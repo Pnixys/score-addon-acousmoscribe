@@ -42,7 +42,7 @@ bool View::canEdit() const
 void View::paint_impl(QPainter* p) const
 {
   
-    m_spectralkey->SpectralKeyView::paint(p);
+    m_spectralKey->SpectralKeyView::paint(p);
 
     //m_melodickey->MelodicKeyView::paint(p);
 }

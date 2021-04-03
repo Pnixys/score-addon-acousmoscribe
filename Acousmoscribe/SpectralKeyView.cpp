@@ -23,7 +23,7 @@ SpectralKeyView::SpectralKeyView(View* parent)
 void SpectralKeyView::paint(QPainter* painter)
 {
 
-   /* if(m_spectralkey->getNature() == null){
+   /* if(m_spectralKey->getNature() == null){
 
     }*/
 

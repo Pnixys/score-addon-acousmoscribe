@@ -33,8 +33,8 @@ public:
 
 
   score::EntityMap<Sign> signs;
-  score::EntityMap<SpectralKey> spectralkey;
-  score::EntityMap<MelodicKey> melodickeys;
+  score::EntityMap<SpectralKey> spectralKey;
+  score::EntityMap<MelodicKey> melodicKeys;
 
 public:
   void signsNeedUpdate() W_SIGNAL(signsNeedUpdate);

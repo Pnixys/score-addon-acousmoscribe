@@ -22,11 +22,11 @@ public:
   std::pair<int, int> range() const { return {m_min, m_max}; }
 
 private:
-  struct SK spectralkey();
+  struct SK spectralKey();
   bool canEdit() const;
   void paint_impl(QPainter*) const override;
 
-  SpectralKeyView *m_spectralkey;
+  SpectralKeyView *m_spectralKey;
   MelodicKeyView *m_melodickey;
 
   QPainterPath m_selectArea;
