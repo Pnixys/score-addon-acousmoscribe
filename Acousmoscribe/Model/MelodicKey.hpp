@@ -21,8 +21,8 @@ struct MelodicKeyData{
     MelodicKeyData() = default;
     MelodicKeyData(Pitch p, Range r);
 
-    Pitch getPitch() const;
-    Range getRange() const;
+    Pitch pitch() const;
+    Range range() const;
 
     void setPitch(Pitch p);
     void setRange(Range r);
@@ -50,8 +50,8 @@ public:
     //MelodicKey(Pitch pitch, Range range);
     //~MelodicKey();
 
-    Pitch getPitch() const noexcept;
-    Range getRange() const noexcept;
+    Pitch pitch() const noexcept;
+    Range range() const noexcept;
 
     MelodicKeyData melodicKeyData() const;
 

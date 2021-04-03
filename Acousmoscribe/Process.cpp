@@ -384,7 +384,7 @@ void JSONWriter::write(Acousmoscribe::SpectralKey& sk)
 template <>
 void DataStreamReader::read(const Acousmoscribe::MelodicKeyData& mkd)
 {
-  m_stream << mkd.getPitch() << mkd.getRange();
+  m_stream << mkd.pitch() << mkd.range();
   insertDelimiter();
 } 
 
@@ -403,8 +403,8 @@ template <>
 void JSONReader::read(const Acousmoscribe::MelodicKeyData& mkd)
 {
   stream.StartArray();
-  stream.Int(mkd.getPitch());
-  stream.Int(mkd.getRange());
+  stream.Int(mkd.pitch());
+  stream.Int(mkd.range());
   stream.EndArray();
 }
 
@@ -460,8 +460,8 @@ template <>
 void JSONReader::read(const Acousmoscribe::MelodicKey& mk)
 {
   stream.StartArray();
-  stream.Int(mk.getPitch());
-  stream.Int(mk.getRange());
+  stream.Int(mk.pitch());
+  stream.Int(mk.range());
   stream.EndArray();
 }
 

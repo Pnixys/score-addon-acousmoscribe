@@ -21,11 +21,11 @@ void MelodicProfile::setVariation(Variation variation) {
     m_var = variation;
 }
 
-Pitch MelodicProfile::getPitch() const {
+Pitch MelodicProfile::pitch() const {
     return m_pitch;
 }
 
-Variation MelodicProfile::getVariation() const {
+Variation MelodicProfile::variation() const {
     return m_var;
 }
 
@@ -34,7 +34,7 @@ Variation MelodicProfile::getVariation() const {
 template <>
 void DataStreamReader::read(const Acousmoscribe::MelodicProfile& mp)
 {
-  m_stream << mp.getPitch() << mp.getVariation();
+  m_stream << mp.pitch() << mp.variation();
   insertDelimiter();
 }
 
@@ -54,8 +54,8 @@ void DataStreamWriter::write(Acousmoscribe::MelodicProfile& mp)
 template <>
 void JSONReader::read(const Acousmoscribe::MelodicProfile& mp){
     stream.StartArray();
-    stream.Int(mp.getPitch());
-    stream.Int(mp.getVariation());
+    stream.Int(mp.pitch());
+    stream.Int(mp.variation());
     stream.EndArray();
 }
 

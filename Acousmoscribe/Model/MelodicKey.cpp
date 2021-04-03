@@ -23,11 +23,11 @@ MelodicKeyData::MelodicKeyData(Pitch p, Range r)
 {   
 }
 
-Pitch MelodicKeyData::getPitch() const {
+Pitch MelodicKeyData::pitch() const {
     return m_pitch;
 }
 
-Range MelodicKeyData::getRange() const {
+Range MelodicKeyData::range() const {
     return m_range;
 }
 
@@ -61,11 +61,11 @@ MelodicKey::MelodicKey(const Id<MelodicKey>& id, MelodicKeyData m, QObject* pare
 
 //MelodicKey::~MelodicKey(){}
 
-Pitch MelodicKey::getPitch() const noexcept { 
+Pitch MelodicKey::pitch() const noexcept { 
     return m_pitch;
 }
 
-Range MelodicKey::getRange() const noexcept { 
+Range MelodicKey::range() const noexcept { 
     return m_range;
 }
 
@@ -82,8 +82,8 @@ void MelodicKey::setRange(Range range) {
 }
 
 void MelodicKey::setData(MelodicKeyData mkd){
-    m_pitch = mkd.getPitch();
-    m_range = mkd.getRange();
+    m_pitch = mkd.pitch();
+    m_range = mkd.range();
 }
 
 }
