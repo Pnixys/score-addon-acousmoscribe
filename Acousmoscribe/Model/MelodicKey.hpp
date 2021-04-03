@@ -1,5 +1,11 @@
 #pragma once
+#include <score/model/IdentifiedObject.hpp>
+
+#include <score/selection/Selectable.hpp>
+
+#include <verdigris>
 #include <iostream>
+
 #include "MelodicProfile.hpp"
 
 //#include <verdigris>
@@ -11,20 +17,50 @@ enum Range{
     normal,
     strong
 };
+struct MelodicKeyData{
+    MelodicKeyData() = default;
+    MelodicKeyData(Pitch p, Range r);
 
-class MelodicKey
+    Pitch getPitch() const;
+    Range getRange() const;
+
+    void setPitch(Pitch p);
+    void setRange(Range r);
+
+    Pitch m_pitch;
+    Range m_range;
+};
+
+class MelodicKey final : public IdentifiedObject<MelodicKey>
 {
-
+    W_OBJECT(MelodicKey)
+    SCORE_SERIALIZE_FRIENDS
 public:
-    MelodicKey(Pitch pitch, Range range);
-    ~MelodicKey();
+    Selectable selection;
+
+    MelodicKey(const Id<MelodicKey>& id, QObject* parent);
+    MelodicKey(const Id<MelodicKey>& id, MelodicKeyData n, QObject* parent);
+
+    template <typename Impl>
+    MelodicKey(Impl& vis, QObject* parent) : IdentifiedObject{vis, parent}
+    {
+      vis.writeTo(*this);
+    }
+
+    //MelodicKey(Pitch pitch, Range range);
+    //~MelodicKey();
 
     Pitch getPitch() const noexcept;
     Range getRange() const noexcept;
 
+    MelodicKeyData melodicKeyData() const;
+
     void setPitch(Pitch pitch);
     void setRange(Range range);
 
+    void setData(MelodicKeyData mkd);
+
+    void melodicKeyChanged() W_SIGNAL(melodicKeyChanged);
 private:
     Pitch m_pitch;
     Range m_range;

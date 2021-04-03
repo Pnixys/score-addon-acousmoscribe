@@ -1,7 +1,5 @@
 #include "SpectralKey.hpp"
 
-#include <wobjectimpl.h>
-
 #include <score/plugins/SerializableHelpers.hpp>
 #include <score/model/EntitySerialization.hpp>
 #include <score/model/EntityMapSerialization.hpp>
