@@ -78,7 +78,7 @@ void MelodicKey::setPitch(Pitch pitch) {
     
 }
 
-void MelodicKey::setRange(Range range) noexcept {
+void MelodicKey::setRange(Range range) {
     m_range = range;
 }
 

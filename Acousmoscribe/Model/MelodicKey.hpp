@@ -50,26 +50,12 @@ public:
     //MelodicKey(Pitch pitch, Range range);
     //~MelodicKey();
 
-<<<<<<< HEAD
     Pitch pitch() const noexcept;
     Range range() const noexcept;
-
-=======
-    Pitch getPitch() noexcept;
-    Range getRange() noexcept;
-
-<<<<<<< HEAD
-    void setPitch(Pitch pitch) noexcept;
-    void setRange(Range range) noexcept;
-    
-=======
->>>>>>> eb5207657d6e7a220bed6e624449d40f62e27e5d
     MelodicKeyData melodicKeyData() const;
 
     void setPitch(Pitch pitch);
     void setRange(Range range);
->>>>>>> c4a8de7376bbbc754568e2be623fcdd14acfa38e
-
     void setData(MelodicKeyData mkd);
 
     void melodicKeyChanged() W_SIGNAL(melodicKeyChanged);
