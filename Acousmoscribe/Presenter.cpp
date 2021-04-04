@@ -7,7 +7,7 @@
 #include <Acousmoscribe/SpectralKeyView.hpp>
 #include <ossia/detail/algorithms.hpp>
 #include <ossia/detail/math.hpp>
-
+#include <score/tools/IdentifierGeneration.hpp>
 
 
 namespace Acousmoscribe
@@ -22,9 +22,9 @@ Presenter::Presenter(
   MelodicKeyData mkData;
   mkData.setPitch(high);
   mkData.setRange(weak);
-  const Id<MelodicKey> id;
-  MelodicKey& mk = new MelodicKey(id, mkData, m_model);
-  m_melodicKeyView = new MelodicKeyView(mk, *this, m_view);
+  auto id = getStrongId(layer.melodicKeys);
+  auto mk = new MelodicKey(id, mkData, parent);
+  m_melodicKeyView = new MelodicKeyView(*mk, *this, m_view);
 }
 
 void Presenter::setWidth(qreal val, qreal defaultWidth)
