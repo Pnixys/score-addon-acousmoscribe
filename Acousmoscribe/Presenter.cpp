@@ -25,16 +25,19 @@ Presenter::Presenter(
   auto id = getStrongId(layer.melodicKeys);
   auto mk = new MelodicKey(id, mkData, parent);
   m_melodicKeyView = new MelodicKeyView(*mk, *this, m_view);
+  updateMelodicKey(*m_melodicKeyView);
 }
 
 void Presenter::setWidth(qreal val, qreal defaultWidth)
 {
   m_view->setWidth(val);
+  updateMelodicKey(*m_melodicKeyView);
 }
 
 void Presenter::setHeight(qreal val)
 {
   m_view->setHeight(val);
+  updateMelodicKey(*m_melodicKeyView);
 }
 
 void Presenter::putToFront()
@@ -47,24 +50,34 @@ void Presenter::putBehind()
   m_view->setOpacity(0.2);
 }
 
-void Presenter::on_zoomRatioChanged(ZoomRatio)
+void Presenter::on_zoomRatioChanged(ZoomRatio zr)
 {
+  m_zr = zr;
+  m_view->setDefaultWidth(model().duration().toPixels(m_zr));
+  updateMelodicKey(*m_melodicKeyView);
 }
 
 void Presenter::parentGeometryChanged()
 {
 }
 
+
 void Presenter::updateMelodicKey(MelodicKeyView& v)
 {
   const auto keyRect = v.computeRect();
+  const auto newPos = keyRect.topLeft();
+  if (newPos != v.pos())
+  {
+    v.setPos(newPos);
+  }
+
   v.setWidth(keyRect.width());
   v.setHeight(keyRect.height());
 }
 
 void Presenter::on_melodicKeyChanged(MelodicKeyView& mKey)
 {
-  mKey.melodicKey.setPitch(mid_high);
+  mKey.melodicKey.setPitch(low);
   mKey.melodicKey.setRange(weak);
 }
 

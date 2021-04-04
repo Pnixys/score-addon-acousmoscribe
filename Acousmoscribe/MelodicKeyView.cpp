@@ -23,210 +23,87 @@ MelodicKeyView::MelodicKeyView(MelodicKey& mk, Presenter& p, View* parent)
 
 
 
+void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+
+//void MelodicKeyView::paint(QPainter* painter)
+{
+  float w = m_width;
+  float h = m_height;
+
+  Pitch pitch = melodicKey.pitch();
+  Range range = melodicKey.range();
+
+  QPen pen;
+  pen.setWidth(3);
+  pen.setColor(Qt::black);
+  pen.setStyle(Qt::SolidLine);
+  painter->setPen(pen);
+
+  /* Background Rect */
+
+  painter->setBrush(Qt::white);
+  painter->drawRect(boundingRect().adjusted(0., 0., 0., 0));
+
+  float h_pitch = h*4/5;
+  float x_pitch = w * 1/4;
+  float y_pitch;
+  for (int i = 1 ; i <= 7 ; i++){
+    y_pitch = i*h_pitch/7;
+    if(i == 4){ 
+      pen.setWidth(5); //the 4th point is bigger
+      painter->setPen(pen);
+      painter->drawPoint(QPoint(x_pitch, y_pitch));
+      pen.setWidth(3);
+      painter->setPen(pen);
+    }
+    else{
+     painter->drawPoint(QPoint(x_pitch, y_pitch));
+    }
+  }
+
+  switch(range)
+  {
+    case weak:
+      pen.setStyle(Qt::DotLine); 
+      break;
+
+    case normal:
+      pen.setStyle(Qt::DashDotLine); 
+      break;
+
+    case strong:
+      pen.setStyle(Qt::SolidLine); 
+      break;
+
+    default:
+      pen.setStyle(Qt::SolidLine); 
+      break;
+  }
+
+  float y_range = (pitch+1)*h_pitch/7;;
+  painter->drawLine(QPoint(x_pitch, y_range), QPoint(x_pitch + w/2, y_range));
+  
+}
+
+
 QRectF MelodicKeyView::computeRect() const noexcept
 {
   auto& view = *(View*)parentItem();
   const auto h = view.height();
   //const auto w = view.defaultWidth();
-  const auto w = view.width();
+  const auto w = view.defaultWidth();
   const auto [min, max] = view.range();
   const auto key_height = h / view.visibleCount();
   const QRectF rect{
-      35 * w, //35 à changer (instant de départ)
+      w/10, //35 à changer (instant de départ)
       0,
-      35 * w,
-      key_height};
+      0.1 * w,
+      h};
 
   return rect;
 }
 
-void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-
-//void MelodicKeyView::paint(QPainter* painter)
-{
-  QPen p;
-  p.setColor(Qt::black);
-  p.setWidth(1);
-  painter->setPen(p);
-  painter->setBrush(Qt::white);
-  painter->drawRect(QRect(35, 0, 35, 70));
-
-  enum Pitch
-  {
-    very_high = 0,
-    high,
-    mid_high,
-    mid,
-    mid_low,
-    low,
-    very_low
-  };
-
-  enum Range
-  {
-    weak = 0,
-    normal,
-    strong
-  };
-
-  Range m_range = weak;
-  Pitch m_pitch = mid_high;
-
-  /* RANGE */
-  p.setWidth(1);
-  p.setStyle(Qt::SolidLine);
-  painter->setPen(p);
-  painter->drawPoint(QPoint(42, 8));
-  painter->drawPoint(QPoint(42, 17));
-  painter->drawPoint(QPoint(42, 25));
-  p.setWidth(2);
-  painter->setPen(p);
-  painter->drawPoint(QPoint(42, 34));
-  p.setWidth(1);
-  painter->setPen(p);
-  painter->drawPoint(QPoint(42, 43));
-  painter->drawPoint(QPoint(42, 52));
-  painter->drawPoint(QPoint(42, 61));
-
-  /* VERY HIGH */
-  if (m_pitch == very_high)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 8), QPoint(63, 8));
-
-    /* HIGH */
-  }
-  else if (m_pitch == high)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 17), QPoint(63, 17));
-
-    /* MID HIGH */
-  }
-  else if (m_pitch == mid_high)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 25), QPoint(63, 25));
-
-    /* MID */
-  }
-  else if (m_pitch == mid)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 34), QPoint(63, 33));
-
-    /* MID LOW */
-  }
-  else if (m_pitch == mid_low)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 43), QPoint(63, 43));
-
-    /* LOW */
-  }
-  else if (m_pitch == low)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 52), QPoint(63, 52));
-
-    /* VERY LOW */
-  }
-  else if (m_pitch == very_low)
-  {
-
-    /* DIFFERENCES */
-    if (m_range == weak)
-    {
-      p.setStyle(Qt::DotLine);
-    }
-    else if (m_range == normal)
-    {
-      p.setStyle(Qt::DashDotLine);
-    }
-    else if (m_range == strong)
-      p.setStyle(Qt::SolidLine);
-
-    painter->setPen(p);
-    painter->drawLine(QPoint(42, 61), QPoint(63, 61));
-  }
+float pitchToY(Pitch pitch){
 }
 
 bool MelodicKeyView::canEdit() const
@@ -267,11 +144,7 @@ void MelodicKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
       case ChangePitch:
         m_presenter.on_melodicKeyChanged(*this);
-        QPainter* p;
-        const QStyleOptionGraphicsItem *option;
-        QWidget* widget;
-        paint(p, option, widget);
-        std::cout << "in mouseReleaseEvent\n";
+        std::cout << "in changePitch\n";
         break;
       case ChangeRange:
         /*m_presenter->on_melodicKeyChanged(this);

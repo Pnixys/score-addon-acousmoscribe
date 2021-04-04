@@ -103,5 +103,6 @@ private:
   MelodicKeyView* m_melodicKeyView;
   std::vector<SignView*> m_signs;
 
+  ZoomRatio m_zr{};
 };
 }

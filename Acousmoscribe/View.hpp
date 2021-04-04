@@ -17,6 +17,9 @@ class View final : public Process::LayerView
 public:
   explicit View(QGraphicsItem* parent);
   ~View() override;
+  double defaultWidth() const noexcept { return m_defaultW; }
+  void setDefaultWidth(double w);
+  
   int visibleCount() const;
 
   std::pair<int, int> range() const { return {m_min, m_max}; }

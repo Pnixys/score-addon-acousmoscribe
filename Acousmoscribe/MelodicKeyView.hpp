@@ -51,8 +51,8 @@ private:
 
   Presenter& m_presenter;
 
-  float m_width{35};
-  float m_height{70};
+  float m_width{};
+  float m_height{};
 
   enum Action
   {

@@ -47,9 +47,7 @@ void View::paint_impl(QPainter* p) const
 {
   /*p->setBrush(draw);
   p->drawRect( 40,30, width_fdp,100 );*/
-  m_spectralKey->SpectralKeyView::paint(p);
 
-  //m_melodickey->MelodicKeyView::paint(p);
 }
 
 void View::mousePressEvent(QGraphicsSceneMouseEvent* ev)
@@ -67,6 +65,15 @@ void View::mouseReleaseEvent(QGraphicsSceneMouseEvent* ev)
   QColor green(Qt::green); 
   draw.setColor(green); */
   
+}
+
+void View::setDefaultWidth(double w)
+{
+  m_defaultW = w;
+  update();
+  const auto& children = childItems();
+  for (auto cld : children)
+    cld->update();
 }
 
 int View::visibleCount() const
