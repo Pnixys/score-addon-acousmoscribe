@@ -22,7 +22,6 @@ MelodicKeyView::MelodicKeyView(MelodicKey& mk, Presenter& p, View* parent)
 }
 
 
-
 QRectF MelodicKeyView::computeRect() const noexcept
 {
   auto& view = *(View*)parentItem();
@@ -265,19 +264,17 @@ void MelodicKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
   {
     switch (m_action)
     {
+      Pitch p;
+      Range r;
       case ChangePitch:
-        m_presenter.on_melodicKeyChanged(*this);
-        QPainter* p;
-        const QStyleOptionGraphicsItem *option;
-        QWidget* widget;
-        paint(p, option, widget);
-        std::cout << "in mouseReleaseEvent\n";
+        p = low;
+        m_presenter.on_melodicKeyPitchChanged(melodicKey, p);
+        std::cout << "on_melodicKeyPitchChanged\n";
         break;
       case ChangeRange:
-        /*m_presenter->on_melodicKeyChanged(this);
-        QPainter *p;
-        paint(p);
-        std::cout << "in mouseReleaseEvent\n";*/
+        r = weak;
+        m_presenter.on_melodicKeyRangeChanged(melodicKey, r);
+        std::cout << "on_melodicKeyRangeChanged\n";
         break;
     }
   }

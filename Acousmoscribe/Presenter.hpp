@@ -1,33 +1,23 @@
 #pragma once
-#include <Process/Focus/FocusDispatcher.hpp>
-#include <Process/LayerPresenter.hpp>
-#include <Process/ZoomHelper.hpp>
-
-#include <score/model/Identifier.hpp>
-#include <Acousmoscribe/MelodicKeyView.hpp>
-
-#include <Acousmoscribe/Model/Sign.hpp>
-#include <Acousmoscribe/Model/Grain.hpp>
-#include <Acousmoscribe/Model/MelodicKey.hpp>
-#include <Acousmoscribe/Model/SpectralKey.hpp>
-#include <Acousmoscribe/Model/RhythmicProfile.hpp>
-#include <Acousmoscribe/Model/MelodicProfile.hpp>
-//#include <Acousmoscribe/Model/DynamicProfileNotuse.hpp>
-
-
-#include "SignView.hpp"
-#include "SpectralKeyView.hpp"
-#include "MelodicKeyView.hpp"
 
 #include <Acousmoscribe/Process.hpp>
+#include <Process/Focus/FocusDispatcher.hpp>
+#include <Process/LayerPresenter.hpp>
 
+/* Commands */
+#include <Acousmoscribe/Commands/ChangeMelodicKey.hpp>
+
+#include <score/command/Dispatchers/SingleOngoingCommandDispatcher.hpp>
 
 namespace Acousmoscribe
 {
 class Model;
 class View;
-class MelodicKeyView;
+class Sign;
+class SignView;
 class MelodicKey;
+class MelodicKeyView;
+
 class Presenter final : public Process::LayerPresenter
 {
 public:
@@ -47,6 +37,8 @@ public:
 
   void parentGeometryChanged() override;
 
+  const Acousmoscribe::Model& model() const noexcept;
+
 /*
   void on_spectralKeyChanged(SpectralKeyView& sKey);
   
@@ -56,12 +48,11 @@ public:
   void on_spectralKeyIsHybridChanged(bool& isHybrid);
   */
 
-  void on_melodicKeyChanged(MelodicKeyView& mKey);
-
-  /*
-  void on_melodicKeyPitchChanged(Pitch& pitch);
-  void on_melodicKeyRangeChanged(Range& range);
-  */
+  //void on_melodicKeyChanged(MelodicKeyView& mKey);
+  
+  void on_melodicKeyPitchChanged(MelodicKey&, Pitch& pitch);
+  void on_melodicKeyRangeChanged(MelodicKey&, Range& range);
+  
 
   /*
   void on_deselectOtherSigns();
@@ -103,5 +94,10 @@ private:
   MelodicKeyView *m_melodicKeyView;
   std::vector<SignView*> m_signs;
 
+  /* COMMAND DISPATCHERS */
+  SingleOngoingCommandDispatcher<ChangeMelodicKeyPitch> m_changeMelodicKeyPitch;
+  SingleOngoingCommandDispatcher<ChangeMelodicKeyRange> m_changeMelodicKeyRange;
+
+  ZoomRatio m_zr{};
 };
 }
