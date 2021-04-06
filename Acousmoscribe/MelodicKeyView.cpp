@@ -3,8 +3,9 @@
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
-#include <Acousmoscribe/Presenter.hpp>
+
 #include <Acousmoscribe/Model/MelodicKey.hpp>
+#include <Acousmoscribe/Presenter.hpp>
 
 namespace Acousmoscribe
 {
@@ -25,7 +26,6 @@ MelodicKeyView::MelodicKeyView(MelodicKey& mk, Presenter& p, View* parent)
 
 void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 
-//void MelodicKeyView::paint(QPainter* painter)
 {
   float w = m_width;
   float h = m_height;
@@ -34,7 +34,7 @@ void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
   Range range = melodicKey.range();
 
   QPen pen;
-  pen.setWidth(3);
+  pen.setWidth((w + h) / 100);
   pen.setColor(Qt::black);
   pen.setStyle(Qt::SolidLine);
   painter->setPen(pen);
@@ -47,13 +47,15 @@ void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
   float h_pitch = h*4/5;
   float x_pitch = w * 1/4;
   float y_pitch;
-  for (int i = 1 ; i <= 7 ; i++){
-    y_pitch = i*h_pitch/7;
-    if(i == 4){ 
-      pen.setWidth(5); //the 4th point is bigger
+  for (int i = 1; i <= 7; i++)
+  {
+    y_pitch = i * h_pitch / 7;
+    if (i == 4)
+    {
+      pen.setWidth((w + h) / 50); // the 4th point is bigger
       painter->setPen(pen);
       painter->drawPoint(QPoint(x_pitch, y_pitch));
-      pen.setWidth(3);
+      pen.setWidth((w + h) / 100);
       painter->setPen(pen);
     }
     else{
@@ -85,17 +87,15 @@ void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
   
 }
 
-
 QRectF MelodicKeyView::computeRect() const noexcept
 {
   auto& view = *(View*)parentItem();
   const auto h = view.height();
-  //const auto w = view.defaultWidth();
   const auto w = view.defaultWidth();
   const auto [min, max] = view.range();
   const auto key_height = h / view.visibleCount();
   const QRectF rect{
-      w/10, //35 à changer (instant de départ)
+      w/10, 
       0,
       0.1 * w,
       h};
@@ -103,8 +103,6 @@ QRectF MelodicKeyView::computeRect() const noexcept
   return rect;
 }
 
-float pitchToY(Pitch pitch){
-}
 
 bool MelodicKeyView::canEdit() const
 {
