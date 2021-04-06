@@ -12,35 +12,44 @@ ChangeMelodicKeyPitch::ChangeMelodicKeyPitch(
     const Model& model,
     const Id<MelodicKey>& to_change,
     Pitch pitch)
-    : m_model{model}, m_toChange{to_change}
+    : m_model{model}
 {
-  auto& melodicKey = model.melodicKeys.at(to_change);
-  m_pitchBefore = melodicKey.pitch();
-  m_pitchAfter = pitch;
+  auto& mKey = model.melodicKeys.at(to_change);
+  MelodicKeyData data = mKey.melodicKeyData();
+  m_before = qMakePair(mKey.id(), data);
+  data.setPitch(pitch);
+  m_after = qMakePair(mKey.id(), data);
+}
+
+void ChangeMelodicKeyPitch::update(unused_t, unused_t, Pitch pitch)
+{
+  m_after.second.setPitch(pitch);
 }
 
 void ChangeMelodicKeyPitch::undo(const score::DocumentContext& ctx) const
 {
   auto& model = m_model.find(ctx);
-  auto& mk = model.melodicKeys.at(m_toChange);
-  mk.setPitch(m_pitchBefore);
+  auto& mKey = m_before;
+  auto& m = model.melodicKeys.at(mKey.first);
+  m.setPitch(mKey.second.pitch());
 }
 
 void ChangeMelodicKeyPitch::redo(const score::DocumentContext& ctx) const
 {
   auto& model = m_model.find(ctx);
-  auto& mk = model.melodicKeys.at(m_toChange);
-  mk.setPitch(m_pitchAfter);
+  auto& mKey = m_after;
+  auto& m = model.melodicKeys.at(mKey.first);
+  m.setPitch(mKey.second.pitch());
 }
 
 void ChangeMelodicKeyPitch::serializeImpl(DataStreamInput& s) const
 {
-  s << m_model << m_toChange << m_pitchBefore << m_pitchAfter;
+  s << m_model << m_before << m_after;
 }
 
 void ChangeMelodicKeyPitch::deserializeImpl(DataStreamOutput& s)
 {
-  s >> m_model >> m_toChange >> m_pitchBefore >> m_pitchAfter;
+  s >> m_model >> m_before >> m_after;
 }
 
 
@@ -48,40 +57,43 @@ ChangeMelodicKeyRange::ChangeMelodicKeyRange(
     const Model& model,
     const Id<MelodicKey>& to_change,
     Range range)
-    : m_model{model}, m_toChange{to_change}
+    : m_model{model}
 {
-  auto& melodicKey = model.melodicKeys.at(to_change);
-  m_rangeBefore = melodicKey.range();
-  m_rangeAfter = range;
+  auto& mKey = model.melodicKeys.at(to_change);
+  MelodicKeyData data = mKey.melodicKeyData();
+  m_before = qMakePair(mKey.id(), data);
+  data.setRange(range);
+  m_after = qMakePair(mKey.id(), data);
+}
+
+void ChangeMelodicKeyRange::update(unused_t, unused_t, Range range)
+{
+  m_after.second.setRange(range);
 }
 
 void ChangeMelodicKeyRange::undo(const score::DocumentContext& ctx) const
 {
   auto& model = m_model.find(ctx);
-  auto& mk = model.melodicKeys.at(m_toChange);
-  mk.setRange(m_rangeBefore);
+  auto& mKey = m_before;
+  auto& m = model.melodicKeys.at(mKey.first);
+  m.setRange(mKey.second.range());
 }
 
 void ChangeMelodicKeyRange::redo(const score::DocumentContext& ctx) const
 {
   auto& model = m_model.find(ctx);
-  auto& mk = model.melodicKeys.at(m_toChange);
-  mk.setRange(m_rangeAfter);
+  auto& mKey = m_after;
+  auto& m = model.melodicKeys.at(mKey.first);
+  m.setRange(mKey.second.range());
 }
 
 void ChangeMelodicKeyRange::serializeImpl(DataStreamInput& s) const
 {
-  s << m_model << m_toChange << m_rangeBefore << m_rangeAfter;
+  s << m_model << m_before << m_after;
 }
 
 void ChangeMelodicKeyRange::deserializeImpl(DataStreamOutput& s)
 {
-  s >> m_model >> m_toChange >> m_rangeBefore >> m_rangeAfter;
+  s >> m_model >> m_before >> m_after;
 }
-
-
-
-
-
-
 }
