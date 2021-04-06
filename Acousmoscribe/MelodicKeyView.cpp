@@ -10,7 +10,7 @@
 namespace Acousmoscribe
 {
 
-MelodicKeyView::MelodicKeyView(MelodicKey& mk, Presenter& p, View* parent)
+MelodicKeyView::MelodicKeyView(const MelodicKey& mk, Presenter& p, View* parent)
     : QGraphicsItem{parent}
     , melodicKey{mk}
     , m_presenter{p}
@@ -21,8 +21,6 @@ MelodicKeyView::MelodicKeyView(MelodicKey& mk, Presenter& p, View* parent)
   this->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
   this->setAcceptHoverEvents(true);
 }
-
-
 
 void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 
@@ -82,6 +80,8 @@ void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
       break;
   }
 
+  painter->setPen(pen);
+
   float y_range = (pitch+1)*h_pitch/7;;
   painter->drawLine(QPoint(x_pitch, y_range), QPoint(x_pitch + w/2, y_range));
   
@@ -111,8 +111,6 @@ bool MelodicKeyView::canEdit() const
 
 void MelodicKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-      std::cout << "in mousePressEvent\n";
-
   const auto mods = QGuiApplication::keyboardModifiers();
   setSelected(true);
 
@@ -134,22 +132,25 @@ void MelodicKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void MelodicKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-          std::cout << "in mouseReleaseEvent\n";
-
   if (canEdit())
   {
     switch (m_action)
     {
+      Range r;
       case ChangePitch:
-        m_presenter.on_melodicKeyChanged(*this);
-        std::cout << "in changePitch\n";
+      {
+        Pitch p = (Pitch) (((int) melodicKey.pitch() + 1)%7);
+        m_presenter.on_melodicKeyPitchChanged(melodicKey, p);
+        std::cout << "done on_melodicKeyPitchChanged\n";
         break;
+      }
       case ChangeRange:
-        /*m_presenter->on_melodicKeyChanged(this);
-        QPainter *p;
-        paint(p);
-        std::cout << "in mouseReleaseEvent\n";*/
+      {
+        Range r = (Range) (((int) melodicKey.range() + 1)%3);
+        m_presenter.on_melodicKeyRangeChanged(melodicKey, r);
+        std::cout << "done on_melodicKeyRangeChanged\n";
         break;
+      }
     }
   }
   event->accept();

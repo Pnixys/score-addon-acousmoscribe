@@ -15,9 +15,9 @@ class SpectralKeyView final
 {
   Q_INTERFACES(QGraphicsItem)
 public:
-  SpectralKey& spectralKey;
+  const SpectralKey& spectralKey;
 
-  SpectralKeyView(SpectralKey& sp, Presenter& presenter, View* parent);
+  SpectralKeyView(const SpectralKey& sp, Presenter& presenter, View* parent);
 
   void setWidth(qreal w) noexcept
   {

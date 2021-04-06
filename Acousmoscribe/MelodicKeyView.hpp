@@ -14,9 +14,9 @@ class MelodicKeyView final
 {
   Q_INTERFACES(QGraphicsItem)
 public:
-  MelodicKey& melodicKey;
+  const MelodicKey& melodicKey;
 
-  MelodicKeyView(MelodicKey& mk, Presenter& presenter, View* parent);
+  MelodicKeyView(const MelodicKey& mk, Presenter& presenter, View* parent);
 
   void setWidth(qreal w) noexcept
   {

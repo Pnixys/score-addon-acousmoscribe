@@ -1,35 +1,27 @@
 #pragma once
-#include <Process/Focus/FocusDispatcher.hpp>
-#include <Process/LayerPresenter.hpp>
-#include <Process/ZoomHelper.hpp>
-
-#include <score/model/Identifier.hpp>
-#include <Acousmoscribe/MelodicKeyView.hpp>
-
-#include <Acousmoscribe/Model/Sign.hpp>
-#include <Acousmoscribe/Model/Grain.hpp>
-#include <Acousmoscribe/Model/MelodicKey.hpp>
-#include <Acousmoscribe/Model/SpectralKey.hpp>
-#include <Acousmoscribe/Model/RhythmicProfile.hpp>
-#include <Acousmoscribe/Model/MelodicProfile.hpp>
-//#include <Acousmoscribe/Model/DynamicProfileNotuse.hpp>
-
-
-#include "SignView.hpp"
-#include "SpectralKeyView.hpp"
-#include "MelodicKeyView.hpp"
 
 #include <Acousmoscribe/Process.hpp>
+#include <Process/Focus/FocusDispatcher.hpp>
+#include <Process/LayerPresenter.hpp>
 
+/* Commands */
+#include <Acousmoscribe/Commands/ChangeMelodicKey.hpp>
+
+#include <score/command/Dispatchers/SingleOngoingCommandDispatcher.hpp>
+
+#include <nano_observer.hpp>
 
 namespace Acousmoscribe
 {
 class Model;
 class View;
-class MelodicKeyView;
+class Sign;
+class SignView;
 class MelodicKey;
-class SpectralKeyView;
+class MelodicKeyView;
 class SpectralKey;
+class SpectralKeyView;
+
 class Presenter final : public Process::LayerPresenter
 {
 public:
@@ -49,7 +41,9 @@ public:
 
   void parentGeometryChanged() override;
 
+  const Acousmoscribe::Model& model() const noexcept;
 
+/*
   void on_spectralKeyChanged(SpectralKeyView& sKey);
 /*  
   void on_spectralKeyNature1Changed(Nature& nature1);
@@ -62,12 +56,11 @@ public:
   void on_spectralKeyIsWarped2Changed(bool& isWarped2);
   */
 
-  void on_melodicKeyChanged(MelodicKeyView& mKey);
-
-  /*
-  void on_melodicKeyPitchChanged(Pitch& pitch);
-  void on_melodicKeyRangeChanged(Range& range);
-  */
+  //void on_melodicKeyChanged(MelodicKeyView& mKey);
+  
+  void on_melodicKeyPitchChanged(const MelodicKey&, Pitch& pitch);
+  void on_melodicKeyRangeChanged(const MelodicKey&, Range& range);
+  
 
   /*
   void on_deselectOtherSigns();
@@ -92,11 +85,11 @@ public:
 private:  
 
   void updateSpectralKey(SpectralKeyView&);
-  void on_spectralKeyAdded(SpectralKey&);
+  void on_spectralKeyAdded(const SpectralKey&);
 //  void on_spectralKeyRemoving(const SpectralKey&);
 
   void updateMelodicKey(MelodicKeyView&);
-  void on_melodicKeyAdded(MelodicKey&);
+  void on_melodicKeyAdded(const MelodicKey&);
   void on_melodicKeyRemoving(MelodicKey&);
 /*
   void updateSign(SignView&);
@@ -109,6 +102,10 @@ private:
   MelodicKeyView* m_melodicKeyView;
   SpectralKeyView* m_spectralKeyView;
   std::vector<SignView*> m_signs;
+
+  /* COMMAND DISPATCHERS */
+  SingleOngoingCommandDispatcher<ChangeMelodicKeyPitch> m_changeMelodicKeyPitch;
+  SingleOngoingCommandDispatcher<ChangeMelodicKeyRange> m_changeMelodicKeyRange;
 
   ZoomRatio m_zr{};
 };
