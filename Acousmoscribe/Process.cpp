@@ -256,7 +256,7 @@ void JSONWriter::write(Acousmoscribe::Model& proc)
 template <>
 void DataStreamReader::read(const Acousmoscribe::SpectralKeyData& skd)
 {
-  m_stream << skd.getNature() << skd.getNature2() << skd.isHybrid() << skd.isRich() << skd.isRich2();
+  m_stream << skd.getNature() << skd.getNature2() << skd.isHybrid() << skd.isHybrid2() << skd.isRich() << skd.isRich2() << skd.isWarped() << skd.isWarped2();
   insertDelimiter();
 } 
 
@@ -265,13 +265,16 @@ void DataStreamWriter::write(Acousmoscribe::SpectralKeyData& skd)
 {
     Acousmoscribe::Nature nat;
     Acousmoscribe::Nature nat2;
-    bool hyb, rich, rich2;
-    m_stream >> nat >> nat2 >> hyb >> rich >> rich2;
+    bool hyb, hyb2, rich, rich2, warp, warp2;
+    m_stream >> nat >> nat2 >> hyb >> hyb2 >> rich >> rich2 >> warp >> warp2;
     skd.setNature(nat);
     skd.setNature2(nat2);
     skd.setHybrid(hyb);
+    skd.setHybrid2(hyb2);
     skd.setRich(rich);
     skd.setRich2(rich2);
+    skd.setWarped(warp);
+    skd.setWarped2(warp2);
     checkDelimiter();
 } 
 
@@ -282,8 +285,11 @@ void JSONReader::read(const Acousmoscribe::SpectralKeyData& skd)
   stream.Int(skd.getNature());
   stream.Int(skd.getNature2());
   stream.Bool(skd.isHybrid());
+  stream.Bool(skd.isHybrid2());
   stream.Bool(skd.isRich());
   stream.Bool(skd.isRich2());
+  stream.Bool(skd.isWarped());
+  stream.Bool(skd.isWarped());
   stream.EndArray();
 }
 
@@ -343,8 +349,11 @@ void JSONReader::read(const Acousmoscribe::SpectralKey& sk)
   stream.Int(sk.getNature());
   stream.Int(sk.getNature2());
   stream.Bool(sk.isHybrid());
+  stream.Bool(sk.isHybrid2());
   stream.Bool(sk.isRich());
   stream.Bool(sk.isRich2());
+  stream.Bool(sk.isWarped());
+  stream.Bool(sk.isWarped2());
   stream.EndArray();
 }
 
@@ -373,8 +382,11 @@ void JSONWriter::write(Acousmoscribe::SpectralKey& sk)
   }
   sk.setNature2(n);
   sk.setIsHybrid(arr[2].GetBool());
-  sk.setIsRich(arr[3].GetBool());
-  sk.setIsRich2(arr[4].GetBool());
+  sk.setIsHybrid2(arr[3].GetBool());
+  sk.setIsRich(arr[4].GetBool());
+  sk.setIsRich2(arr[5].GetBool());
+  sk.setIsWarped(arr[6].GetBool());
+  sk.setIsWarped2(arr[7].GetBool());
 }
 
 
