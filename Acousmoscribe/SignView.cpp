@@ -11,10 +11,10 @@
 namespace Acousmoscribe
 {
 
-SignView::SignView(QGraphicsItem* parent)
+SignView::SignView(const Sign& n, Presenter& presenter, View* parent)
     : QGraphicsItem{parent}
     , sign{n}
-    , m_presenter{p}
+    , m_presenter{presenter}
     , m_action{None}
 {
     this->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -23,11 +23,8 @@ SignView::SignView(QGraphicsItem* parent)
     this->setAcceptHoverEvents(true);
 }
 
-void SignView::paint(QPainter* p) const
-{
-}
-/*void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-{
+void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{/*
   static const MidiStyle s;
 
   painter->setRenderHint(QPainter::Antialiasing, false);
@@ -43,8 +40,8 @@ void SignView::paint(QPainter* p) const
     painter->setBrush(s.paintedSignBrush[sign.velocity()]);
 
     painter->drawRect(boundingRect().adjusted(0., 0., 0., 0));
-  }
-}*/
+  }*/
+}
 
 QPointF SignView::closestPos(QPointF newPos) const noexcept
 {
@@ -72,7 +69,7 @@ QRectF SignView::computeRect() const noexcept
   const auto sign_height = h / view.visibleCount();
   const QRectF rect{
       sign.start() * w,
-      h - std::ceil((sign.pitch() - min + 1) * sign_height),
+      h - std::ceil(min * sign_height),
       sign.duration() * w,
       sign_height};
 
@@ -161,10 +158,10 @@ void SignView::mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
       m_action = Scale;
     }
-    else if (mods & Qt::ShiftModifier)
+    /*else if (mods & Qt::ShiftModifier)
     {
       m_action = ChangeVelocity;
-    }
+    }*/
     else if (mods & Qt::AltModifier)
     {
       m_action = Duplicate;
@@ -187,17 +184,17 @@ void SignView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
       case Move:
         this->setPos(closestPos(
             signview_origpoint + event->scenePos() - event->buttonDownScenePos(Qt::LeftButton)));
-         m_presenter.on_signChanged(*this);
+         m_presenter.on_signMoved(*this);
         break;
       case Scale:
         this->setWidth(std::max(2., event->pos().x()));
         break;
       case Duplicate:
-        m_presenter.on_duplicate();
+        m_presenter.on_signDuplicate();
         break;
-      case ChangeVelocity:
+      /*case ChangeVelocity:
         m_presenter.on_requestVelocityChange(sign, event->buttonDownScenePos(Qt::LeftButton).y() - event->scenePos().y());
-        break;
+        break;*/
       case None:
         break;
     }
@@ -214,20 +211,20 @@ void SignView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
       case Move:
         this->setPos(closestPos(
             signview_origpoint + event->scenePos() - event->buttonDownScenePos(Qt::LeftButton)));
-         m_presenter.on_signChanged(*this);
-         m_presenter.on_signChangeFinished(*this);
+         m_presenter.on_signMoved(*this);
+         m_presenter.on_signMoveFinished(*this);
         break;
       case Scale:
         this->setWidth(std::max(2., event->pos().x()));
         m_presenter.on_signScaled(sign, m_width / ((View*)parentItem())->defaultWidth());
         break;
       case Duplicate:
-        m_presenter.on_duplicate();
+        m_presenter.on_signDuplicate();
         break;
-      case ChangeVelocity:
+      /*case ChangeVelocity:
         m_presenter.on_requestVelocityChange(sign, event->buttonDownScenePos(Qt::LeftButton).y() - event->scenePos().y());
         m_presenter.on_velocityChangeFinished();
-        break;
+        break;*/
       case None:
         break;
     }

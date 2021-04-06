@@ -1,24 +1,27 @@
 #pragma once
 #include <Acousmoscribe/View.hpp>
-
+#include "Acousmoscribe/Model/Sign.hpp"
+#include <Acousmoscribe/Presenter.hpp>
 #include <QGraphicsItem>
 
 namespace Acousmoscribe
 {
 class View;
 class Presenter;
+class Sign;
 class SignView final 
     : public QGraphicsItem
 {
   Q_INTERFACES(QGraphicsItem)
 
 public:
-struct Sign
+/*struct Sign
 {
   Sign() = default;
-};
-  SignView(const Sign& n, Presenter& presenter, QGraphicsItem* parent);
-  Sign Sign() const noexcept;
+};*/
+  const Sign& sign;
+  SignView(const Sign& n, Presenter& presenter, View* parent);
+  //Sign Sign() const noexcept;
 
   void setWidth(qreal w) noexcept
   {
@@ -63,7 +66,7 @@ private:
     None,
     Move,
     Scale,
-    ChangeVelocity,
+    //ChangeVelocity,
     Duplicate
   } m_action{};
 };
