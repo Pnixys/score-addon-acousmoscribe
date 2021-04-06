@@ -6,6 +6,9 @@
 
 /* Commands */
 #include <Acousmoscribe/Commands/ChangeMelodicKey.hpp>
+#include <Acousmoscribe/Commands/MoveSigns.hpp>
+#include <Acousmoscribe/Commands/ChangeSign.hpp>
+
 
 #include <score/command/Dispatchers/SingleOngoingCommandDispatcher.hpp>
 
@@ -30,6 +33,7 @@ public:
       View* view,
       const Process::Context& ctx, 
       QObject* parent);
+  ~Presenter() override;
 
   void setWidth(qreal width, qreal defaultWidth) override;
   void setHeight(qreal height) override;
@@ -61,26 +65,32 @@ public:
   void on_melodicKeyPitchChanged(const MelodicKey&, Pitch& pitch);
   void on_melodicKeyRangeChanged(const MelodicKey&, Range& range);
   
-
-  /*
-  void on_deselectOtherSigns();
+  
+  void on_deselectOtherSigns();                         //done
   void on_signDuplicate();
-  void on_signScaled(const Sign&, double newScale);
-  void on_signMoved(SignView& s); 
-  void on_signMoveFinished(SignView& s); 
+  void on_signScaled(const Sign&, double newScale);     //done
+  void on_signMoved(SignView& s);                       //done
+  void on_signMoveFinished(SignView& s);                //done
 
   // Dynamic Profile :
-  void on_signAttackChanged(const Sign&, double newAttack);
-  void on_signReleaseChanged(const Sign&, double newRelease);
-  void on_signVolumeInChanged(const Sign&, double newVolIn);
-  void on_signVolumeOutChanged(const Sign&, double newVolOut);
-  void on_signVolumeChanged(const Sign&, double newVol);
+  void on_signAttackChanged(const Sign&, double newAttack);               //done
+  void on_signReleaseChanged(const Sign&, double newRelease);             //done
+  void on_signVolumeInChanged(const Sign&, double newVolIn);              //done
+  void on_signVolumeOutChanged(const Sign&, double newVolOut);            //done
+  //void on_signVolumeChanged(const Sign&, double newVol);
 
   // Other profiles
-  void on_signMelodicProfileChanged(SignView& s);
-  void on_signRhythmicProfileChanged(SignView& s);
-  void on_signGrainChanged(SignView& s);
-*/
+  //void on_signMelodicProfileChanged(Sign& v, MelodicProfile mp);
+  void on_signMelodicProfilePitchChanged(Sign& v, Pitch newPitch);                //done
+  void on_signMelodicProfileVariationChanged(Sign& v, Variation newVar);          //done
+
+  //void on_signRhythmicProfileChanged(Sign& v, RhythmicProfile rp);
+  void on_signRhythmicProfileSpeedChanged(Sign& v, Speed newSpeed);               //done
+  void on_signRhythmicProfileAccelerationChanged(Sign& v, Acceleration newAcc);   //done
+  void on_signRhythmicProfileIsRandomChanged(Sign& v, bool newIsRandom);          //done
+
+  void on_signGrainChanged(Sign& v, Grain g);                                     //done
+
 
 private:  
 
@@ -91,11 +101,12 @@ private:
   void updateMelodicKey(MelodicKeyView&);
   void on_melodicKeyAdded(const MelodicKey&);
   void on_melodicKeyRemoving(MelodicKey&);
-/*
-  void updateSign(SignView&);
-  void on_signAdded(const Sign&);
-  void on_signRemoving(const Sign&);
-  */
+
+  void updateSign(SignView&);         //done
+  void on_signAdded(const Sign&);     //done
+  void on_signRemoving(const Sign&);  //done
+  
+  std::vector<Id<Sign>> selectedSigns() const;            //done
 
   const Model& m_model;
   View* m_view{};
@@ -106,6 +117,10 @@ private:
   /* COMMAND DISPATCHERS */
   SingleOngoingCommandDispatcher<ChangeMelodicKeyPitch> m_changeMelodicKeyPitch;
   SingleOngoingCommandDispatcher<ChangeMelodicKeyRange> m_changeMelodicKeyRange;
+
+  SingleOngoingCommandDispatcher<MoveSigns> m_moveDispatcher;
+
+  std::optional<double> m_origMoveStart{};
 
   ZoomRatio m_zr{};
 };

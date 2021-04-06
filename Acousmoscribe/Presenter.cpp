@@ -11,6 +11,10 @@
 
 /* Commands */
 #include <Acousmoscribe/Commands/AddKey.hpp>
+#include <Acousmoscribe/Commands/AddSign.hpp>
+#include <Acousmoscribe/Commands/RemoveSigns.hpp>
+#include <Acousmoscribe/Commands/ScaleSigns.hpp>
+
 
 /* Model */
 #include <Acousmoscribe/Process.hpp>
@@ -55,6 +59,7 @@ Presenter::Presenter(
     : Process::LayerPresenter{layer, view, ctx, parent}
     , m_model{layer}
     , m_view{view}
+    , m_moveDispatcher{ctx.commandStack}
     , m_changeMelodicKeyPitch{ctx.commandStack}
     , m_changeMelodicKeyRange{ctx.commandStack}
     , m_zr{1.}
@@ -71,8 +76,31 @@ Presenter::Presenter(
     updateSpectralKey(*m_spectralKeyView);
   });
 
+  con(model, &Model::signsNeedUpdate, this, [&] {
+    for (auto sign : m_signs)
+      updateSign(*sign);
+  });
+
+  con(model, &Model::signsChanged, this, [&] {
+    for (auto sign : m_signs)
+    {
+      delete sign;
+    }
+
+    m_signs.clear();
+
+    for (auto& sign : model.signs)
+    {
+      on_signAdded(sign);
+    }
+  });
+
   model.melodicKeys.added.connect<&Presenter::on_melodicKeyAdded>(this);
   model.spectralKey.added.connect<&Presenter::on_spectralKeyAdded>(this);
+
+  model.signs.added.connect<&Presenter::on_signAdded>(this);
+  model.signs.removing.connect<&Presenter::on_signRemoving>(this);
+
 
   // Default MelodicKey
   MelodicKeyData mkData = {mid, weak};
@@ -85,13 +113,54 @@ Presenter::Presenter(
   skData.setNature2(null);
   CommandDispatcher<>{context().context.commandStack}.submit(
         new AddSpectralKey{model, skData});
+
+
+  /*connect(m_view, &View::doubleClicked, this, [&](QPointF pos) {
+    CommandDispatcher<>{context().context.commandStack}.submit(
+        new AddSign{layer, m_view->signAtPos(pos)});
+  });*/
+
+  connect(m_view, &View::pressed, this, [&]() {
+    m_context.context.focusDispatcher.focus(this);
+    for (SignView* n : m_signs)
+      n->setSelected(false);
+  });
+
+  //connect(m_view, &View::dropReceived, this, &Presenter::on_drop);
+
+  /*connect(m_view, &View::deleteRequested, this, [&] {
+    CommandDispatcher<>{context().context.commandStack}.submit(
+        new RemoveSigns{this->model(), selectedSigns()});
+  });*/
+
+  connect(m_view, &View::askContextMenu, this, &Presenter::contextMenuRequested);
+
+
+  for (auto& sign : model.signs)
+  {
+    on_signAdded(sign);
+  }
+#if __has_include(<valgrind/callgrind.h>)
+  // CALLGRIND_START_INSTRUMENTATION;
+#endif
 } 
+
+Presenter::~Presenter()
+{
+#if __has_include(<valgrind/callgrind.h>)
+  // CALLGRIND_STOP_INSTRUMENTATION;
+#endif
+}
+
 
 void Presenter::setWidth(qreal val, qreal defaultWidth)
 {
   m_view->setWidth(val);
+  m_view->setDefaultWidth(defaultWidth);
   updateMelodicKey(*m_melodicKeyView);
   updateSpectralKey(*m_spectralKeyView);
+  for (auto sign : m_signs)
+    updateSign(*sign);
 }
 
 void Presenter::setHeight(qreal val)
@@ -99,16 +168,18 @@ void Presenter::setHeight(qreal val)
   m_view->setHeight(val);
   updateMelodicKey(*m_melodicKeyView);
   updateSpectralKey(*m_spectralKeyView);
+  for (auto sign : m_signs)
+    updateSign(*sign);
 }
 
 void Presenter::putToFront()
 {
-  m_view->setOpacity(1);
+  m_view->setEnabled(true);
 }
 
 void Presenter::putBehind()
 {
-  m_view->setOpacity(0.2);
+  m_view->setEnabled(false);
 }
 
 void Presenter::on_zoomRatioChanged(ZoomRatio zr)
@@ -117,6 +188,8 @@ void Presenter::on_zoomRatioChanged(ZoomRatio zr)
   m_view->setDefaultWidth(model().duration().toPixels(m_zr));
   updateMelodicKey(*m_melodicKeyView);
   updateSpectralKey(*m_spectralKeyView);
+  for (auto sign : m_signs)
+    updateSign(*sign);
 }
 
 void Presenter::parentGeometryChanged()
@@ -154,6 +227,20 @@ void Presenter::updateSpectralKey(SpectralKeyView& s)
   s.setHeight(keyRect.height());
 }
 
+void Presenter::updateSign(SignView& v)
+{
+  const auto signRect = v.computeRect();
+  const auto newPos = signRect.topLeft();
+  if (newPos != v.pos())
+  {
+    v.setPos(newPos);
+  }
+
+  v.setWidth(signRect.width());
+  v.setHeight(signRect.height());
+}
+
+
 void Presenter::on_melodicKeyPitchChanged(const MelodicKey& mKey, Pitch& pitch){
   m_changeMelodicKeyPitch.submit(model(), mKey.id(), pitch);
 }
@@ -161,6 +248,180 @@ void Presenter::on_melodicKeyPitchChanged(const MelodicKey& mKey, Pitch& pitch){
 void Presenter::on_melodicKeyRangeChanged(const MelodicKey& mKey, Range& range){
   m_changeMelodicKeyRange.submit(model(), mKey.id(), range);
 }
+
+// ===================================================== SIGN ===================================================== 
+
+void Presenter::on_signMoved(SignView& v)
+{
+  if(!m_origMoveStart)
+  {
+    m_origMoveStart = v.sign.start();
+  }
+
+  auto newPos = v.pos();
+  auto rect = m_view->boundingRect();
+  auto height = rect.height();
+
+  auto signs = selectedSigns();
+  auto it = ossia::find(signs, v.sign.id());
+  if (it == signs.end())
+  {
+    signs = {v.sign.id()};
+  }
+
+  m_moveDispatcher.submit(
+      model(),
+      signs,
+      newPos.x() / m_view->defaultWidth() - *m_origMoveStart);
+}
+
+void Presenter::on_signMoveFinished(SignView& v)
+{
+  on_signMoved(v);
+  m_moveDispatcher.commit();
+
+  m_origMoveStart = std::nullopt;
+}
+
+void Presenter::on_signScaled(const Sign& sign, double newScale)
+{
+  auto signs = selectedSigns();
+  auto it = ossia::find(signs, sign.id());
+  if (it == signs.end())
+  {
+    signs = {sign.id()};
+  }
+
+  auto dt = newScale - sign.duration();
+  CommandDispatcher<>{context().context.commandStack}.submit(new ScaleSigns{model(), signs, dt}); 
+}
+
+
+// --------------------------------------------- Sign/Dynamic Profile ---------------------------------------------      
+
+void Presenter::on_signAttackChanged(const Sign& sign, double newAttack)
+{
+  if(sign.dynamicProfile().attack != newAttack)
+  {
+    auto newDP = sign.dynamicProfile() ;
+    newDP.attack = newAttack ;
+
+    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
+  }
+};
+
+void Presenter::on_signReleaseChanged(const Sign& sign, double newRelease)
+{
+  if(sign.dynamicProfile().release != newRelease)
+  {
+    auto newDP = sign.dynamicProfile() ;
+    newDP.release = newRelease ;
+
+    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
+  }
+};
+
+void Presenter::on_signVolumeInChanged(const Sign& sign, double newVolIn)
+{
+  if(sign.dynamicProfile().volumeStart != newVolIn)
+  {
+    auto newDP = sign.dynamicProfile() ;
+    newDP.volumeStart = newVolIn ;
+
+    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
+  }
+};
+
+void Presenter::on_signVolumeOutChanged(const Sign& sign, double newVolOut)
+{
+  if(sign.dynamicProfile().volumeEnd != newVolOut)
+  {
+    auto newDP = sign.dynamicProfile() ;
+    newDP.volumeEnd = newVolOut ;
+
+    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
+  }
+};
+
+/*void on_signVolumeChanged(const Sign&, double newVol)
+{
+  if(sign.dynamicProfile().volume != newVol)
+  {
+    auto newDP = sign.dynamicProfile() ;
+    newDP.volume = newVol ;
+
+    m_changeDynamicProfile.submit(model(), sign.id(), newDP);
+  }
+};*/
+
+// --------------------------------------------- Sign/Melodic Profile ---------------------------------------------      
+
+void Presenter::on_signMelodicProfilePitchChanged(Sign& sign, Pitch newPitch){
+  if(sign.melodicProfile().pitch() != newPitch)
+  {
+    auto newMP = sign.melodicProfile() ;
+    newMP.setPitch(newPitch)  ;
+
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeMelodicProfile{model(), sign.id(), newMP}); 
+  }
+}
+
+void Presenter::on_signMelodicProfileVariationChanged(Sign& sign, Variation newVar){
+  if(sign.melodicProfile().variation() != newVar)
+  {
+    auto newMP = sign.melodicProfile() ;
+    newMP.setVariation(newVar) ;
+
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeMelodicProfile{model(), sign.id(), newMP}); 
+  }
+}
+
+// --------------------------------------------- Sign/Rhythmic Profile ---------------------------------------------      
+
+void Presenter::on_signRhythmicProfileSpeedChanged(Sign& sign, Speed newSpeed)
+{
+  if(sign.rhythmicProfile().speed() != newSpeed)
+  {
+    auto newRP = sign.rhythmicProfile() ;
+    newRP.setSpeed(newSpeed)  ;
+
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeRhythmicProfile{model(), sign.id(), newRP}); 
+  }
+}
+
+void Presenter::on_signRhythmicProfileAccelerationChanged(Sign& sign, Acceleration newAcc)
+{
+  if(sign.rhythmicProfile().acceleration() != newAcc)
+  {
+    auto newRP = sign.rhythmicProfile() ;
+    newRP.setAcceleration(newAcc)  ;
+
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeRhythmicProfile{model(), sign.id(), newRP}); 
+  }
+}
+
+void Presenter::on_signRhythmicProfileIsRandomChanged(Sign& sign, bool newIsRandom)
+{
+  if(sign.rhythmicProfile().isRandom() != newIsRandom)
+  {
+    auto newRP = sign.rhythmicProfile() ;
+    newRP.setIsRandom(newIsRandom)  ;
+
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeRhythmicProfile{model(), sign.id(), newRP}); 
+  }
+}
+
+// -------------------------------------------------- Sign/Grain  --------------------------------------------------      
+
+void Presenter::on_signGrainChanged(Sign& sign, Grain g)
+{
+  if(sign.grain() != g)
+  {
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeGrain{model(), sign.id(), g}); 
+  }
+}
+
+// =================================================================================================================
 
 void Presenter::on_melodicKeyAdded(const MelodicKey& mKey)
 {
@@ -175,4 +436,48 @@ void Presenter::on_spectralKeyAdded(const SpectralKey& mKey)
   updateSpectralKey(*v);
   m_spectralKeyView = v;
 }
+
+
+void Presenter::on_signAdded(const Sign& s)
+{
+  auto v = new SignView{s, *this, m_view};
+  updateSign(*v);
+  m_signs.push_back(v);
+}
+
+void Presenter::on_signRemoving(const Sign& s)
+{
+  auto it = ossia::find_if(m_signs, [&](const auto& other) { return &other->sign == &s; });
+  if (it != m_signs.end())
+  {
+    delete *it;
+    m_signs.erase(it);
+  }
+}
+
+void Presenter::on_signDuplicate()
+{
+
+}
+
+void Presenter::on_deselectOtherSigns()
+{
+  for (SignView* s : m_signs)
+    s->setSelected(false);
+}
+
+
+std::vector<Id<Sign>> Presenter::selectedSigns() const
+{
+  using namespace boost::adaptors;
+
+  std::vector<Id<Sign>> res;
+  boost::copy(
+      m_signs | boost::adaptors::filtered([](SignView* v) { return v->isSelected(); })
+          | transformed([](SignView* v) { return v->sign.id(); }),
+      std::back_inserter(res));
+  return res;
+  
+}
+
 }
