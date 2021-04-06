@@ -96,10 +96,4 @@ void ChangeMelodicKeyRange::deserializeImpl(DataStreamOutput& s)
 {
   s >> m_model >> m_before >> m_after;
 }
-
-
-
-
-
-
 }

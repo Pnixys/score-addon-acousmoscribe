@@ -9,6 +9,8 @@
 
 #include <score/command/Dispatchers/SingleOngoingCommandDispatcher.hpp>
 
+#include <nano_observer.hpp>
+
 namespace Acousmoscribe
 {
 class Model;
@@ -17,6 +19,8 @@ class Sign;
 class SignView;
 class MelodicKey;
 class MelodicKeyView;
+class SpectralKey;
+class SpectralKeyView;
 
 class Presenter final : public Process::LayerPresenter
 {
@@ -41,17 +45,21 @@ public:
 
 /*
   void on_spectralKeyChanged(SpectralKeyView& sKey);
-  
+/*  
   void on_spectralKeyNature1Changed(Nature& nature1);
   void on_spectralKeyNature2Changed(Nature& nature2);
   void on_spectralKeyIsRichChanged(bool& isRich);
+  void on_spectralKeyIsRich2Changed(bool& isRich2);
   void on_spectralKeyIsHybridChanged(bool& isHybrid);
+  void on_spectralKeyIsHybrid2Changed(bool& isHybrid2);
+  void on_spectralKeyIsWarpedChanged(bool& isWarped);
+  void on_spectralKeyIsWarped2Changed(bool& isWarped2);
   */
 
   //void on_melodicKeyChanged(MelodicKeyView& mKey);
   
-  void on_melodicKeyPitchChanged(MelodicKey&, Pitch& pitch);
-  void on_melodicKeyRangeChanged(MelodicKey&, Range& range);
+  void on_melodicKeyPitchChanged(const MelodicKey&, Pitch& pitch);
+  void on_melodicKeyRangeChanged(const MelodicKey&, Range& range);
   
 
   /*
@@ -75,13 +83,13 @@ public:
 */
 
 private:  
-/*
+
   void updateSpectralKey(SpectralKeyView&);
   void on_spectralKeyAdded(const SpectralKey&);
-  void on_spectralKeyRemoving(const SpectralKey&);
-*/
+//  void on_spectralKeyRemoving(const SpectralKey&);
+
   void updateMelodicKey(MelodicKeyView&);
-  void on_melodicKeyAdded(MelodicKey&);
+  void on_melodicKeyAdded(const MelodicKey&);
   void on_melodicKeyRemoving(MelodicKey&);
 /*
   void updateSign(SignView&);
@@ -91,7 +99,8 @@ private:
 
   const Model& m_model;
   View* m_view{};
-  MelodicKeyView *m_melodicKeyView;
+  MelodicKeyView* m_melodicKeyView;
+  SpectralKeyView* m_spectralKeyView;
   std::vector<SignView*> m_signs;
 
   /* COMMAND DISPATCHERS */

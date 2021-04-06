@@ -1,214 +1,309 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check
 // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
-#include <Acousmoscribe/View.hpp>
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
-#include <Acousmoscribe/SpectralKeyView.hpp>
 #include <QGuiApplication>
 #include <QPainter>
 #include <QPoint>
+
+#include <Acousmoscribe/Presenter.hpp>
+#include <Acousmoscribe/SpectralKeyView.hpp>
+#include <Acousmoscribe/View.hpp>
+
 namespace Acousmoscribe
 {
-SpectralKeyView::SpectralKeyView(View* parent)
-  : QGraphicsItem{parent}
-  , m_action{None}
+SpectralKeyView::SpectralKeyView(const SpectralKey& sk, Presenter& p, View* parent)
+    : QGraphicsItem{parent}, spectralKey{sk}, m_presenter{p}, m_action{None}
 {
   this->setFlag(QGraphicsItem::ItemIsSelectable, true);
-  this->setFlag(QGraphicsItem::ItemIsMovable, true);
+  this->setFlag(QGraphicsItem::ItemIsMovable, false);
   this->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
   this->setAcceptHoverEvents(true);
 }
 
-void SpectralKeyView::paint(QPainter* painter)
+void SpectralKeyView::paint(
+    QPainter* painter,
+    const QStyleOptionGraphicsItem* option,
+    QWidget* widget)
 {
+  float w = m_width;
+  float h = m_height;
 
-   /* if(m_spectralKey->getNature() == null){
+  Nature nature = spectralKey.getNature();
+  Nature nature2 = spectralKey.getNature2();
+  bool rich = spectralKey.isRich();
+  bool rich2 = spectralKey.isRich2();
+  bool hybrid = spectralKey.isHybrid();
+  bool hybrid2 = spectralKey.isHybrid2();
+  bool warped = spectralKey.isWarped();
+  bool warped2 = spectralKey.isWarped2();
 
-    }*/
+  QPen p;
+  p.setColor(Qt::black);
+  p.setWidth((w + h) / 100);
+  painter->setPen(p);
 
-    //TODO RENDRE RECT INVISIBLE
-    /*static const MidiStyle s;
+  /* Background Rect */
 
-  painter->setRenderHint(QPainter::Antialiasing, false);
-  if (m_width <= 1.2)
+  painter->setBrush(Qt::white);
+  painter->drawRect(boundingRect().adjusted(0., 0., 0., 0));
+
+  if (hybrid)
   {
-    painter->setPen(this->isSelected() ? s.noteSelectedBasePen : s.noteBasePen);
-    painter->drawLine(0, 0, 0, m_height - 1.5);
-  }
-  else
-  {
-    painter->setPen(this->isSelected() ? s.noteSelectedBasePen : Qt::NoPen);
-    painter->setBrush(s.paintedNoteBrush[note.velocity()]);*/
-
-    QPen p;
-    p.setColor(Qt::black);
-    p.setWidth(1);
-    painter->setPen(p);
-    painter->setBrush(Qt::white);
-    painter->drawRect(QRect(0,0,35,70));
-    
-
-    enum Nature
+    switch (nature)
     {
-        null = 0,
-        tonic,
-        inharmonic,
-        noise
-    };
 
-    Nature m_nature = noise;
-    Nature m_nature2 = inharmonic;
-    bool m_isRich = true;
-    bool m_isRich2 = true;
-    bool m_isHybrid = true;
+      case tonic_inharmonic:
+        p.setStyle(Qt::DashLine);
+        nature = inharmonic;
+        break;
 
-    /* TONIC */
-    if(m_nature == tonic){
-        if(m_nature2 == noise){
-            p.setStyle(Qt::DotLine);
-            painter->setPen(p);
+      case noisy_tonic:
+        p.setStyle(Qt::DotLine);
+        nature = tonic;
+        break;
+
+      case noisy_inharmonic:
+        p.setStyle(Qt::DotLine);
+        nature = inharmonic;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  painter->setPen(p);
+
+  switch (nature)
+  {
+    case tonic:
+      if (warped)
+      {
+        painter->drawLine(QPoint(w / 5, h / 1.05), QPoint(w / 1.5, h / 1.5));
+        painter->drawLine(QPoint(w / 1.5, h / 1.5), QPoint(w / 1.05, h / 5));
+      }
+      else
+      {
+        painter->drawLine(QPoint(w / 5, h / 1.05), QPoint(w / 1.05, h / 5));
+      }
+      break;
+
+    case inharmonic:
+      painter->drawArc(QRectF(w / 11, h / 30, w / 3, h / 3), 9900, 2000);
+      break;
+
+    case noise:
+      p.setWidth((w + h) / 100);
+      painter->setPen(p);
+      painter->drawPoint(w / 2.5, h / 2.5);
+      p.setWidth((w + h) / 100);
+      painter->setPen(p);
+      break;
+
+    default:
+      break;
+  }
+
+  if (hybrid2)
+  {
+    switch (nature2)
+    {
+
+      case tonic_inharmonic:
+        p.setStyle(Qt::DashLine);
+        nature2 = inharmonic;
+        break;
+
+      case noisy_tonic:
+        p.setStyle(Qt::DotLine);
+        nature2 = tonic;
+        break;
+
+      case noisy_inharmonic:
+        p.setStyle(Qt::DotLine);
+        nature2 = inharmonic;
+        break;
+
+      default:
+        break;
+    }
+  }
+  painter->setPen(p);
+
+  switch (nature2)
+  {
+    case tonic:
+      if (warped2)
+      {
+        painter->drawLine(QPoint(w / 10, h / 1.2), QPoint(w / 1.7, h / 2.1));
+        painter->drawLine(QPoint(w / 1.7, h / 2.1), QPoint(w / 1.2, h / 10));
+      }
+      else
+      {
+        painter->drawLine(QPoint(w / 10, h / 1.2), QPoint(w / 1.2, h / 10));
+      }
+      break;
+
+    case inharmonic:
+      painter->drawArc(QRectF(w / 11, h / 30, w / 2, h / 2), 9900, 2000);
+      break;
+
+    case noise:
+      p.setWidth((w + h) / 100);
+      painter->setPen(p);
+      painter->drawPoint(w / 1.3, h / 1.3);
+      p.setWidth((w + h) / 100);
+      painter->setPen(p);
+      break;
+
+    default:
+      break;
+  }
+
+  p.setStyle(Qt::SolidLine);
+  painter->setPen(p);
+
+  switch (rich)
+  {
+    case true:
+      if (nature == tonic)
+      {
+        painter->drawLine(QPoint(w / 1.08, h / 6), QPoint(w / 1.015, h / 4.25));
+        painter->drawLine(QPoint(w / 6, h / 1.1), QPoint(w / 4.5, h / 1.02));
+      }
+      else if (nature == inharmonic)
+      {
+        painter->drawLine(QPoint(w / 2.3, h / 9.6), QPoint(w / 2.6, h / 6.2));
+        painter->drawLine(QPoint(w / 4.15, h / 2.85), QPoint(w / 4.9, h / 2.6));
+      }
+      else if (nature == noise)
+      {
+        painter->drawLine(QPoint(w / 2.6, h / 4.2), QPoint(w / 3.7, h / 2.8));
+        if (nature2 != noise)
+          painter->drawLine(QPoint(w / 2.45, h / 2), QPoint(w / 1.85, h / 2.7));
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  switch (rich2)
+  {
+    case true:
+      if (nature2 == tonic)
+      {
+        painter->drawLine(QPoint(w / 1.15, h / 7.2), QPoint(w / 1.25, h / 14.8));
+        painter->drawLine(QPoint(w / 14.8, h / 1.25), QPoint(w / 6.8, h / 1.12));
+      }
+      else if (nature2 == inharmonic)
+      {
+        painter->drawLine(QPoint(w / 1.9, h / 4.2), QPoint(w / 1.7, h / 6.4));
+        painter->drawLine(QPoint(w / 3.1, h / 2), QPoint(w / 3.9, h / 1.8));
+      }
+      else if (nature2 == noise)
+      {
+        painter->drawLine(QPoint(w / 1.2, h / 1.1), QPoint(w / 1.05, h / 1.3));
+        if (nature == noise)
+        {
+          painter->drawLine(QPoint(w / 2, h / 1.65), QPoint(w / 1.5, h / 2.3));
         }
-
-        /* HYBRID */
-        if(m_nature2 == inharmonic){
-            p.setStyle(Qt::DashLine);
-            painter->setPen(p);
-            painter->drawArc(QRectF(3,5,25,30), 15000, 2000);
-            if(m_isRich){
-                p.setStyle(Qt::SolidLine);
-                painter->setPen(p);
-                painter->drawLine(QPoint(2, 28), QPoint(6, 28));
-                painter->drawLine(QPoint(25, 23), QPoint(30, 23));
-            }
-
-        /* GROUP */
-        }else if(m_nature2 == tonic){
-            p.setStyle(Qt::SolidLine);
-            painter->setPen(p);
-            painter->drawLine(QPoint(12, 56), QPoint(28, 16));
-            painter->drawLine(QPoint(10, 44), QPoint(18, 25));
-
-            if(m_isRich2){
-                painter->drawLine(QPoint(8, 43), QPoint(11, 46));
-                painter->drawLine(QPoint(16, 23), QPoint(19, 26));
-            }
-            if(m_isRich){
-                painter->drawLine(QPoint(10, 54), QPoint(14, 58));
-                painter->drawLine(QPoint(26, 14), QPoint(30, 18));
-            }
-
-        }else{
-            painter->drawLine(QPoint(9, 55), QPoint(25, 15));
-            if(m_isRich == true)
-                p.setStyle(Qt::SolidLine);
-                painter->setPen(p);
-                painter->drawLine(QPoint(6, 54), QPoint(10, 56));
-                painter->drawLine(QPoint(22, 14), QPoint(26, 16));
+        else
+        {
+          painter->drawLine(QPoint(w / 1.55, h / 1.3), QPoint(w / 1.3, h / 1.6));
         }
+      }
+      break;
 
-    /* INHARMONIC */
-    }else if(m_nature == inharmonic){
-
-        /* HYBRID TONIC */
-        if(m_nature2 == tonic){
-            p.setStyle(Qt::DashLine);
-            painter->setPen(p);
-        }
-
-        /* HYBRID NOISE */
-        if(m_nature2 == noise){
-            p.setStyle(Qt::DotLine);
-            p.setWidth(2);
-            QVector<qreal> dashes;
-            qreal space = 2;
-            dashes << 1 << space << 1 << space << 1 << space << 1 << space << 1 << space << 1;
-            p.setDashPattern(dashes);
-            painter->setPen(p);
-            painter->drawArc(QRectF(3,5,25,30), 15000, 2000);
-
-        }else{
-            painter->drawArc(QRectF(3,5,25,30), 15000, 2000);
-        }
-        if(m_isRich == true){
-            p.setWidth(1);
-            p.setStyle(Qt::SolidLine);
-            painter->setPen(p);
-            painter->drawLine(QPoint(2, 28), QPoint(6, 28));
-            painter->drawLine(QPoint(25, 23), QPoint(30, 23));
-        }
-
-        /* GROUP */
-        if(m_nature2 == inharmonic){
-            painter->drawArc(QRectF(5,4,20,23), 15258, 1400);
-            if(m_isRich2 == true){
-                painter->drawLine(QPoint(6, 24), QPoint(12, 24));
-                painter->drawLine(QPoint(19, 22), QPoint(24, 22));
-            }
-        }
-
-    /* NOISE */
-    }else if(m_nature == noise){
-        p.setWidth(3);
-        painter->setPen(p);
-
-        /* GROUP */
-        if(m_nature2 == noise){
-            painter->drawPoint(QPoint(14, 30));
-            painter->drawPoint(QPoint(20, 37));
-            if(m_isRich){
-                p.setWidth(1);
-                painter->setPen(p);
-                painter->drawLine(QPoint(8, 28), QPoint(14, 24));
-                painter->drawLine(QPoint(14, 36), QPoint(20, 32));
-            }
-            if(m_isRich2){
-                p.setWidth(1);
-                painter->setPen(p);
-                painter->drawLine(QPoint(14, 36), QPoint(20, 32));
-                painter->drawLine(QPoint(20, 44), QPoint(26, 40));
-            }
-        }else{
-            /* HYBRID INHARMONIC */
-            if(m_nature2 == inharmonic){
-                p.setStyle(Qt::DotLine);
-                p.setWidth(2);
-                QVector<qreal> dashes;
-                qreal space = 2;
-                dashes << 1 << space << 1 << space << 1 << space << 1 << space << 1 << space << 1;
-                if(m_isRich == true){
-                    p.setWidth(1);
-                    p.setStyle(Qt::SolidLine);
-                    painter->setPen(p);
-                    painter->drawLine(QPoint(2, 28), QPoint(6, 28));
-                    painter->drawLine(QPoint(25, 23), QPoint(30, 23));                p.setDashPattern(dashes);
-                painter->setPen(p);
-                painter->drawArc(QRectF(3,5,25,30), 15000, 2000);
-                if(m_isRich2 == true){
-                    p.setWidth(1);
-                    p.setStyle(Qt::SolidLine);
-                    painter->setPen(p);
-                    painter->drawLine(QPoint(2, 28), QPoint(6, 28));
-                    painter->drawLine(QPoint(25, 23), QPoint(30, 23));
-            }else{
-                painter->drawPoint(QPoint(17, 35));
-                if(m_isRich == true){
-                    p.setWidth(1);
-                    painter->setPen(p);
-                    painter->drawLine(QPoint(12, 38), QPoint(16, 40));
-                    painter->drawLine(QPoint(18, 31), QPoint(22, 33));
-                }
-            }
-            }
-        }
-   }
+    default:
+      break;
+  }
 }
+
+QRectF SpectralKeyView::computeRect() const noexcept
+{
+  auto& view = *(View*)parentItem();
+  const auto h = view.height();
+  // const auto w = view.defaultWidth();
+  const auto w = view.defaultWidth();
+  const auto [min, max] = view.range();
+  const auto key_height = h / view.visibleCount();
+  const QRectF rect{
+      0, // 35 à changer (instant de départ)
+      0,
+      0.1 * w,
+      h};
+
+  return rect;
 }
 
+bool SpectralKeyView::canEdit() const
+{
+  return boundingRect().height() > 5;
+}
 
+void SpectralKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+  std::cout << "in SPECTRAL mousePressEvent\n";
 
+  const auto mods = QGuiApplication::keyboardModifiers();
+  setSelected(true);
 
-QVariant SpectralKeyView::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
+  m_action = None;
+
+  if (canEdit())
+  {
+    if (mods & Qt::ShiftModifier)
+    {
+      m_action = ChangeNature2;
+    }
+    else
+    {
+      m_action = ChangeNature;
+    }
+  }
+  event->accept();
+}
+
+void SpectralKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+  std::cout << "in  SPECTRAL mouseReleaseEvent\n";
+
+  if (canEdit())
+  {
+    switch (m_action)
+    {
+      case ChangeNature:
+        //m_presenter.on_spectralKeyChanged(*this);
+        std::cout << "in changeNature\n";
+        break;
+      case ChangeNature2:
+      //TODO CHANGE THAT
+      //m_presenter.on_spectralKeyChanged(*this);
+        std::cout << "in changeNature\n";
+        break;
+      case ChangeRich:
+        break;
+      case ChangeRich2:
+        break;
+        case ChangeHybrid:
+        break;
+      case ChangeHybrid2:
+        break;
+        case ChangeWarped:
+        break;
+      case ChangeWarped2:
+        break;
+    }
+  }
+  event->accept();
+  m_action = None;
+}
+
+QVariant
+SpectralKeyView::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
 {
   switch (change)
   {
@@ -224,4 +319,3 @@ QVariant SpectralKeyView::itemChange(QGraphicsItem::GraphicsItemChange change, c
   return QGraphicsItem::itemChange(change, value);
 }
 }
-

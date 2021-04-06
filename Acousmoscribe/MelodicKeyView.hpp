@@ -14,9 +14,9 @@ class MelodicKeyView final
 {
   Q_INTERFACES(QGraphicsItem)
 public:
-  MelodicKey& melodicKey;
+  const MelodicKey& melodicKey;
 
-  MelodicKeyView(MelodicKey& mk, Presenter& presenter, View* parent);
+  MelodicKeyView(const MelodicKey& mk, Presenter& presenter, View* parent);
 
   void setWidth(qreal w) noexcept
   {
@@ -37,12 +37,10 @@ public:
   }
 
   QRectF boundingRect() const override { return {0, 0, m_width, m_height}; }
-  //void paint(QPainter* painter);
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 
   QRectF computeRect() const noexcept;
-  // QPointF closestPos(QPointF note) const noexcept;
 
 private:
   bool canEdit() const;
@@ -51,8 +49,8 @@ private:
 
   Presenter& m_presenter;
 
-  float m_width{35};
-  float m_height{70};
+  float m_width{};
+  float m_height{};
 
   enum Action
   {
