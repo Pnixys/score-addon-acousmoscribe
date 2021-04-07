@@ -92,12 +92,10 @@ QRectF MelodicKeyView::computeRect() const noexcept
   auto& view = *(View*)parentItem();
   const auto h = view.height();
   const auto w = view.defaultWidth();
-  const auto [min, max] = view.range();
-  const auto key_height = h / view.visibleCount();
   const QRectF rect{
-      w/10, 
+      40, 
       0,
-      0.1 * w,
+      40,
       h};
 
   return rect;

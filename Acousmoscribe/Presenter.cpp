@@ -115,10 +115,23 @@ Presenter::Presenter(
         new AddSpectralKey{model, skData});
 
 
-  /*connect(m_view, &View::doubleClicked, this, [&](QPointF pos) {
+  // Default sign (test)
+  SignData sData;
+  DynamicProfile dyn = {0,0,1,1};
+  MelodicProfile melo;
+  RhythmicProfile rhytm;
+  sData.setDynamicProfile(dyn);
+  sData.setMelodicProfile(melo);
+  sData.setRhythmicProfile(rhytm);
+  sData.setDuration(0.3);
+  sData.setStart(0.5);
+  CommandDispatcher<>{context().context.commandStack}.submit(
+        new AddSign{model, sData});
+
+  connect(m_view, &View::doubleClicked, this, [&](QPointF pos) {
     CommandDispatcher<>{context().context.commandStack}.submit(
         new AddSign{layer, m_view->signAtPos(pos)});
-  });*/
+  });
 
   connect(m_view, &View::pressed, this, [&]() {
     m_context.context.focusDispatcher.focus(this);
@@ -229,6 +242,8 @@ void Presenter::updateSpectralKey(SpectralKeyView& s)
 
 void Presenter::updateSign(SignView& v)
 {
+  //std::cout << "entré dans update sign\n";
+
   const auto signRect = v.computeRect();
   const auto newPos = signRect.topLeft();
   if (newPos != v.pos())
@@ -356,7 +371,7 @@ void Presenter::on_signVolumeOutChanged(const Sign& sign, double newVolOut)
 
 // --------------------------------------------- Sign/Melodic Profile ---------------------------------------------      
 
-void Presenter::on_signMelodicProfilePitchChanged(Sign& sign, Pitch newPitch){
+void Presenter::on_signMelodicProfilePitchChanged(const Sign& sign, Pitch newPitch){
   if(sign.melodicProfile().pitch() != newPitch)
   {
     auto newMP = sign.melodicProfile() ;
@@ -366,7 +381,17 @@ void Presenter::on_signMelodicProfilePitchChanged(Sign& sign, Pitch newPitch){
   }
 }
 
-void Presenter::on_signMelodicProfileVariationChanged(Sign& sign, Variation newVar){
+void Presenter::on_signMelodicProfilePitchEndChanged(const Sign& sign, Pitch newPitchEnd){
+  if(sign.melodicProfile().pitchEnd() != newPitchEnd)
+  {
+    auto newMP = sign.melodicProfile() ;
+    newMP.setPitchEnd(newPitchEnd)  ;
+
+    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeMelodicProfile{model(), sign.id(), newMP}); 
+  }
+}
+
+void Presenter::on_signMelodicProfileVariationChanged(const Sign& sign, Variation newVar){
   if(sign.melodicProfile().variation() != newVar)
   {
     auto newMP = sign.melodicProfile() ;
@@ -378,7 +403,7 @@ void Presenter::on_signMelodicProfileVariationChanged(Sign& sign, Variation newV
 
 // --------------------------------------------- Sign/Rhythmic Profile ---------------------------------------------      
 
-void Presenter::on_signRhythmicProfileSpeedChanged(Sign& sign, Speed newSpeed)
+void Presenter::on_signRhythmicProfileSpeedChanged(const Sign& sign, Speed newSpeed)
 {
   if(sign.rhythmicProfile().speed() != newSpeed)
   {
@@ -389,7 +414,7 @@ void Presenter::on_signRhythmicProfileSpeedChanged(Sign& sign, Speed newSpeed)
   }
 }
 
-void Presenter::on_signRhythmicProfileAccelerationChanged(Sign& sign, Acceleration newAcc)
+void Presenter::on_signRhythmicProfileAccelerationChanged(const Sign& sign, Acceleration newAcc)
 {
   if(sign.rhythmicProfile().acceleration() != newAcc)
   {
@@ -400,7 +425,7 @@ void Presenter::on_signRhythmicProfileAccelerationChanged(Sign& sign, Accelerati
   }
 }
 
-void Presenter::on_signRhythmicProfileIsRandomChanged(Sign& sign, bool newIsRandom)
+void Presenter::on_signRhythmicProfileIsRandomChanged(const Sign& sign, bool newIsRandom)
 {
   if(sign.rhythmicProfile().isRandom() != newIsRandom)
   {
@@ -413,7 +438,7 @@ void Presenter::on_signRhythmicProfileIsRandomChanged(Sign& sign, bool newIsRand
 
 // -------------------------------------------------- Sign/Grain  --------------------------------------------------      
 
-void Presenter::on_signGrainChanged(Sign& sign, Grain g)
+void Presenter::on_signGrainChanged(const Sign& sign, Grain g)
 {
   if(sign.grain() != g)
   {
@@ -441,6 +466,7 @@ void Presenter::on_spectralKeyAdded(const SpectralKey& mKey)
 void Presenter::on_signAdded(const Sign& s)
 {
   auto v = new SignView{s, *this, m_view};
+    std::cout << "entré dans addsign\n";
   updateSign(*v);
   m_signs.push_back(v);
 }

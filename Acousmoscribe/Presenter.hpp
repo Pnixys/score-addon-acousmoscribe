@@ -81,15 +81,16 @@ public:
 
   // Other profiles
   //void on_signMelodicProfileChanged(Sign& v, MelodicProfile mp);
-  void on_signMelodicProfilePitchChanged(Sign& v, Pitch newPitch);                //done
-  void on_signMelodicProfileVariationChanged(Sign& v, Variation newVar);          //done
+  void on_signMelodicProfilePitchChanged(const Sign&, Pitch newPitch);                //done
+  void on_signMelodicProfilePitchEndChanged(const Sign&, Pitch newPitchEnd);                //done
+  void on_signMelodicProfileVariationChanged(const Sign&, Variation newVar);          //done
 
   //void on_signRhythmicProfileChanged(Sign& v, RhythmicProfile rp);
-  void on_signRhythmicProfileSpeedChanged(Sign& v, Speed newSpeed);               //done
-  void on_signRhythmicProfileAccelerationChanged(Sign& v, Acceleration newAcc);   //done
-  void on_signRhythmicProfileIsRandomChanged(Sign& v, bool newIsRandom);          //done
+  void on_signRhythmicProfileSpeedChanged(const Sign&, Speed newSpeed);               //done
+  void on_signRhythmicProfileAccelerationChanged(const Sign&, Acceleration newAcc);   //done
+  void on_signRhythmicProfileIsRandomChanged(const Sign&, bool newIsRandom);          //done
 
-  void on_signGrainChanged(Sign& v, Grain g);                                     //done
+  void on_signGrainChanged(const Sign&, Grain g);                                     //done
 
 
 private:  

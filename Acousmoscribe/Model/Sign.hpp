@@ -46,7 +46,7 @@ struct SignData
     double m_start{};
     double m_duration{};
 
-    Grain m_grain;
+    Grain m_grain{smooth};
     DynamicProfile m_dynamicProfile;
     MelodicProfile m_melodicProfile;
     RhythmicProfile m_rhythmicProfile;
@@ -108,7 +108,7 @@ public:
 private:
     double m_start{};
     double m_duration{};
-    Grain _grain;
+    Grain _grain{smooth};
     DynamicProfile _dynamicProfile;
     MelodicProfile _melodicProfile;
     RhythmicProfile _rhythmicProfile;

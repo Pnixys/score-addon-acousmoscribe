@@ -36,13 +36,6 @@ View::~View()
 {
 }
 
-bool View::canEdit() const
-{
-  const auto rect = boundingRect();
-  const auto note_height = rect.height() / (visibleCount());
-  return note_height > 5;
-}
-
 void View::paint_impl(QPainter* p) const
 {
   /*p->setBrush(draw);
@@ -76,9 +69,22 @@ void View::setDefaultWidth(double w)
     cld->update();
 }
 
-int View::visibleCount() const
+void View::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* ev)
 {
-  return m_max - m_min + 1;
+  std::cout << "mouseDoubleClickEvent\n";
+  doubleClicked(ev->pos());
+  ev->accept();
+}
+
+SignData View::signAtPos(QPointF point) const
+{
+  const auto rect = boundingRect();
+
+  SignData s;
+  s.m_start = std::max(0., point.x() / m_defaultW);
+  s.m_duration = 0.1;
+
+  return s;
 }
 
 

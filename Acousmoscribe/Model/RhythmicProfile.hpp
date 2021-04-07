@@ -36,8 +36,8 @@ public:
     void setIsRandom(bool rand);
 
 private:
-    Speed m_speed{};
-    Acceleration m_acceleration{};
+    Speed m_speed{continuous};
+    Acceleration m_acceleration{constant};
     bool m_isRandom{false};
 };
 

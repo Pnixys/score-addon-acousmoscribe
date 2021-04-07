@@ -27,17 +27,18 @@ enum Variation
 class MelodicProfile{
 public:
     MelodicProfile(){}
-    MelodicProfile(Pitch pitch, Variation var);
+    MelodicProfile(Pitch pitch, Pitch pitchEnd, Variation var);
     ~MelodicProfile();
     void setPitch(Pitch pitch);
+    void setPitchEnd(Pitch pitchEnd);
     void setVariation(Variation variation);
     Pitch pitch() const;
+    Pitch pitchEnd() const;
     Variation variation() const;
 
-
 private:
-    Pitch m_pitch;
-    Variation m_var;
+    Pitch m_pitch{mid};
+    Pitch m_pitchEnd{mid};
+    Variation m_var{none};
 };
-
 }
