@@ -454,12 +454,12 @@ void Presenter::on_signAdded(const Sign& s)
 
 void Presenter::on_signRemoving(const Sign& s)
 {
-  auto it = ossia::find_if(m_signs, [&](const auto& other) { return &other->sign == &s; });
+  /*auto it = ossia::find_if(m_signs, [&](const auto& other) { return &other->sign == &s; });
   if (it != m_signs.end())
   {
     delete *it;
     m_signs.erase(it);
-  }
+  }*/
 }
 
 void Presenter::on_signDuplicate()

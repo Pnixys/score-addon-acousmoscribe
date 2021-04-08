@@ -15,13 +15,8 @@ class SignView final
   Q_INTERFACES(QGraphicsItem)
 
 public:
-/*struct Sign
-{
-  Sign() = default;
-};*/
   const Sign& sign;
   SignView(const Sign& n, Presenter& presenter, View* parent);
-  //Sign Sign() const noexcept;
 
   void setWidth(qreal w) noexcept
   {

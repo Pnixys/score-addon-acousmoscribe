@@ -26,13 +26,13 @@ void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
 
 {
   float w = m_width;
-  float h = m_height;
+  float h = m_height*0.99;
 
   Pitch pitch = melodicKey.pitch();
   Range range = melodicKey.range();
 
   QPen pen;
-  pen.setWidth((w + h) / 100);
+  pen.setWidth(1);
   pen.setColor(Qt::black);
   pen.setStyle(Qt::SolidLine);
   painter->setPen(pen);
@@ -50,10 +50,10 @@ void MelodicKeyView::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
     y_pitch = i * h_pitch / 7;
     if (i == 4)
     {
-      pen.setWidth((w + h) / 50); // the 4th point is bigger
+      pen.setWidth(3); // the 4th point is bigger
       painter->setPen(pen);
       painter->drawPoint(QPoint(x_pitch, y_pitch));
-      pen.setWidth((w + h) / 100);
+      pen.setWidth(1);
       painter->setPen(pen);
     }
     else{

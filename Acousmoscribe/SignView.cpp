@@ -22,20 +22,22 @@ SignView::SignView(const Sign& n, Presenter& presenter, View* parent)
 }
 
 void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-{ 
+{
+
   QPen p;
   p.setColor(Qt::black);
   p.setWidth(1);
   painter->setPen(p);
 
-  float w = m_width;
-  float h = m_height * 0.99;
+  float x_left = boundingRect().left();
+  float x_right = boundingRect().right();
+  float w = boundingRect().width();
+  float h = boundingRect().height()*0.99;
 
   Grain grain = sign.grain();
   Speed speed = sign.rhythmicProfile().speed();
   Acceleration acc = sign.rhythmicProfile().acceleration();
 
-  double start = sign.start();
   double duration = sign.duration();
   double attack = sign.dynamicProfile().attack;
   double release = sign.dynamicProfile().release;
@@ -46,200 +48,204 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
   Pitch pitch = sign.melodicProfile().pitch();
   Pitch pitchEnd = sign.melodicProfile().pitchEnd();
 
-  float x_pitch, x_acc, h_acc;
-   if(attack+volumeStart > 1)
-       attack = 1-volumeStart;
-   if(release > volumeStart)
-       release = volumeStart;
+  float x_pitch;
+    if(attack+volumeStart > 1)
+           attack = 1-volumeStart;
+       if(release > volumeStart)
+           release = volumeStart;
 
-    QPointF a(w*start, h);
-    QPointF b(w*start, h*(1-volumeStart));
-    QPointF c;
-    QPointF d(w* duration + w * start, h);
+        QPointF a(x_left, h);
+        QPointF b(x_left, h*(1-volumeStart));
+        QPointF c;
+        QPointF d(x_right, h);
 
-  // DYNAMIC 
-   if(attack > 0.0){
-       c = QPointF(w* duration + w * start, h*(1-volumeStart-attack));
-       volumeEnd = 1-volumeStart-attack;
-       volumeUsed = volumeEnd;
+        /* DYNAMIC */
+       if(attack > 0.0){
+           c = QPointF(x_right, h*(1-volumeStart-attack));
+           volumeEnd = volumeStart+attack;
 
-    }else if (release > 0.0){
-       c = QPointF(w* duration + w * start, h*(1-volumeStart+release));
-       volumeEnd = 1-volumeStart-release;
-       volumeUsed = volumeStart;
+        }else if (release > 0.0){
+           c = QPointF(x_right, h*(1-volumeStart+release));
+           volumeEnd = volumeStart-release;
 
-   }else{
-       c = QPointF(w* duration + w * start, h*(1-volumeEnd));
-       volumeUsed = volumeStart;
-   }
+       }else{
+           c = QPointF(x_right, h*(1-volumeEnd));
+       }
 
-   p.setStyle(Qt::DotLine);
-   painter->setBrush(Qt::white);
-   painter->setPen(p);
-   QPointF points[4] = {a,b,c,d};
-   painter->drawPolygon(points, 4);
-   p.setCapStyle(Qt::RoundCap);
-   painter->setPen(p);
+       volumeUsed = std::max(volumeStart, volumeEnd);
+       if(volumeUsed == volumeStart){
+           x_pitch = w*(duration*0.05);
+       }else{
+           x_pitch = w*(duration*0.95);
+       }
 
-  
-   // RHYTHMIC
-   switch (grain) {
-    case smooth:
        p.setStyle(Qt::DotLine);
-       break;
-    case fine:
-       p.setStyle(Qt::DashDotLine);
-       break;
-    case sharp:
-       p.setStyle(Qt::DashLine);
-       break;
-    case big:
+       painter->setBrush(Qt::white);
+       painter->setPen(p);
+       QPointF points[4] = {a,b,c,d};
+       painter->drawPolygon(points, 4);
+       p.setCapStyle(Qt::RoundCap);
+       painter->setPen(p);
+
+       /* RHYTHMIC */
+       switch (grain) {
+        case smooth:
+           p.setStyle(Qt::DotLine);
+           break;
+        case fine:
+           p.setStyle(Qt::DashDotLine);
+           break;
+        case sharp:
+           p.setStyle(Qt::DashLine);
+           break;
+        case big:
+           p.setStyle(Qt::SolidLine);
+           break;
+       }
+
+       painter->setPen(p);
+       painter->drawLine(b, c);
+
+       switch (speed) {
+        case slow:
+           p.setStyle(Qt::DashLine);
+           break;
+        case medium:
+           p.setStyle(Qt::DashDotLine);
+           break;
+        case fast:
+           p.setStyle(Qt::DotLine);
+           break;
+        default :
+           break;
+       }
+
+       painter->setPen(p);
+       painter->drawLine(d, a);
+
        p.setStyle(Qt::SolidLine);
-       break;
-   }
+       painter->setPen(p);
+       painter->drawLine(a, b);
+       painter->drawLine(c, d);
 
-   painter->setPen(p);
-   painter->drawLine(b, c);
+       float h_acc = h - std::min(h*volumeStart/3, h*volumeEnd/3);
 
-   switch (speed) {
-    case slow:
-       p.setStyle(Qt::DashLine);
-       break;
-    case medium:
-       p.setStyle(Qt::DashDotLine);
-       break;
-    case fast:
-       p.setStyle(Qt::DotLine);
-       break;
-    default :
-       break;
-   }
 
-   painter->setPen(p);
-   painter->drawLine(d, a);
+       /* ACCELERATION */
+       switch (acc) {
+       case decelerating:
+           painter->drawLine(QPointF(x_left+w/10, h), QPointF(x_left+w/10, h_acc));
+           break;
+       case accelerating:
+           painter->drawLine(QPointF(x_right-w/10, h), QPointF(x_right-w/10, h_acc));
+           break;
+       default:
+           break;
+       }
 
-   p.setStyle(Qt::SolidLine);
-   painter->setPen(p);
-   painter->drawLine(a, b);
-   painter->drawLine(c, d);
+       /* MELODIC */
+       p.setWidth(2);
+       painter->setPen(p);
 
-   h_acc = h - std::min(h*volumeStart/3, h*volumeEnd/3);
+         float h_pitch = volumeUsed*0.65;
+         float y_pitch;
 
-   // ACCELERATION
-   switch (acc) {
-   case accelerating:
-       painter->drawLine(QPointF(start*w+duration*w/2.5, h), QPointF(start*w+duration*w/2.5, h_acc));
-       break;
-   case decelerating:
-       painter->drawLine(QPointF(start*w+duration*w/1.5, h), QPointF(start*w+duration*w/1.5, h_acc));
-       break;
-   default:
-       break;
-   }
+         float att_rel = 1;
+         if(attack > 0)
+            att_rel = -1;
 
-  // MELODIC
-  p.setWidth(2);
-  painter->setPen(p);
+         float pitchY[7];
 
-  float h_pitch = h * volumeUsed * 4 / 5;
-  float y_pitch;
+         for (int i = 1; i <= 7; i++)
+         {
+             y_pitch = h-volumeUsed*h + i*h_pitch*h/5;
+           pitchY[i-1] = y_pitch;
+           if (i == 4)
+           {
+             p.setWidth(4); // the 4th point is bigger
+             painter->setPen(p);
+             painter->drawPoint(QPoint(x_pitch, y_pitch));
+             p.setWidth(2);
+             painter->setPen(p);
+           }
+           else{
+            painter->drawPoint(QPoint(x_pitch, y_pitch));
+           }
 
-  float att_rel = 1;
-  if (attack > 0)
-    att_rel = -1;
+         }
+         p.setWidth(1);
+         painter->setPen(p);
 
-  float pitchY[7];
 
-  for (int i = 1; i <= 7; i++)
-  {
-    y_pitch = h * (1 - volumeUsed) + i * h_pitch / 7 + 5;
-    pitchY[i - 1] = y_pitch;
-    if (i == 4)
-    {
-      p.setWidth(4); // the 4th point is bigger
-      painter->setPen(p);
-      painter->drawPoint(QPoint(x_pitch, y_pitch));
-      p.setWidth(2);
-      painter->setPen(p);
+     QPoint firstP;
+     QPoint secondP;
+
+     painter->setPen(p);
+
+     float use1, use2;
+     if(attack > 0){
+         use1 = w*(att_rel*(0.025+0.04));
+         use2 = 0.05*w*att_rel;
+     }else{
+         use1 = 0.05*w*att_rel;
+         use2 = w*(att_rel*(0.025+0.04));
+     }
+
+
+     switch(pitch){
+        case very_high :
+         firstP = QPoint(x_pitch+use1, pitchY[0]);
+         break;
+        case high:
+            firstP = QPoint(x_pitch+use1, pitchY[1]);
+            break;
+
+     case mid_high :
+         firstP = QPoint(x_pitch+use1, pitchY[2]);
+         break;
+     case mid:
+         firstP = QPoint(x_pitch+use1, pitchY[3]);
+         break;
+     case mid_low:
+      firstP = QPoint(x_pitch+use1, pitchY[4]);
+      break;
+
+        case low:
+         firstP = QPoint(x_pitch+use1, pitchY[5]);
+         break;
+
+        case very_low:
+         firstP = QPoint(x_pitch+use1, pitchY[6]);
+         break;
+
     }
-    else
-    {
-      painter->drawPoint(QPoint(x_pitch, y_pitch));
-    }
 
-    p.setWidth(1);
-    painter->setPen(p);
-  }
+     switch (pitchEnd){
+     case very_high:
+         secondP =  QPoint(x_pitch+use2, pitchY[0]);
+         break;
+     case high:
+         secondP =  QPoint(x_pitch+use2, pitchY[1]);
+         break;
+     case mid_high:
+         secondP =  QPoint(x_pitch+use2, pitchY[2]);
+         break;
+     case mid:
+         secondP =  QPoint(x_pitch+use2, pitchY[3]);
+         break;
+     case mid_low:
+         secondP =  QPoint(x_pitch+use2, pitchY[4]);
+         break;
+     case low:
+         secondP =  QPoint(x_pitch+use2, pitchY[5]);
+         break;
+     case very_low:
+         secondP =  QPoint(x_pitch+use2, pitchY[6]);
+         break;
+   }
 
-  QPoint firstP;
-  QPoint secondP;
+     painter->drawLine(firstP, secondP);
 
-  float use1, use2;
-  if (attack > 0)
-  {
-    use1 = w * (att_rel * (0.025 + 0.04));
-    use2 = 0.05 * w * att_rel;
-  }
-  else
-  {
-    use1 = 0.05 * w * att_rel;
-    use2 = w * (att_rel * (0.025 + 0.04));
-  }
-
-  switch (pitch)
-  {
-    case very_high:
-      firstP = QPoint(x_pitch + use1, pitchY[0]);
-      break;
-    case high:
-      firstP = QPoint(x_pitch + use1, pitchY[1]);
-      break;
-
-    case mid_high:
-      firstP = QPoint(x_pitch + use1, pitchY[2]);
-      break;
-    case mid:
-      firstP = QPoint(x_pitch + use1, pitchY[3]);
-      break;
-    case mid_low:
-      firstP = QPoint(x_pitch + use1, pitchY[4]);
-      break;
-
-    case low:
-      firstP = QPoint(x_pitch + use1, pitchY[5]);
-      break;
-
-    case very_low:
-      firstP = QPoint(x_pitch + use1, pitchY[6]);
-      break;
-  }
-
-  switch (pitchEnd)
-  {
-    case very_high:
-      secondP = QPoint(x_pitch + use2, pitchY[0]);
-      break;
-    case high:
-      secondP = QPoint(x_pitch + use2, pitchY[1]);
-      break;
-    case mid_high:
-      secondP = QPoint(x_pitch + use2, pitchY[2]);
-      break;
-    case mid:
-      secondP = QPoint(x_pitch + use2, pitchY[3]);
-      break;
-    case mid_low:
-      secondP = QPoint(x_pitch + use2, pitchY[4]);
-      break;
-    case low:
-      secondP = QPoint(x_pitch + use2, pitchY[5]);
-      break;
-    case very_low:
-      secondP = QPoint(x_pitch + use2, pitchY[6]);
-      break;
-  }
-
-  painter->drawLine(firstP, secondP);
 }
 
 QPointF SignView::closestPos(QPointF newPos) const noexcept
@@ -249,7 +255,7 @@ QPointF SignView::closestPos(QPointF newPos) const noexcept
   const auto height = rect.height();
 
   const auto w = view.defaultWidth();
-  double offset = 80; //corresponds to the space of the 2 keys
+  double offset = 80; // corresponds to the space of the 2 keys
 
   newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left() + offset)));
   newPos.setY(0);
@@ -261,12 +267,18 @@ QRectF SignView::computeRect() const noexcept
 {
   auto& view = *(View*)parentItem();
   const auto h = view.height();
-  const auto w = view.width();
+  // const auto w = view.width();
+  const auto w = view.defaultWidth(); // changé
   const QRectF rect{
-      sign.start() * w, 
-      0, 
-      sign.duration() * w, 
-      h};
+    sign.start() * w, 
+    0, 
+    sign.duration() * w, 
+    h};
+
+  std::cout << "entré dans compute rect :\n" << "\n";
+  std::cout << "largeur :" << sign.duration()*w << "\n";
+  std::cout << "w :" << view.width() << "\n";
+
 
   return rect;
 }
@@ -344,14 +356,14 @@ void SignView::mousePressEvent(QGraphicsSceneMouseEvent* event)
   if (!(mods & Qt::ControlModifier) && !isSelected())
     m_presenter.on_deselectOtherSigns();
 
-  setSelected(true);  
+  setSelected(true);
 
   m_action = None;
   if (canEdit())
   {
     if (event->pos().x() >= this->boundingRect().width() - 2)
-    { 
-      m_action = Scale; 
+    {
+      m_action = Scale;
     }
     /*else if (mods & Qt::ShiftModifier)
     {
@@ -410,23 +422,25 @@ void SignView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         m_presenter.on_signMoveFinished(*this);
         break;
       case Scale:
-        this->setWidth(std::max(2., event->pos().x()));
-        m_presenter.on_signScaled(sign, m_width / ((View*)parentItem())->defaultWidth());
+        //this->setWidth(std::max(2., event->pos().x()));
+        //m_presenter.on_signScaled(sign, m_width / ((View*)parentItem())->defaultWidth());
         break;
       case Duplicate:
         m_presenter.on_signDuplicate();
         break;
       case ChangeSignVolumeIn:
-        //m_presenter.on_signVolumeInChanged(sign, (sign.dynamicProfile().volumeStart+0.1)%1);
+        // m_presenter.on_signVolumeInChanged(sign, (sign.dynamicProfile().volumeStart+0.1)%1);
         break;
       case ChangeSignVolumeOut:
-        //m_presenter.on_signVolumeOutChanged(sign, (sign.dynamicProfile().volumeEnd+0.1)%1.0);
+        // m_presenter.on_signVolumeOutChanged(sign, (sign.dynamicProfile().volumeEnd+0.1)%1.0);
         break;
       case ChangeMelodicProfilePitch:
-        //m_presenter.on_signMelodicProfilePitchChanged(sign, (sign.melodicProfile().pitch()+1)%7.0);
+        // m_presenter.on_signMelodicProfilePitchChanged(sign,
+        // (sign.melodicProfile().pitch()+1)%7.0);
         break;
       case ChangeMelodicProfilePitchEnd:
-        //m_presenter.on_signMelodicProfilePitchEndChanged(sign, (sign.melodicProfile().pitchEnd()+1)%7.0);
+        // m_presenter.on_signMelodicProfilePitchEndChanged(sign,
+        // (sign.melodicProfile().pitchEnd()+1)%7.0);
         break;
       case ChangeMelodicProfileVariation:
         m_presenter.on_signMelodicProfileVariationChanged(sign, none);
@@ -435,17 +449,16 @@ void SignView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         m_presenter.on_signRhythmicProfileSpeedChanged(sign, continuous);
         break;
       case ChangeGrain:
-        //TODO recup le grain voulu
+        // TODO recup le grain voulu
         m_presenter.on_signGrainChanged(sign, smooth);
         break;
       /*case ChangeVelocity:
-        m_presenter.on_requestVelocityChange(note, event->buttonDownScenePos(Qt::LeftButton).y() - event->scenePos().y());
-        m_presenter.on_velocityChangeFinished();
-        break;*/
+        m_presenter.on_requestVelocityChange(note, event->buttonDownScenePos(Qt::LeftButton).y() -
+        event->scenePos().y()); m_presenter.on_velocityChangeFinished(); break;*/
       case None:
         break;
 
-        //TODO START ?
+        // TODO START ?
     }
   }
   event->accept();

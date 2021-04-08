@@ -82,7 +82,7 @@ SignData View::signAtPos(QPointF point) const
   SignData s;
   s.m_start = std::max(0., point.x() / m_defaultW);
   s.m_duration = 0.5;
-  DynamicProfile dyn = {0, 0, 1, 1};
+  DynamicProfile dyn = {0.1, 0.1, 0.1, 0.3};
   s.setDynamicProfile(dyn);
 
   return s;

@@ -28,7 +28,7 @@ void SpectralKeyView::paint(
     QWidget* widget)
 {
   float w = m_width;
-  float h = m_height;
+  float h = m_height*0.99;
 
   Nature nature = spectralKey.getNature();
   Nature nature2 = spectralKey.getNature2();
@@ -41,7 +41,7 @@ void SpectralKeyView::paint(
 
   QPen p;
   p.setColor(Qt::black);
-  p.setWidth((w + h) / 100);
+  p.setWidth(1);
   painter->setPen(p);
 
   /* Background Rect */
@@ -95,10 +95,10 @@ void SpectralKeyView::paint(
       break;
 
     case noise:
-      p.setWidth((w + h) / 100);
+      p.setWidth(4);
       painter->setPen(p);
       painter->drawPoint(w / 2.5, h / 2.5);
-      p.setWidth((w + h) / 100);
+      p.setWidth(1);
       painter->setPen(p);
       break;
 
@@ -151,10 +151,10 @@ void SpectralKeyView::paint(
       break;
 
     case noise:
-      p.setWidth((w + h) / 100);
+      p.setWidth(4);
       painter->setPen(p);
       painter->drawPoint(w / 1.3, h / 1.3);
-      p.setWidth((w + h) / 100);
+      p.setWidth(1);
       painter->setPen(p);
       break;
 
