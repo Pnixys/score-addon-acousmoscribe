@@ -33,6 +33,7 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 
   Grain grain = sign.grain();
   Speed speed = sign.rhythmicProfile().speed();
+  Acceleration acc = sign.rhythmicProfile().acceleration();
 
   double start = sign.start();
   double duration = sign.duration();
@@ -46,105 +47,95 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
   Pitch pitchEnd = sign.melodicProfile().pitchEnd();
 
   float x_pitch, x_acc, h_acc;
+   if(attack+volumeStart > 1)
+       attack = 1-volumeStart;
+   if(release > volumeStart)
+       release = volumeStart;
 
-  if (attack + volumeStart > 1)
-    attack = 1 - volumeStart;
-  if (release > volumeStart)
-    release = volumeStart;
+    QPointF a(w*start, h);
+    QPointF b(w*start, h*(1-volumeStart));
+    QPointF c;
+    QPointF d(w* duration + w * start, h);
 
-  QPointF a(w * start, h);
-  QPointF b(w * start, h * (1 - volumeStart));
-  QPointF c;
-  QPointF d(w * (start + duration), h);
+  // DYNAMIC 
+   if(attack > 0.0){
+       c = QPointF(w* duration + w * start, h*(1-volumeStart-attack));
+       volumeEnd = 1-volumeStart-attack;
+       volumeUsed = volumeEnd;
 
-  // DYNAMIC
-  if (attack > 0.0)
-  {
-    c = QPointF(w * (start + duration), h * (1 - volumeStart - attack));
-    volumeEnd = volumeStart + attack;
-    volumeUsed = volumeEnd;
-    x_pitch = w * (start + duration / 1.9);
-    x_acc = w * (start + duration / 2.2);
-    h_acc = h * (1.1 - volumeUsed / 2) - 0.04 * h;
-  }
-  else if (release > 0.0)
-  {
-    c = QPointF(w * (start + duration), h * (1 - volumeStart + release));
-    volumeEnd = volumeStart - release;
-    volumeUsed = volumeStart;
-    x_pitch = w * (start + duration / 130);
-    x_acc = w * (start + duration / 15);
-    h_acc = h * (1.05 - volumeUsed / 2) - 0.04 * h;
-  }
-  else
-  {
-    c = QPointF(w * (start + duration), h * (1 - volumeEnd));
-    volumeUsed = volumeStart;
-    x_pitch = w * (start + duration / 130);
-    x_acc = w * (start + duration / 15);
-    h_acc = h * (1.04 - volumeUsed / 2) - 0.04 * h;
-  }
+    }else if (release > 0.0){
+       c = QPointF(w* duration + w * start, h*(1-volumeStart+release));
+       volumeEnd = 1-volumeStart-release;
+       volumeUsed = volumeStart;
 
-  p.setStyle(Qt::DotLine);
-  painter->setBrush(Qt::white);
-  painter->setPen(p);
-  QPointF points[4] = {a, b, c, d};
-  painter->drawPolygon(points, 4);
-  p.setCapStyle(Qt::RoundCap);
-  painter->setPen(p);
+   }else{
+       c = QPointF(w* duration + w * start, h*(1-volumeEnd));
+       volumeUsed = volumeStart;
+   }
 
-  // RHYTHMIC
-  switch (grain)
-  {
+   p.setStyle(Qt::DotLine);
+   painter->setBrush(Qt::white);
+   painter->setPen(p);
+   QPointF points[4] = {a,b,c,d};
+   painter->drawPolygon(points, 4);
+   p.setCapStyle(Qt::RoundCap);
+   painter->setPen(p);
+
+  
+   // RHYTHMIC
+   switch (grain) {
     case smooth:
-      p.setStyle(Qt::SolidLine);
-      break;
+       p.setStyle(Qt::DotLine);
+       break;
     case fine:
-      p.setStyle(Qt::DotLine);
-      break;
+       p.setStyle(Qt::DashDotLine);
+       break;
     case sharp:
-      p.setStyle(Qt::DashDotLine);
-      break;
+       p.setStyle(Qt::DashLine);
+       break;
     case big:
-      p.setStyle(Qt::DashLine);
-      break;
-  }
+       p.setStyle(Qt::SolidLine);
+       break;
+   }
 
-  painter->setPen(p);
-  painter->drawLine(b, c);
+   painter->setPen(p);
+   painter->drawLine(b, c);
 
-  switch (speed)
-  {
+   switch (speed) {
     case slow:
-      p.setStyle(Qt::DashLine);
-      break;
+       p.setStyle(Qt::DashLine);
+       break;
     case medium:
-      p.setStyle(Qt::DashDotLine);
-      break;
+       p.setStyle(Qt::DashDotLine);
+       break;
     case fast:
-      p.setStyle(Qt::DotLine);
-      break;
-    default:
-      break;
-  }
+       p.setStyle(Qt::DotLine);
+       break;
+    default :
+       break;
+   }
 
-  painter->setPen(p);
-  painter->drawLine(d, a);
+   painter->setPen(p);
+   painter->drawLine(d, a);
 
-  p.setStyle(Qt::SolidLine);
-  painter->setPen(p);
-  painter->drawLine(a, b);
-  painter->drawLine(c, d);
+   p.setStyle(Qt::SolidLine);
+   painter->setPen(p);
+   painter->drawLine(a, b);
+   painter->drawLine(c, d);
 
-  // ACCELERATION
-  if (attack > 0)
-  {
-    painter->drawLine(QPointF(x_acc - 0.05 * w, h), QPointF(x_acc - 0.05 * w, h_acc));
-  }
-  else
-  {
-    painter->drawLine(QPointF(x_acc + 0.05 * w, h), QPointF(x_acc + 0.05 * w, h_acc));
-  }
+   h_acc = h - std::min(h*volumeStart/3, h*volumeEnd/3);
+
+   // ACCELERATION
+   switch (acc) {
+   case accelerating:
+       painter->drawLine(QPointF(start*w+duration*w/2.5, h), QPointF(start*w+duration*w/2.5, h_acc));
+       break;
+   case decelerating:
+       painter->drawLine(QPointF(start*w+duration*w/1.5, h), QPointF(start*w+duration*w/1.5, h_acc));
+       break;
+   default:
+       break;
+   }
 
   // MELODIC
   p.setWidth(2);
@@ -270,7 +261,7 @@ QRectF SignView::computeRect() const noexcept
 {
   auto& view = *(View*)parentItem();
   const auto h = view.height();
-  const auto w = view.defaultWidth();
+  const auto w = view.width();
   const QRectF rect{
       sign.start() * w, 
       0, 

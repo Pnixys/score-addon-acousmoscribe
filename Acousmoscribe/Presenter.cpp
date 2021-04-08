@@ -81,7 +81,7 @@ Presenter::Presenter(
       updateSign(*sign);
   });
 
-  con(model, &Model::signsChanged, this, [&] {
+  /*con(model, &Model::signsChanged, this, [&] {
     for (auto sign : m_signs)
     {
       delete sign;
@@ -93,7 +93,7 @@ Presenter::Presenter(
     {
       on_signAdded(sign);
     }
-  });
+  });*/
 
   model.melodicKeys.added.connect<&Presenter::on_melodicKeyAdded>(this);
   model.spectralKey.added.connect<&Presenter::on_spectralKeyAdded>(this);
@@ -114,23 +114,9 @@ Presenter::Presenter(
   CommandDispatcher<>{context().context.commandStack}.submit(
         new AddSpectralKey{model, skData});
 
-
-  // Default sign (test)
-  SignData sData;
-  DynamicProfile dyn = {0,0,1,1};
-  MelodicProfile melo;
-  RhythmicProfile rhytm;
-  sData.setDynamicProfile(dyn);
-  sData.setMelodicProfile(melo);
-  sData.setRhythmicProfile(rhytm);
-  sData.setDuration(0.3);
-  sData.setStart(0.5);
-  CommandDispatcher<>{context().context.commandStack}.submit(
-        new AddSign{model, sData});
-
   connect(m_view, &View::doubleClicked, this, [&](QPointF pos) {
     CommandDispatcher<>{context().context.commandStack}.submit(
-        new AddSign{layer, m_view->signAtPos(pos)});
+        new AddSign{model, m_view->signAtPos(pos)});
   });
 
   connect(m_view, &View::pressed, this, [&]() {
@@ -170,10 +156,6 @@ void Presenter::setWidth(qreal val, qreal defaultWidth)
 {
   m_view->setWidth(val);
   m_view->setDefaultWidth(defaultWidth);
-  updateMelodicKey(*m_melodicKeyView);
-  updateSpectralKey(*m_spectralKeyView);
-  for (auto sign : m_signs)
-    updateSign(*sign);
 }
 
 void Presenter::setHeight(qreal val)
@@ -466,7 +448,6 @@ void Presenter::on_spectralKeyAdded(const SpectralKey& mKey)
 void Presenter::on_signAdded(const Sign& s)
 {
   auto v = new SignView{s, *this, m_view};
-    std::cout << "entré dans addsign\n";
   updateSign(*v);
   m_signs.push_back(v);
 }

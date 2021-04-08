@@ -16,10 +16,10 @@ namespace Acousmoscribe
     
 //Dynamic Profile :
 typedef struct{
-    double attack; //attack duration
-    double release; //release duration
-    float volumeStart;
-    float volumeEnd;
+    double attack{0}; //attack duration
+    double release{0}; //release duration
+    float volumeStart{1};
+    float volumeEnd{1};
 }DynamicProfile;
 
 struct SignData

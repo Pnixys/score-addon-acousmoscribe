@@ -78,15 +78,14 @@ void View::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* ev)
 
 SignData View::signAtPos(QPointF point) const
 {
-  const auto rect = boundingRect();
 
   SignData s;
   s.m_start = std::max(0., point.x() / m_defaultW);
-  s.m_duration = 0.1;
+  s.m_duration = 0.5;
+  DynamicProfile dyn = {0, 0, 1, 1};
+  s.setDynamicProfile(dyn);
 
   return s;
 }
-
-
 
 }
