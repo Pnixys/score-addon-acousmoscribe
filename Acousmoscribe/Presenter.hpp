@@ -6,6 +6,7 @@
 
 /* Commands */
 #include <Acousmoscribe/Commands/ChangeMelodicKey.hpp>
+#include <Acousmoscribe/Commands/ChangeSpectralKey.hpp>
 #include <Acousmoscribe/Commands/MoveSigns.hpp>
 #include <Acousmoscribe/Commands/ChangeSign.hpp>
 
@@ -47,24 +48,24 @@ public:
 
   const Acousmoscribe::Model& model() const noexcept;
 
-/*
-  void on_spectralKeyChanged(SpectralKeyView& sKey);
-/*  
-  void on_spectralKeyNature1Changed(Nature& nature1);
-  void on_spectralKeyNature2Changed(Nature& nature2);
-  void on_spectralKeyIsRichChanged(bool& isRich);
-  void on_spectralKeyIsRich2Changed(bool& isRich2);
-  void on_spectralKeyIsHybridChanged(bool& isHybrid);
-  void on_spectralKeyIsHybrid2Changed(bool& isHybrid2);
-  void on_spectralKeyIsWarpedChanged(bool& isWarped);
-  void on_spectralKeyIsWarped2Changed(bool& isWarped2);
-  */
+
 
   //void on_melodicKeyChanged(MelodicKeyView& mKey);
   
-  void on_melodicKeyPitchChanged(const MelodicKey&, Pitch& pitch);
-  void on_melodicKeyRangeChanged(const MelodicKey&, Range& range);
+  void on_melodicKeyPitchChanged(const MelodicKey&, Pitch pitch);
+  void on_melodicKeyRangeChanged(const MelodicKey&, Range range);
+
+
+  //void on_spectralKeyChanged(SpectralKeyView& sKey);
   
+  void on_spectralKeyNatureChanged(const SpectralKey&, Nature nature);
+  void on_spectralKeyNature2Changed(const SpectralKey&, Nature nature);
+  void on_spectralKeyIsRichChanged(const SpectralKey&, bool isRich);
+  void on_spectralKeyIsRich2Changed(const SpectralKey&, bool isRich);
+  void on_spectralKeyWarpedChanged(const SpectralKey&, bool warped);
+  void on_spectralKeyWarped2Changed(const SpectralKey&, bool warped);
+  
+
   
   void on_deselectOtherSigns();                         //done
   void on_signDuplicate();
@@ -118,6 +119,13 @@ private:
   /* COMMAND DISPATCHERS */
   SingleOngoingCommandDispatcher<ChangeMelodicKeyPitch> m_changeMelodicKeyPitch;
   SingleOngoingCommandDispatcher<ChangeMelodicKeyRange> m_changeMelodicKeyRange;
+
+  SingleOngoingCommandDispatcher<ChangeSpectralKeyNature> m_changeSpectralKeyNature;
+  SingleOngoingCommandDispatcher<ChangeSpectralKeyNature2> m_changeSpectralKeyNature2;
+  SingleOngoingCommandDispatcher<ChangeSpectralKeyIsRich> m_changeSpectralKeyIsRich;
+  SingleOngoingCommandDispatcher<ChangeSpectralKeyIsRich2> m_changeSpectralKeyIsRich2;
+  SingleOngoingCommandDispatcher<ChangeSpectralKeyWarped> m_changeSpectralKeyWarped;
+  SingleOngoingCommandDispatcher<ChangeSpectralKeyWarped2> m_changeSpectralKeyWarped2;
 
   SingleOngoingCommandDispatcher<MoveSigns> m_moveDispatcher;
 
