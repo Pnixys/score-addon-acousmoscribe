@@ -30,8 +30,8 @@ void SpectralKeyView::paint(
   float w = m_width;
   float h = m_height*0.99;
 
-  Nature nature = spectralKey.getNature();
-  Nature nature2 = spectralKey.getNature2();
+  Nature nature = spectralKey.nature();
+  Nature nature2 = spectralKey.nature2();
   bool rich = spectralKey.isRich();
   bool rich2 = spectralKey.isRich2();
   bool hybrid = spectralKey.isHybrid();

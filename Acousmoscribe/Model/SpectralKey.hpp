@@ -23,10 +23,10 @@ enum Nature
  struct SpectralKeyData
 {
     SpectralKeyData() = default;
-    SpectralKeyData(Nature nature, Nature nature2, bool isHybrid, bool isHybrid2, bool isRich, bool isRich2, bool isWraped, bool isWraped2);
+    SpectralKeyData(Nature nature, Nature nature2, bool isHybrid, bool isHybrid2, bool isRich, bool isRich2, bool isWarped, bool isWarped2);
 
-    Nature getNature() const;
-    Nature getNature2() const;
+    Nature nature() const;
+    Nature nature2() const;
     bool isHybrid() const;
     bool isHybrid2() const;
     bool isRich() const;
@@ -38,10 +38,10 @@ enum Nature
     void setNature2(Nature nature);
     void setHybrid(bool h);
     void setHybrid2(bool h);
-    void setRich(bool r);
-    void setRich2(bool r);
-    void setWarped(bool w);
-    void setWarped2(bool w);
+    void setIsRich(bool r);
+    void setIsRich2(bool r);
+    void setIsWarped(bool w);
+    void setIsWarped2(bool w);
 
     Nature m_nature;
     Nature m_nature2;
@@ -78,8 +78,8 @@ public:
 
     //~SpectralKey(); 
 
-    Nature getNature() const noexcept;  
-    Nature getNature2() const noexcept;
+    Nature nature() const noexcept;  
+    Nature nature2() const noexcept;
     bool isHybrid() const noexcept;
     bool isHybrid2() const noexcept;
     bool isRich() const noexcept;
@@ -94,9 +94,9 @@ public:
     void setIsHybrid(bool isHybrid);
     void setIsHybrid2(bool isHybrid2);
     void setIsRich(bool isRich);
-    void setIsRich2(bool isRich);
-    void setIsWarped(bool isRich);
-    void setIsWarped2(bool isRich);
+    void setIsRich2(bool isRich2);
+    void setIsWarped(bool isWarped);
+    void setIsWarped2(bool isWarped2);
 
     void setData(SpectralKeyData sd);
 

@@ -256,7 +256,7 @@ void JSONWriter::write(Acousmoscribe::Model& proc)
 template <>
 void DataStreamReader::read(const Acousmoscribe::SpectralKeyData& skd)
 {
-  m_stream << skd.getNature() << skd.getNature2() << skd.isHybrid() << skd.isHybrid2() << skd.isRich() << skd.isRich2() << skd.isWarped() << skd.isWarped2();
+  m_stream << skd.nature() << skd.nature2() << skd.isHybrid() << skd.isHybrid2() << skd.isRich() << skd.isRich2() << skd.isWarped() << skd.isWarped2();
   insertDelimiter();
 } 
 
@@ -271,10 +271,10 @@ void DataStreamWriter::write(Acousmoscribe::SpectralKeyData& skd)
     skd.setNature2(nat2);
     skd.setHybrid(hyb);
     skd.setHybrid2(hyb2);
-    skd.setRich(rich);
-    skd.setRich2(rich2);
-    skd.setWarped(warp);
-    skd.setWarped2(warp2);
+    skd.setIsRich(rich);
+    skd.setIsRich2(rich2);
+    skd.setIsWarped(warp);
+    skd.setIsWarped2(warp2);
     checkDelimiter();
 } 
 
@@ -282,8 +282,8 @@ template <>
 void JSONReader::read(const Acousmoscribe::SpectralKeyData& skd)
 {
   stream.StartArray();
-  stream.Int(skd.getNature());
-  stream.Int(skd.getNature2());
+  stream.Int(skd.nature());
+  stream.Int(skd.nature2());
   stream.Bool(skd.isHybrid());
   stream.Bool(skd.isHybrid2());
   stream.Bool(skd.isRich());
@@ -318,8 +318,8 @@ void JSONWriter::write(Acousmoscribe::SpectralKeyData& skd)
   }
   skd.setNature2(n);
   skd.setHybrid(arr[2].GetBool());
-  skd.setRich(arr[3].GetBool());
-  skd.setRich2(arr[4].GetBool());
+  skd.setIsRich(arr[3].GetBool());
+  skd.setIsRich2(arr[4].GetBool());
 }
 
 /****************************
@@ -346,8 +346,8 @@ template <>
 void JSONReader::read(const Acousmoscribe::SpectralKey& sk)
 {
   stream.StartArray();
-  stream.Int(sk.getNature());
-  stream.Int(sk.getNature2());
+  stream.Int(sk.nature());
+  stream.Int(sk.nature2());
   stream.Bool(sk.isHybrid());
   stream.Bool(sk.isHybrid2());
   stream.Bool(sk.isRich());

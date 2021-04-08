@@ -23,6 +23,7 @@ set(HDRS
     Acousmoscribe/Commands/CommandFactory.hpp
     Acousmoscribe/Commands/AddKey.hpp
     Acousmoscribe/Commands/ChangeMelodicKey.hpp
+    Acousmoscribe/Commands/ChangeSpectralKey.hpp
     Acousmoscribe/Commands/AddSign.hpp
     Acousmoscribe/Commands/ChangeSign.hpp
     Acousmoscribe/Commands/MoveSigns.hpp
@@ -56,6 +57,7 @@ set(SRCS
     #Commands
     Acousmoscribe/Commands/AddKey.cpp
     Acousmoscribe/Commands/ChangeMelodicKey.cpp
+    Acousmoscribe/Commands/ChangeSpectralKey.cpp
     Acousmoscribe/Commands/AddSign.cpp
     Acousmoscribe/Commands/ChangeSign.cpp
     Acousmoscribe/Commands/MoveSigns.cpp

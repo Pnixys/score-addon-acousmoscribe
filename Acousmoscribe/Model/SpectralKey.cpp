@@ -23,11 +23,11 @@ SpectralKeyData::SpectralKeyData(Nature nature, Nature nature2, bool isHybrid, b
         {
         }
 
-Nature SpectralKeyData::getNature() const{ 
+Nature SpectralKeyData::nature() const{ 
     return m_nature; 
 }
 
-Nature SpectralKeyData::getNature2() const {
+Nature SpectralKeyData::nature2() const {
     return m_nature2;
 }
 
@@ -71,19 +71,19 @@ void SpectralKeyData::setHybrid2(bool h) {
     m_isHybrid2 = h;
 }
 
-void SpectralKeyData::setRich(bool r) {
+void SpectralKeyData::setIsRich(bool r) {
     m_isRich = r;
 }
 
-void SpectralKeyData::setRich2(bool r) {
+void SpectralKeyData::setIsRich2(bool r) {
     m_isRich2 = r;
 }
 
-void SpectralKeyData::setWarped(bool w) { 
+void SpectralKeyData::setIsWarped(bool w) { 
     m_isWarped = w;
 }
 
-void SpectralKeyData::setWarped2(bool w) { 
+void SpectralKeyData::setIsWarped2(bool w) { 
     m_isWarped2 = w;
 }
 
@@ -107,11 +107,11 @@ SpectralKey::SpectralKey(const Id<SpectralKey>& id, SpectralKeyData s, QObject* 
     , m_isWarped2(s.m_isWarped2)
     {}
 
-Nature SpectralKey::getNature() const noexcept {
+Nature SpectralKey::nature() const noexcept {
     return m_nature;
 }
 
-Nature SpectralKey::getNature2() const noexcept {
+Nature SpectralKey::nature2() const noexcept {
     return m_nature2;
 }
 
@@ -176,8 +176,8 @@ void SpectralKey::setIsWarped2(bool isWarped2){
 }
 
 void SpectralKey::setData(SpectralKeyData sd){
-    m_nature = sd.getNature();
-    m_nature2 = sd.getNature2();
+    m_nature = sd.nature();
+    m_nature2 = sd.nature2();
     m_isHybrid = sd.isHybrid();
     m_isHybrid2 = sd.isHybrid2();
     m_isRich = sd.isRich();
