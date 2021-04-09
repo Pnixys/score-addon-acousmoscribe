@@ -63,11 +63,11 @@ void SpectralKeyData::setNature2(Nature nature2) {
     m_nature2 = nature2;
 }
 
-void SpectralKeyData::setHybrid(bool h) { 
+void SpectralKeyData::setIsHybrid(bool h) { 
     m_isHybrid = h;
 }
 
-void SpectralKeyData::setHybrid2(bool h) { 
+void SpectralKeyData::setIsHybrid2(bool h) { 
     m_isHybrid2 = h;
 }
 

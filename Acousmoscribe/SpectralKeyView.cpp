@@ -230,7 +230,7 @@ QRectF SpectralKeyView::computeRect() const noexcept
   const QRectF rect{
       0, // 35 à changer (instant de départ)
       0,
-      40,
+      60,
       h};
 
   return rect;
@@ -246,19 +246,51 @@ void SpectralKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
   std::cout << "in SPECTRAL mousePressEvent\n";
 
   const auto mods = QGuiApplication::keyboardModifiers();
-  setSelected(true);
+  if (!(mods & Qt::ControlModifier) && !isSelected())
+    m_presenter.on_deselectOtherSigns();
+
+  float h = this->boundingRect().height();
+  float w = this->boundingRect().width();
 
   m_action = None;
 
   if (canEdit())
   {
-    if (mods & Qt::ShiftModifier)
+    if (event->pos().x() <= w/2 && event->pos().y() >= h / 2 && mods & Qt::NoModifier)
+    {
+      m_action = ChangeNature;
+    }
+    else if (event->pos().x() <= w/2 && event->pos().y() <= h / 2 && mods & Qt::NoModifier)
+    {
+      m_action = ChangeRich;
+    }
+    else if (event->pos().x() >= w/2 && event->pos().y() <= h / 2 && mods & Qt::NoModifier)
+    {
+      m_action = ChangeHybrid;
+    }
+    else if (event->pos().x() >= w/2 && event->pos().y() >= h / 2 && mods & Qt::NoModifier)
+    {
+      m_action = ChangeWarped;
+    }
+    else if (event->pos().x() <= w/2 && event->pos().y() >= h / 2 && mods & Qt::AltModifier)
     {
       m_action = ChangeNature2;
     }
+    else if (event->pos().x() <= w/2 && event->pos().y() <= h / 2 && mods & Qt::AltModifier)
+    {
+      m_action = ChangeRich2;
+    }
+    else if (event->pos().x() >= w/2 && event->pos().y() <= h / 2 && mods & Qt::AltModifier)
+    {
+      m_action = ChangeHybrid2;
+    }
+    else if (event->pos().x() >= w/2 && event->pos().y() >= h / 2 && mods & Qt::AltModifier)
+    {
+      m_action = ChangeWarped2;
+    }
     else
     {
-      m_action = ChangeNature;
+      m_action = None;
     }
   }
   event->accept();
@@ -272,27 +304,48 @@ void SpectralKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
   {
     switch (m_action)
     {
-      case ChangeNature:
-        //m_presenter.on_spectralKeyChanged(*this);
+      case ChangeNature:{
+        Nature n = (Nature) (((int) spectralKey.nature() + 1)%7);
+        m_presenter.on_spectralKeyNatureChanged(spectralKey, n);
         std::cout << "in changeNature\n";
         break;
-      case ChangeNature2:
-      //TODO CHANGE THAT
-      //m_presenter.on_spectralKeyChanged(*this);
-        std::cout << "in changeNature\n";
+      }
+      case ChangeNature2:{
+        Nature n = (Nature) (((int) spectralKey.nature2() + 1)%7);
+        m_presenter.on_spectralKeyNature2Changed(spectralKey, n);
+        std::cout << "in changeNature2\n";
         break;
-      case ChangeRich:
+      }
+      case ChangeRich:{
+        bool b = !(spectralKey.isRich());
+        m_presenter.on_spectralKeyIsRichChanged(spectralKey, b);
         break;
-      case ChangeRich2:
+      }
+      case ChangeRich2:{
+        bool b = !(spectralKey.isRich2());
+        m_presenter.on_spectralKeyIsRich2Changed(spectralKey, b);
         break;
-        case ChangeHybrid:
+      }
+      case ChangeHybrid:{
+        bool b = !(spectralKey.isHybrid());
+        m_presenter.on_spectralKeyIsHybridChanged(spectralKey, b);
         break;
-      case ChangeHybrid2:
+      }
+      case ChangeHybrid2:{
+        bool b = !(spectralKey.isHybrid2());
+        m_presenter.on_spectralKeyIsHybrid2Changed(spectralKey, b);
         break;
-        case ChangeWarped:
+      }
+      case ChangeWarped:{
+        bool b = !(spectralKey.isWarped());
+        m_presenter.on_spectralKeyIsWarpedChanged(spectralKey, b);
         break;
-      case ChangeWarped2:
+      }
+      case ChangeWarped2:{
+        bool b = !(spectralKey.isWarped2());
+        m_presenter.on_spectralKeyIsWarped2Changed(spectralKey, b);
         break;
+      }
     }
   }
   event->accept();

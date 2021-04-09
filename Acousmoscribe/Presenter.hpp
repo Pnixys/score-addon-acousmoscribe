@@ -60,10 +60,12 @@ public:
   
   void on_spectralKeyNatureChanged(const SpectralKey&, Nature nature);
   void on_spectralKeyNature2Changed(const SpectralKey&, Nature nature);
+  void on_spectralKeyIsHybridChanged(const SpectralKey&, bool isHybrid);
+  void on_spectralKeyIsHybrid2Changed(const SpectralKey&, bool isHybrid);
   void on_spectralKeyIsRichChanged(const SpectralKey&, bool isRich);
   void on_spectralKeyIsRich2Changed(const SpectralKey&, bool isRich);
-  void on_spectralKeyWarpedChanged(const SpectralKey&, bool warped);
-  void on_spectralKeyWarped2Changed(const SpectralKey&, bool warped);
+  void on_spectralKeyIsWarpedChanged(const SpectralKey&, bool warped);
+  void on_spectralKeyIsWarped2Changed(const SpectralKey&, bool warped);
   
 
   
@@ -115,16 +117,6 @@ private:
   std::vector<SignView*> m_signs;
 
   /* COMMAND DISPATCHERS */
-  SingleOngoingCommandDispatcher<ChangeMelodicKeyPitch> m_changeMelodicKeyPitch;
-  SingleOngoingCommandDispatcher<ChangeMelodicKeyRange> m_changeMelodicKeyRange;
-
-  SingleOngoingCommandDispatcher<ChangeSpectralKeyNature> m_changeSpectralKeyNature;
-  SingleOngoingCommandDispatcher<ChangeSpectralKeyNature2> m_changeSpectralKeyNature2;
-  SingleOngoingCommandDispatcher<ChangeSpectralKeyIsRich> m_changeSpectralKeyIsRich;
-  SingleOngoingCommandDispatcher<ChangeSpectralKeyIsRich2> m_changeSpectralKeyIsRich2;
-  SingleOngoingCommandDispatcher<ChangeSpectralKeyWarped> m_changeSpectralKeyWarped;
-  SingleOngoingCommandDispatcher<ChangeSpectralKeyWarped2> m_changeSpectralKeyWarped2;
-
   SingleOngoingCommandDispatcher<MoveSigns> m_moveDispatcher;
 
   std::optional<double> m_origMoveStart{};
