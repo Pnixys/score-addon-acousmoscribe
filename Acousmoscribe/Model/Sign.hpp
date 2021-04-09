@@ -112,4 +112,17 @@ private:
     RhythmicProfile _rhythmicProfile;
 };
 
+
+inline bool operator==(DynamicProfile const dp1, DynamicProfile const dp2){
+  return dp1.volumeStart == dp2.volumeStart && dp1.volumeEnd == dp2.volumeEnd;
+}
+
+inline bool operator==(Sign const s1, Sign const s2){
+    return s1.duration() == s2.duration()
+        && s1.start() == s2.start()
+        && s1.grain() == s2.grain()
+        && s1.dynamicProfile() == s2.dynamicProfile()
+        && s1.melodicProfile() == s2.melodicProfile()
+        && s1.rhythmicProfile() == s2.rhythmicProfile();
+}
 }
