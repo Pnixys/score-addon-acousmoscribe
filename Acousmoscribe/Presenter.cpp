@@ -119,6 +119,11 @@ Presenter::Presenter(
         new AddSign{model, m_view->signAtPos(pos)});
   });
 
+  connect(m_view, &View::deleteRequested, this, [&] {
+    CommandDispatcher<>{context().context.commandStack}.submit(
+        new RemoveSigns{this->model(), selectedSigns()});
+  });
+
   connect(m_view, &View::pressed, this, [&]() {
     m_context.context.focusDispatcher.focus(this);
     for (SignView* n : m_signs)
@@ -296,45 +301,25 @@ void Presenter::on_signScaled(const Sign& sign, double newScale)
 
 // --------------------------------------------- Sign/Dynamic Profile ---------------------------------------------      
 
-void Presenter::on_signAttackChanged(const Sign& sign, double newAttack)
+
+
+void Presenter::on_signVolumeStartChanged(const Sign& sign, float newVolStart)
 {
-  if(sign.dynamicProfile().attack != newAttack)
+  if(sign.dynamicProfile().volumeStart != newVolStart)
   {
     auto newDP = sign.dynamicProfile() ;
-    newDP.attack = newAttack ;
+    newDP.volumeStart = newVolStart ;
 
     CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
   }
 };
 
-void Presenter::on_signReleaseChanged(const Sign& sign, double newRelease)
+void Presenter::on_signVolumeEndChanged(const Sign& sign, float newVolEnd)
 {
-  if(sign.dynamicProfile().release != newRelease)
+  if(sign.dynamicProfile().volumeEnd != newVolEnd)
   {
     auto newDP = sign.dynamicProfile() ;
-    newDP.release = newRelease ;
-
-    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
-  }
-};
-
-void Presenter::on_signVolumeInChanged(const Sign& sign, double newVolIn)
-{
-  if(sign.dynamicProfile().volumeStart != newVolIn)
-  {
-    auto newDP = sign.dynamicProfile() ;
-    newDP.volumeStart = newVolIn ;
-
-    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
-  }
-};
-
-void Presenter::on_signVolumeOutChanged(const Sign& sign, double newVolOut)
-{
-  if(sign.dynamicProfile().volumeEnd != newVolOut)
-  {
-    auto newDP = sign.dynamicProfile() ;
-    newDP.volumeEnd = newVolOut ;
+    newDP.volumeEnd = newVolEnd ;
 
     CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
   }
@@ -424,7 +409,7 @@ void Presenter::on_signGrainChanged(const Sign& sign, Grain g)
 {
   if(sign.grain() != g)
   {
-    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeGrain{model(), sign.id(), g}); 
+    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeGrain{model(), sign.id(), g}); 
   }
 }
 

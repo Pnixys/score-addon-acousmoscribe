@@ -73,16 +73,14 @@ public:
   void on_signMoveFinished(SignView& s);                //done
 
   // Dynamic Profile :
-  void on_signAttackChanged(const Sign&, double newAttack);               //done
-  void on_signReleaseChanged(const Sign&, double newRelease);             //done
-  void on_signVolumeInChanged(const Sign&, double newVolIn);              //done
-  void on_signVolumeOutChanged(const Sign&, double newVolOut);            //done
+  void on_signVolumeStartChanged(const Sign&, float newVolStart);        //done
+  void on_signVolumeEndChanged(const Sign&, float newVolEnd);            //done
   //void on_signVolumeChanged(const Sign&, double newVol);
 
   // Other profiles
   //void on_signMelodicProfileChanged(Sign& v, MelodicProfile mp);
   void on_signMelodicProfilePitchChanged(const Sign&, Pitch newPitch);                //done
-  void on_signMelodicProfilePitchEndChanged(const Sign&, Pitch newPitchEnd);                //done
+  void on_signMelodicProfilePitchEndChanged(const Sign&, Pitch newPitchEnd);          //done
   void on_signMelodicProfileVariationChanged(const Sign&, Variation newVar);          //done
 
   //void on_signRhythmicProfileChanged(Sign& v, RhythmicProfile rp);
