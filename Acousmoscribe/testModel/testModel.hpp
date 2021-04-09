@@ -7,5 +7,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <Acousmoscribe/Process.hpp> 
 #include <score/model/path/Path.hpp>
+#include <Acousmoscribe/Presenter.hpp>
 
 #endif

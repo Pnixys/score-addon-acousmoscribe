@@ -3,9 +3,38 @@
 
 #include "testModel.hpp"
 
-#include "../Model/Sign.hpp"
+/* #include "../Model/Sign.hpp"
 #include "../Model/MelodicKey.hpp"
-#include "../Model/SpectralKey.hpp"
+#include "../Model/SpectralKey.hpp" */
+#include <score/command/Dispatchers/CommandDispatcher.hpp>
+
+#include <Acousmoscribe/Model/Sign.hpp>
+#include <Acousmoscribe/Model/Grain.hpp>
+#include <Acousmoscribe/Model/MelodicKey.hpp>
+#include <Acousmoscribe/Model/SpectralKey.hpp>
+#include <Acousmoscribe/Model/RhythmicProfile.hpp>
+#include <Acousmoscribe/Model/MelodicProfile.hpp>
+
+
+/* Commands */
+#include <Acousmoscribe/Commands/AddKey.hpp>
+#include <Acousmoscribe/Commands/AddSign.hpp>
+#include <Acousmoscribe/Commands/RemoveSigns.hpp>
+#include <Acousmoscribe/Commands/ScaleSigns.hpp>
+
+#include <Acousmoscribe/View.hpp>
+#include <Acousmoscribe/SignView.hpp>
+#include <Acousmoscribe/MelodicKeyView.hpp>
+#include <Acousmoscribe/SpectralKeyView.hpp>
+
+#include <QPainter>
+#include <QPainterPath>
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsView>
+#include <QKeyEvent>
 
 using namespace Acousmoscribe;
 
@@ -236,6 +265,11 @@ SCENARIO("Creation of Spectral Key", "[SpectralKey]")
         {
             sp1.setNature(inharmonic);
 
+            THEN("Test changement")
+            {
+                REQUIRE(sp1.nature() == inharmonic);
+            }
+
             THEN("Spectral Key Nature 1 must be different")
             {
                 REQUIRE_FALSE(sp1.nature() == sp2.nature());
@@ -318,7 +352,21 @@ SCENARIO("Test on Melodic Key", "[MelodicKey]")
     }
 }
 
-SCENARIO("Test on presenter and command", "[presenter][command]")
+/* SCENARIO("Test on presenter and command", "[presenter][command]")
 {
+    MelodicKeyData mkData = {mid,weak};
 
-}
+    TestModel* m_model;
+
+    Process::Context ctx = Process::Context(NULL,NULL,NULL);
+    QObject q = QObject(0);
+
+    auto qi = ItemIsFocusable(&q);
+    View v = View(&qi);
+
+    Presenter p_pres = Presenter(m_model->model, &v,ctx,&q);
+
+     CommandDispatcher<>{context().context.commandStack}.submit(
+        new AddMelodicKey{m_model, mkData}); 
+
+ }*/
