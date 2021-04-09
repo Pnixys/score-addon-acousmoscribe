@@ -41,4 +41,9 @@ private:
     Pitch m_pitchEnd{mid};
     Variation m_var{none};
 };
+
+inline bool operator==(MelodicProfile const mp1, MelodicProfile const mp2){
+  return mp1.pitch() == mp2.pitch() && mp1.variation() == mp2.variation();
+}
+
 }

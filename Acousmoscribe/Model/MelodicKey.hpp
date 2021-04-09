@@ -63,4 +63,5 @@ private:
     Pitch m_pitch{};
     Range m_range{};
 };
+
 }

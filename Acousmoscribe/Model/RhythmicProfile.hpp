@@ -41,5 +41,8 @@ private:
     bool m_isRandom{false};
 };
 
+inline bool operator==(RhythmicProfile const rp1, RhythmicProfile const rp2) {
+  return rp1.acceleration() == rp2.acceleration() && rp1.speed() == rp2.speed() && rp1.isRandom() == rp2.isRandom();
+}
 }
 #endif
