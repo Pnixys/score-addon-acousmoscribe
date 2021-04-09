@@ -138,4 +138,47 @@ private:
 };
 
 
+class ChangeSpectralKeyIsHybrid final : public score::Command
+{
+  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeSpectralKeyIsHybrid, "Change the isHybrid of a spectral key")
+public:
+  ChangeSpectralKeyIsHybrid(const Model& model, const Id<SpectralKey>& to_update, bool isHybrid);
+
+  void undo(const score::DocumentContext& ctx) const override;
+  void redo(const score::DocumentContext& ctx) const override;
+
+  void update(unused_t, unused_t, bool isHybrid);
+
+protected:
+  void serializeImpl(DataStreamInput& s) const override;
+  void deserializeImpl(DataStreamOutput& s) override;
+
+private:
+  Path<Model> m_model;
+  QPair<Id<SpectralKey>, SpectralKeyData> m_before, m_after;
+};
+
+
+class ChangeSpectralKeyIsHybrid2 final : public score::Command
+{
+  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeSpectralKeyIsHybrid2, "Change the isHybrid2 of a spectral key")
+public:
+  ChangeSpectralKeyIsHybrid2(const Model& model, const Id<SpectralKey>& to_update, bool isHybrid2);
+
+  void undo(const score::DocumentContext& ctx) const override;
+  void redo(const score::DocumentContext& ctx) const override;
+
+  void update(unused_t, unused_t, bool isHybrid2);
+
+protected:
+  void serializeImpl(DataStreamInput& s) const override;
+  void deserializeImpl(DataStreamOutput& s) override;
+
+private:
+  Path<Model> m_model;
+  QPair<Id<SpectralKey>, SpectralKeyData> m_before, m_after;
+};
+
+
+
 }

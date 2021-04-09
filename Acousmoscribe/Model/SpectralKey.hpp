@@ -36,8 +36,8 @@ enum Nature
 
     void setNature(Nature nature);
     void setNature2(Nature nature);
-    void setHybrid(bool h);
-    void setHybrid2(bool h);
+    void setIsHybrid(bool h);
+    void setIsHybrid2(bool h);
     void setIsRich(bool r);
     void setIsRich2(bool r);
     void setIsWarped(bool w);

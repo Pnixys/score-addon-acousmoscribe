@@ -60,14 +60,6 @@ Presenter::Presenter(
     , m_model{layer}
     , m_view{view}
     , m_moveDispatcher{ctx.commandStack}
-    , m_changeMelodicKeyPitch{ctx.commandStack}
-    , m_changeMelodicKeyRange{ctx.commandStack}
-    , m_changeSpectralKeyNature{ctx.commandStack}
-    , m_changeSpectralKeyNature2{ctx.commandStack}
-    , m_changeSpectralKeyIsRich{ctx.commandStack}
-    , m_changeSpectralKeyIsRich2{ctx.commandStack}
-    , m_changeSpectralKeyWarped{ctx.commandStack}
-    , m_changeSpectralKeyWarped2{ctx.commandStack}
     , m_zr{1.}
 {
   putToFront();
@@ -252,38 +244,45 @@ void Presenter::updateSign(SignView& v)
 // Melodic Key Changed
 
 void Presenter::on_melodicKeyPitchChanged(const MelodicKey& mKey, Pitch pitch){
-  m_changeMelodicKeyPitch.submit(model(), mKey.id(), pitch);
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeMelodicKeyPitch{model(), mKey.id(), pitch}); 
 }
 
 void Presenter::on_melodicKeyRangeChanged(const MelodicKey& mKey, Range range){
-  m_changeMelodicKeyRange.submit(model(), mKey.id(), range);
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeMelodicKeyRange{model(), mKey.id(), range}); 
 }
 
 
 // Spectral Key Changed
 
 void Presenter::on_spectralKeyNatureChanged(const SpectralKey& sKey, Nature nature){
-  m_changeSpectralKeyNature.submit(model(), sKey.id(), nature);
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyNature{model(), sKey.id(), nature}); 
 }
 
 void Presenter::on_spectralKeyNature2Changed(const SpectralKey& sKey, Nature nature){
-  m_changeSpectralKeyNature2.submit(model(), sKey.id(), nature);
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyNature2{model(), sKey.id(), nature}); 
 }
 
 void Presenter::on_spectralKeyIsRichChanged(const SpectralKey& sKey, bool isRich){
-  m_changeSpectralKeyIsRich.submit(model(), sKey.id(), isRich);
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyIsRich{model(), sKey.id(), isRich}); 
 }
 
 void Presenter::on_spectralKeyIsRich2Changed(const SpectralKey& sKey, bool isRich){
-  m_changeSpectralKeyIsRich2.submit(model(), sKey.id(), isRich);
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyIsRich2{model(), sKey.id(), isRich}); 
 }
 
-void Presenter::on_spectralKeyWarpedChanged(const SpectralKey& sKey, bool warped){
-  m_changeSpectralKeyWarped.submit(model(), sKey.id(), warped);
+void Presenter::on_spectralKeyIsHybridChanged(const SpectralKey& sKey, bool isHybrid){
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyIsHybrid{model(), sKey.id(), isHybrid}); 
 }
 
-void Presenter::on_spectralKeyWarped2Changed(const SpectralKey& sKey, bool warped){
-  m_changeSpectralKeyWarped2.submit(model(), sKey.id(), warped);
+void Presenter::on_spectralKeyIsHybrid2Changed(const SpectralKey& sKey, bool isHybrid){
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyIsHybrid2{model(), sKey.id(), isHybrid}); 
+}
+void Presenter::on_spectralKeyIsWarpedChanged(const SpectralKey& sKey, bool warped){
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyWarped{model(), sKey.id(), warped}); 
+}
+
+void Presenter::on_spectralKeyIsWarped2Changed(const SpectralKey& sKey, bool warped){
+  CommandDispatcher<>{context().context.commandStack}.submit(new ChangeSpectralKeyWarped2{model(), sKey.id(), warped}); 
 }
 
 

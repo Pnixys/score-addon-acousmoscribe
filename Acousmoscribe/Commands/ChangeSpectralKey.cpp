@@ -290,4 +290,98 @@ void ChangeSpectralKeyWarped2::deserializeImpl(DataStreamOutput& s)
 }
 
 
+/* Is hybrid */
+
+ChangeSpectralKeyIsHybrid::ChangeSpectralKeyIsHybrid(
+    const Model& model,
+    const Id<SpectralKey>& to_change,
+    bool isHybrid)
+    : m_model{model}
+{
+  auto& sKey = model.spectralKey.at(to_change);
+  SpectralKeyData data = sKey.spectralKeyData();
+  m_before = qMakePair(sKey.id(), data);
+  data.setIsHybrid(isHybrid);
+  m_after = qMakePair(sKey.id(), data);
+}
+
+void ChangeSpectralKeyIsHybrid::update(unused_t, unused_t, bool isHybrid)
+{
+  m_after.second.setIsHybrid(isHybrid);
+}
+
+void ChangeSpectralKeyIsHybrid::undo(const score::DocumentContext& ctx) const
+{
+  auto& model = m_model.find(ctx);
+  auto& sKey = m_before;
+  auto& m = model.spectralKey.at(sKey.first);
+  m.setIsHybrid(sKey.second.isHybrid());
+}
+
+void ChangeSpectralKeyIsHybrid::redo(const score::DocumentContext& ctx) const
+{
+  auto& model = m_model.find(ctx);
+  auto& sKey = m_after;
+  auto& m = model.spectralKey.at(sKey.first);
+  m.setIsHybrid(sKey.second.isHybrid());
+}
+
+void ChangeSpectralKeyIsHybrid::serializeImpl(DataStreamInput& s) const
+{
+  s << m_model << m_before << m_after;
+}
+
+void ChangeSpectralKeyIsHybrid::deserializeImpl(DataStreamOutput& s)
+{
+  s >> m_model >> m_before >> m_after;
+}
+
+
+
+/* Is hybrid2 */
+
+ChangeSpectralKeyIsHybrid2::ChangeSpectralKeyIsHybrid2(
+    const Model& model,
+    const Id<SpectralKey>& to_change,
+    bool isHybrid2)
+    : m_model{model}
+{
+  auto& sKey = model.spectralKey.at(to_change);
+  SpectralKeyData data = sKey.spectralKeyData();
+  m_before = qMakePair(sKey.id(), data);
+  data.setIsHybrid2(isHybrid2);
+  m_after = qMakePair(sKey.id(), data);
+}
+
+void ChangeSpectralKeyIsHybrid2::update(unused_t, unused_t, bool isHybrid2)
+{
+  m_after.second.setIsHybrid2(isHybrid2);
+}
+
+void ChangeSpectralKeyIsHybrid2::undo(const score::DocumentContext& ctx) const
+{
+  auto& model = m_model.find(ctx);
+  auto& sKey = m_before;
+  auto& m = model.spectralKey.at(sKey.first);
+  m.setIsHybrid2(sKey.second.isHybrid2());
+}
+
+void ChangeSpectralKeyIsHybrid2::redo(const score::DocumentContext& ctx) const
+{
+  auto& model = m_model.find(ctx);
+  auto& sKey = m_after;
+  auto& m = model.spectralKey.at(sKey.first);
+  m.setIsHybrid2(sKey.second.isHybrid2());
+}
+
+void ChangeSpectralKeyIsHybrid2::serializeImpl(DataStreamInput& s) const
+{
+  s << m_model << m_before << m_after;
+}
+
+void ChangeSpectralKeyIsHybrid2::deserializeImpl(DataStreamOutput& s)
+{
+  s >> m_model >> m_before >> m_after;
+}
+
 }

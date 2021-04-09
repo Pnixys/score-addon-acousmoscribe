@@ -269,8 +269,8 @@ void DataStreamWriter::write(Acousmoscribe::SpectralKeyData& skd)
     m_stream >> nat >> nat2 >> hyb >> hyb2 >> rich >> rich2 >> warp >> warp2;
     skd.setNature(nat);
     skd.setNature2(nat2);
-    skd.setHybrid(hyb);
-    skd.setHybrid2(hyb2);
+    skd.setIsHybrid(hyb);
+    skd.setIsHybrid2(hyb2);
     skd.setIsRich(rich);
     skd.setIsRich2(rich2);
     skd.setIsWarped(warp);
@@ -317,7 +317,7 @@ void JSONWriter::write(Acousmoscribe::SpectralKeyData& skd)
     break;
   }
   skd.setNature2(n);
-  skd.setHybrid(arr[2].GetBool());
+  skd.setIsHybrid(arr[2].GetBool());
   skd.setIsRich(arr[3].GetBool());
   skd.setIsRich2(arr[4].GetBool());
 }
