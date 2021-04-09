@@ -73,8 +73,6 @@ public:
   void on_signMoveFinished(SignView& s);                //done
 
   // Dynamic Profile :
-  void on_signAttackChanged(const Sign&, double newAttack);               //done
-  void on_signReleaseChanged(const Sign&, double newRelease);             //done
   void on_signVolumeStartChanged(const Sign&, float newVolStart);        //done
   void on_signVolumeEndChanged(const Sign&, float newVolEnd);            //done
   //void on_signVolumeChanged(const Sign&, double newVol);

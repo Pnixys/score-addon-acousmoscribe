@@ -38,26 +38,16 @@ View::~View()
 
 void View::paint_impl(QPainter* p) const
 {
-  /*p->setBrush(draw);
-  p->drawRect( 40,30, width_fdp,100 );*/
 
 }
 
 void View::mousePressEvent(QGraphicsSceneMouseEvent* ev)
 {
-  /*
-  width_fdp = 100;
-  QColor cyan(Qt::cyan); 
-  draw.setColor(cyan);*/
 }
 
 void View::mouseReleaseEvent(QGraphicsSceneMouseEvent* ev)
 {
-  /*
-  width_fdp = 300;
-  QColor green(Qt::green); 
-  draw.setColor(green); */
-  
+
 }
 
 void View::setDefaultWidth(double w)
@@ -76,13 +66,23 @@ void View::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* ev)
   ev->accept();
 }
 
+void View::keyPressEvent(QKeyEvent* ev)
+{
+  if (ev->key() == Qt::Key_Backspace || ev->key() == Qt::Key_Delete)
+  {
+    deleteRequested();
+  }
+
+  ev->accept();
+}
+
 SignData View::signAtPos(QPointF point) const
 {
 
   SignData s;
   s.m_start = std::max(0., point.x() / m_defaultW);
   s.m_duration = 0.5;
-  DynamicProfile dyn = {0.1, 0.1, 0.1, 0.3};
+  DynamicProfile dyn = {1,1};
   s.setDynamicProfile(dyn);
 
   return s;

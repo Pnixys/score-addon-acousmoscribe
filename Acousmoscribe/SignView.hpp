@@ -61,8 +61,6 @@ private:
     None,
     Move,
     Scale,
-    ChangeSignAttack,
-    ChangeSignRelease,
     ChangeSignVolumeStart,
     ChangeSignVolumeEnd,
     ChangeMelodicProfilePitch,

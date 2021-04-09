@@ -119,6 +119,11 @@ Presenter::Presenter(
         new AddSign{model, m_view->signAtPos(pos)});
   });
 
+  connect(m_view, &View::deleteRequested, this, [&] {
+    CommandDispatcher<>{context().context.commandStack}.submit(
+        new RemoveSigns{this->model(), selectedSigns()});
+  });
+
   connect(m_view, &View::pressed, this, [&]() {
     m_context.context.focusDispatcher.focus(this);
     for (SignView* n : m_signs)
@@ -296,27 +301,7 @@ void Presenter::on_signScaled(const Sign& sign, double newScale)
 
 // --------------------------------------------- Sign/Dynamic Profile ---------------------------------------------      
 
-void Presenter::on_signAttackChanged(const Sign& sign, double newAttack)
-{
-  if(sign.dynamicProfile().attack != newAttack)
-  {
-    auto newDP = sign.dynamicProfile() ;
-    newDP.attack = newAttack ;
 
-    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
-  }
-};
-
-void Presenter::on_signReleaseChanged(const Sign& sign, double newRelease)
-{
-  if(sign.dynamicProfile().release != newRelease)
-  {
-    auto newDP = sign.dynamicProfile() ;
-    newDP.release = newRelease ;
-
-    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
-  }
-};
 
 void Presenter::on_signVolumeStartChanged(const Sign& sign, float newVolStart)
 {

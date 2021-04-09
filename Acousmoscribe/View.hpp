@@ -19,11 +19,12 @@ public:
   ~View() override;
   double defaultWidth() const noexcept { return m_defaultW; }
   void setDefaultWidth(double w);
+  void deleteRequested() W_SIGNAL(deleteRequested);
+
   
   SignData signAtPos(QPointF point) const;
 
 private:
-  int width_fdp = 200;
   QBrush draw;
 
   struct SK spectralKey();
@@ -32,6 +33,7 @@ private:
   void mousePressEvent(QGraphicsSceneMouseEvent*) override;
   void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;
   void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*) override;
+  void keyPressEvent(QKeyEvent*) override;
 
   SpectralKeyView *m_spectralKey;
   MelodicKeyView *m_melodickey;
