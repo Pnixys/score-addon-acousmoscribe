@@ -318,23 +318,23 @@ void Presenter::on_signReleaseChanged(const Sign& sign, double newRelease)
   }
 };
 
-void Presenter::on_signVolumeInChanged(const Sign& sign, double newVolIn)
+void Presenter::on_signVolumeStartChanged(const Sign& sign, float newVolStart)
 {
-  if(sign.dynamicProfile().volumeStart != newVolIn)
+  if(sign.dynamicProfile().volumeStart != newVolStart)
   {
     auto newDP = sign.dynamicProfile() ;
-    newDP.volumeStart = newVolIn ;
+    newDP.volumeStart = newVolStart ;
 
     CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
   }
 };
 
-void Presenter::on_signVolumeOutChanged(const Sign& sign, double newVolOut)
+void Presenter::on_signVolumeEndChanged(const Sign& sign, float newVolEnd)
 {
-  if(sign.dynamicProfile().volumeEnd != newVolOut)
+  if(sign.dynamicProfile().volumeEnd != newVolEnd)
   {
     auto newDP = sign.dynamicProfile() ;
-    newDP.volumeEnd = newVolOut ;
+    newDP.volumeEnd = newVolEnd ;
 
     CommandDispatcher<>{context().context.commandStack}.submit(new ChangeDynamicProfile{model(), sign.id(), newDP}); 
   }
@@ -424,7 +424,7 @@ void Presenter::on_signGrainChanged(const Sign& sign, Grain g)
 {
   if(sign.grain() != g)
   {
-    //CommandDispatcher<>{context().context.commandStack}.submit(new ChangeGrain{model(), sign.id(), g}); 
+    CommandDispatcher<>{context().context.commandStack}.submit(new ChangeGrain{model(), sign.id(), g}); 
   }
 }
 

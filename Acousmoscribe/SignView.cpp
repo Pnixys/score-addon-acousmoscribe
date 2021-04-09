@@ -81,13 +81,16 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 
        p.setStyle(Qt::DotLine);
        painter->setBrush(Qt::white);
+       p.setWidth(0);
        painter->setPen(p);
        QPointF points[4] = {a,b,c,d};
        painter->drawPolygon(points, 4);
+       
        p.setCapStyle(Qt::RoundCap);
+       p.setWidth(1);
        painter->setPen(p);
 
-       /* RHYTHMIC */
+        /* GRAIN */
        switch (grain) {
         case smooth:
            p.setStyle(Qt::DotLine);
@@ -106,6 +109,7 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
        painter->setPen(p);
        painter->drawLine(b, c);
 
+       /* RHYTHMIC */
        switch (speed) {
         case slow:
            p.setStyle(Qt::DashLine);
@@ -117,6 +121,7 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
            p.setStyle(Qt::DotLine);
            break;
         default :
+           p.setStyle(Qt::SolidLine);
            break;
        }
 
@@ -144,8 +149,6 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
        }
 
        /* MELODIC */
-       p.setWidth(2);
-       painter->setPen(p);
 
          float h_pitch = volumeUsed*0.65;
          float y_pitch;
@@ -162,10 +165,10 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
            pitchY[i-1] = y_pitch;
            if (i == 4)
            {
-             p.setWidth(4); // the 4th point is bigger
+             p.setWidth(5); // the 4th point is bigger
              painter->setPen(p);
              painter->drawPoint(QPoint(x_pitch, y_pitch));
-             p.setWidth(2);
+             p.setWidth(1);
              painter->setPen(p);
            }
            else{
@@ -316,23 +319,50 @@ void SignView::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 
 void SignView::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 {
-  if (event->pos().x() >= this->boundingRect().width() - 2)
-  {
-    auto& skin = score::Skin::instance();
-    this->setCursor(skin.CursorScaleH);
-  }
-  else
-  {
-    if (qApp->keyboardModifiers() == Qt::ShiftModifier)
+  float h = this->boundingRect().height();
+  float w = this->boundingRect().width();
+
+  const auto mods = QGuiApplication::keyboardModifiers();
+  if (!(mods & Qt::ControlModifier) && !isSelected())
+    m_presenter.on_deselectOtherSigns();
+
+  if (event->pos().x() >= w - 10 && event->pos().y() <= h / 2)
     {
-      auto& skin = score::Skin::instance();
-      this->setCursor(skin.CursorSpin);
+      auto& skin = score::Skin::instance(); // Scale
+      this->setCursor(skin.CursorScaleH);
+    }
+    else if (event->pos().y() <= 10 && (2 <= event->pos().x() <= w - 2))
+    { 
+      this->setCursor(Qt::PointingHandCursor); // Change grain
+    }
+    else if (event->pos().y() >= h - 10 && (2 <= event->pos().x() <= w - 2))
+    {
+      this->setCursor(Qt::PointingHandCursor); // Rhythmic speed
+    }
+    else if (event->pos().x() <= 10 && mods & Qt::NoModifier && event->pos().y() <= h / 2 )
+    {
+      this->setCursor(Qt::PointingHandCursor); // Melo Variation
+    }
+    else if (event->pos().x() <= 10 && mods & Qt::ShiftModifier && event->pos().y() <= h / 2 )
+    {
+      this->setCursor(Qt::UpArrowCursor); //Melo Pitch end
+    }
+    else if (event->pos().x() <= 10 && mods & Qt::ControlModifier && event->pos().y() <= h / 2 )
+    {
+      this->setCursor(Qt::UpArrowCursor); //Melo Pitch
+    }
+    else if (event->pos().x() <= 10 && event->pos().y() >= h / 2 )
+    {
+      this->setCursor(Qt::UpArrowCursor); //Vol start
+    }
+    else if (event->pos().x() >= w - 10 && event->pos().y() >= h / 2 )
+    {
+      this->setCursor(Qt::UpArrowCursor); //Vol end
     }
     else
     {
       this->setCursor(Qt::ArrowCursor);
     }
-  }
 
   QGraphicsItem::hoverMoveEvent(event);
 }
@@ -358,20 +388,64 @@ void SignView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
   setSelected(true);
 
+  float h = this->boundingRect().height();
+  float w = this->boundingRect().width();
+
   m_action = None;
+  
   if (canEdit())
   {
-    if (event->pos().x() >= this->boundingRect().width() - 2)
+    std::cout << "x : " << event->pos().x() << ", y : " << event->pos().y() << "\n";
+    std::cout << "w : " << w << ", h : " << h << "\n";
+
+    if (event->pos().x() >= w - 10 && event->pos().y() <= h / 2)
     {
       m_action = Scale;
     }
-    /*else if (mods & Qt::ShiftModifier)
+    else if (event->pos().y() <= 10 && (2 <= event->pos().x() <= w - 2))
+    { 
+      std::cout << "ChangeGrain \n";
+      m_action = ChangeGrain;
+    }
+    else if (event->pos().y() >= h - 10 && (2 <= event->pos().x() <= w - 2))
     {
-      m_action = ChangeVelocity;
-    }*/
-    else if (mods & Qt::AltModifier)
+      std::cout << "ChangeRhythmicProfileSpeed \n";
+      m_action = ChangeRhythmicProfileSpeed;
+    }
+    else if (event->pos().x() <= 10 && mods & Qt::NoModifier && event->pos().y() <= h / 2 )
     {
-      m_action = Duplicate;
+      std::cout << "ChangeMelodicProfileVariation \n";
+      m_action = ChangeMelodicProfileVariation;
+    }
+    else if (event->pos().x() <= 10 && mods & Qt::ShiftModifier && event->pos().y() <= h / 2 )
+    {
+      std::cout << "ChangeMelodicProfilePitchEnd \n";
+      m_action = ChangeMelodicProfilePitchEnd;
+    }
+    else if (event->pos().x() <= 10 && mods & Qt::ControlModifier && event->pos().y() <= h / 2 )
+    {
+      std::cout << "ChangeMelodicProfilePitch \n";
+      m_action = ChangeMelodicProfilePitch;
+    }
+    else if (event->pos().x() <= 10 && event->pos().y() >= h / 2 && mods & Qt::AltModifier)
+    {
+      std::cout << "ChangeSignVolumeStart \n";
+      m_action = ChangeSignVolumeStart;
+    }
+    else if (event->pos().x() >= w - 10 && event->pos().y() >= h / 2  && mods & Qt::ShiftModifier)
+    {
+      std::cout << "ChangeSignVolumeEnd \n";
+      m_action = ChangeSignVolumeEnd;
+    }
+    else if (event->pos().x() <= 10 && event->pos().y() >= h / 2 )
+    {
+      std::cout << "ChangeSignAttack \n";
+      m_action = ChangeSignAttack;
+    }
+    else if (event->pos().x() >= w - 10 && event->pos().y() >= h / 2 )
+    {
+      std::cout << "ChangeSignRelease \n";
+      m_action = ChangeSignRelease;
     }
     else
     {
@@ -399,9 +473,6 @@ void SignView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
       case Duplicate:
         m_presenter.on_signDuplicate();
         break;
-      /*case ChangeVelocity:
-        m_presenter.on_requestVelocityChange(sign, event->buttonDownScenePos(Qt::LeftButton).y() -
-        event->scenePos().y()); break;*/
       case None:
         break;
     }
@@ -422,43 +493,88 @@ void SignView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         m_presenter.on_signMoveFinished(*this);
         break;
       case Scale:
-        //this->setWidth(std::max(2., event->pos().x()));
-        //m_presenter.on_signScaled(sign, m_width / ((View*)parentItem())->defaultWidth());
+        this->setWidth(std::max(2., event->pos().x()));
+        m_presenter.on_signScaled(sign, m_width / ((View*)parentItem())->defaultWidth());
         break;
       case Duplicate:
         m_presenter.on_signDuplicate();
         break;
-      case ChangeSignVolumeIn:
-        // m_presenter.on_signVolumeInChanged(sign, (sign.dynamicProfile().volumeStart+0.1)%1);
+      case ChangeSignAttack:
+      {
+        float v = sign.dynamicProfile().attack + 0.2;
+        v = v > 1. ? 0.2 : v;
+        m_presenter.on_signAttackChanged(sign, v);
+        std::cout << "done on_signAttackChanged\n";
         break;
-      case ChangeSignVolumeOut:
-        // m_presenter.on_signVolumeOutChanged(sign, (sign.dynamicProfile().volumeEnd+0.1)%1.0);
+      }
+      case ChangeSignRelease:
+      {
+        float ve = sign.dynamicProfile().release + 0.2;
+        ve = ve > 1. ? 0.2 : ve;
+        m_presenter.on_signReleaseChanged(sign, ve);
+        std::cout << "done on_signReleaseChanged\n";
         break;
+      }
+      case ChangeSignVolumeStart:
+      {
+        float v = sign.dynamicProfile().volumeStart + 0.2;
+        v = v > 1. ? 0. : v;
+        m_presenter.on_signVolumeStartChanged(sign, v);
+        std::cout << "done on_signVolumeStartChanged\n";
+        break;
+      }
+      case ChangeSignVolumeEnd:
+      {
+        float ve = sign.dynamicProfile().volumeEnd + 0.2;
+        ve = ve > 1. ? 0. : ve;
+        m_presenter.on_signVolumeEndChanged(sign, ve);
+        std::cout << "done on_signVolumeEndChanged\n";
+        break;
+      }
       case ChangeMelodicProfilePitch:
-        // m_presenter.on_signMelodicProfilePitchChanged(sign,
-        // (sign.melodicProfile().pitch()+1)%7.0);
+      {
+        Pitch p = (Pitch) (((int) sign.melodicProfile().pitch() + 1)%7);
+        m_presenter.on_signMelodicProfilePitchChanged(sign, p);
+        std::cout << "done on_signPitchChanged\n"; 
         break;
+      }
       case ChangeMelodicProfilePitchEnd:
-        // m_presenter.on_signMelodicProfilePitchEndChanged(sign,
-        // (sign.melodicProfile().pitchEnd()+1)%7.0);
+      {
+        Pitch pe = (Pitch) (((int) sign.melodicProfile().pitchEnd() + 1)%7);
+        m_presenter.on_signMelodicProfilePitchEndChanged(sign, pe);
+        std::cout << "done on_signPitchEndChanged\n"; 
         break;
+      }
       case ChangeMelodicProfileVariation:
-        m_presenter.on_signMelodicProfileVariationChanged(sign, none);
+      {
+        Variation v = (Variation) (((int) sign.melodicProfile().variation() + 1)%4);
+        m_presenter.on_signMelodicProfileVariationChanged(sign, v);
+        std::cout << "done on_signVariationChanged\n"; 
         break;
+        }
       case ChangeRhythmicProfileSpeed:
-        m_presenter.on_signRhythmicProfileSpeedChanged(sign, continuous);
+      {
+        Speed s = (Speed) (((int) sign.rhythmicProfile().speed() + 1)%4);
+        m_presenter.on_signRhythmicProfileSpeedChanged(sign, s);
+        std::cout << "done on_signSpeedChanged\n";        
         break;
+      }
       case ChangeGrain:
-        // TODO recup le grain voulu
-        m_presenter.on_signGrainChanged(sign, smooth);
+      {
+        Grain g = (Grain) (((int) sign.grain() + 1)%4);
+        m_presenter.on_signGrainChanged(sign, g);
+        std::cout << "done on_signGrainChanged\n";
         break;
-      /*case ChangeVelocity:
-        m_presenter.on_requestVelocityChange(note, event->buttonDownScenePos(Qt::LeftButton).y() -
-        event->scenePos().y()); m_presenter.on_velocityChangeFinished(); break;*/
+      }
+      case ChangeRhythmicProfileAcceleration:
+      {
+        Acceleration a = (Acceleration) (((Acceleration) sign.rhythmicProfile().acceleration() + 1)%3);
+        m_presenter.on_signRhythmicProfileAccelerationChanged(sign, a);
+        std::cout << "done on_signAccelerationChanged\n";
+        break;
+      }
       case None:
         break;
-
-        // TODO START ?
     }
   }
   event->accept();

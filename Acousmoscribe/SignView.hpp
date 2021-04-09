@@ -61,14 +61,17 @@ private:
     None,
     Move,
     Scale,
-    ChangeDuration,
-    ChangeSignVolumeIn,
-    ChangeSignVolumeOut,
+    ChangeSignAttack,
+    ChangeSignRelease,
+    ChangeSignVolumeStart,
+    ChangeSignVolumeEnd,
     ChangeMelodicProfilePitch,
     ChangeMelodicProfilePitchEnd,
     ChangeMelodicProfileVariation,
     ChangeRhythmicProfileSpeed,
+    ChangeRhythmicProfileAcceleration,
     ChangeGrain,
+    ChangeSpeed,
     Duplicate
   } m_action{};
 };
