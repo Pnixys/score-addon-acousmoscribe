@@ -5,7 +5,7 @@
 #include <QGuiApplication>
 
 #include <Acousmoscribe/Model/MelodicKey.hpp>
-#include <Acousmoscribe/Presenter.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
 
 namespace Acousmoscribe
 {

@@ -9,15 +9,14 @@ set(HDRS
     Acousmoscribe/Inspector/Inspector.hpp
     Acousmoscribe/LocalTree.hpp
     Acousmoscribe/Metadata.hpp
-    Acousmoscribe/Presenter.hpp
-    Acousmoscribe/Process.hpp
-    Acousmoscribe/View.hpp
+    Acousmoscribe/Presenter/Presenter.hpp
     Acousmoscribe/Layer.hpp
 
     #View
-    Acousmoscribe/SpectralKeyView.hpp
-    Acousmoscribe/MelodicKeyView.hpp
-    Acousmoscribe/SignView.hpp
+    Acousmoscribe/View/View.hpp
+    Acousmoscribe/View/SpectralKeyView.hpp
+    Acousmoscribe/View/MelodicKeyView.hpp
+    Acousmoscribe/View/SignView.hpp
     
     #Commands
     Acousmoscribe/Commands/CommandFactory.hpp
@@ -31,7 +30,7 @@ set(HDRS
     Acousmoscribe/Commands/ScaleSigns.hpp
 
     #Model
-    #Acousmoscribe/Model/DynamicProfile.hpp
+    Acousmoscribe/Model/Process.hpp
     Acousmoscribe/Model/Grain.hpp
     Acousmoscribe/Model/MelodicProfile.hpp
     Acousmoscribe/Model/MelodicKey.hpp
@@ -45,14 +44,13 @@ set(SRCS
     Acousmoscribe/Executor.cpp
     Acousmoscribe/Inspector/Inspector.cpp
     Acousmoscribe/LocalTree.cpp
-    Acousmoscribe/Presenter.cpp
-    Acousmoscribe/Process.cpp
-    Acousmoscribe/View.cpp
+    Acousmoscribe/Presenter/Presenter.cpp
     
     #View
-    Acousmoscribe/SpectralKeyView.cpp
-    Acousmoscribe/MelodicKeyView.cpp
-    Acousmoscribe/SignView.cpp
+    Acousmoscribe/View/View.cpp
+    Acousmoscribe/View/SpectralKeyView.cpp
+    Acousmoscribe/View/MelodicKeyView.cpp
+    Acousmoscribe/View/SignView.cpp
     
     #Commands
     Acousmoscribe/Commands/AddKey.cpp
@@ -65,7 +63,7 @@ set(SRCS
     Acousmoscribe/Commands/ScaleSigns.cpp
 
     #Model
-    #Acousmoscribe/Model/DynamicProfile.cpp
+    Acousmoscribe/Model/Process.cpp
     Acousmoscribe/Model/MelodicProfile.cpp
     Acousmoscribe/Model/MelodicKey.cpp
     Acousmoscribe/Model/RhythmicProfile.cpp

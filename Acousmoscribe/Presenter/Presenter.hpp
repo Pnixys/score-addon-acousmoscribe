@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 #include <Process/Focus/FocusDispatcher.hpp>
 #include <Process/LayerPresenter.hpp>
 

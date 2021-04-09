@@ -1,5 +1,5 @@
 #pragma once
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 #include <Process/LayerView.hpp>
 
 #include <QPainter>

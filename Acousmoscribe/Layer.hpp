@@ -1,9 +1,9 @@
 #pragma once
 #include <Process/GenericProcessFactory.hpp>
 
-#include <Acousmoscribe/Presenter.hpp>
-#include <Acousmoscribe/Process.hpp>
-#include <Acousmoscribe/View.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
+#include <Acousmoscribe/View/View.hpp>
 
 namespace Acousmoscribe
 {

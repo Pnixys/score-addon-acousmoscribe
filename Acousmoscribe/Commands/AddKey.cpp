@@ -2,7 +2,7 @@
 // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "AddKey.hpp"
 
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 #include <Process/TimeValueSerialization.hpp>
 
 #include <score/model/path/PathSerialization.hpp>

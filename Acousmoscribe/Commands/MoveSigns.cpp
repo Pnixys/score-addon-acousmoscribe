@@ -2,7 +2,7 @@
 // it. PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "MoveSigns.hpp"
 
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 
 #include <score/model/path/PathSerialization.hpp>
 

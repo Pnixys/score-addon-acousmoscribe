@@ -4,7 +4,7 @@
 
 #include <score/command/Dispatchers/CommandDispatcher.hpp>
 
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 
 namespace Acousmoscribe
 {

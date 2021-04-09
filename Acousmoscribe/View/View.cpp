@@ -1,8 +1,8 @@
 #include "View.hpp"
 
 #include <Process/Style/ScenarioStyle.hpp>
-#include <Acousmoscribe/SpectralKeyView.hpp>
-#include <Acousmoscribe/MelodicKeyView.hpp>
+#include <Acousmoscribe/View/SpectralKeyView.hpp>
+#include <Acousmoscribe/View/MelodicKeyView.hpp>
 #include <Acousmoscribe/Model/MelodicKey.hpp>
 
 #include <score/graphics/GraphicsItem.hpp>

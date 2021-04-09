@@ -1,7 +1,7 @@
 #pragma once
-#include <Acousmoscribe/View.hpp>
+#include <Acousmoscribe/View/View.hpp>
 #include "Acousmoscribe/Model/Sign.hpp"
-#include <Acousmoscribe/Presenter.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
 #include <QGraphicsItem>
 
 namespace Acousmoscribe

@@ -6,8 +6,8 @@
 #include <QPainter>
 
 #include <Acousmoscribe/Model/Sign.hpp>
-#include <Acousmoscribe/Presenter.hpp>
-#include <Acousmoscribe/View.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
+#include <Acousmoscribe/View/View.hpp>
 
 namespace Acousmoscribe
 {

@@ -45,7 +45,7 @@ Ainsi, pour récupérer les sources, il suffit d'exécuter sur le git Savane :
 
 # Architecture
 
-Nous sommes partis des sources de addon-skeleton (score/src/addon-skeleton) contenant un ensemble de coquilles vides facilitant la création d'un addon. L’architecture de l’addon respecte le pattern MVP (model view presenter), ainsi, on remarque un fichier View.cpp, un fichier Presenter.cpp, et un fichier Process.cpp, contenant le “model” de l’addon. 
+Nous sommes partis des sources de addon-skeleton (score/src/addon-skeleton) contenant un ensemble de coquilles vides facilitant la création d'un addon. L’architecture de l’addon respecte le pattern MVP (model view presenter), ainsi, on remarque un fichier View.cpp, un fichier Presenter/Presenter.cpp, et un fichier Model/Process.cpp, contenant le “model” de l’addon. 
 
 Il existe également d’autres classes :
 

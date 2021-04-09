@@ -2,8 +2,8 @@
 
 #include <QGraphicsItem>
 #include "Acousmoscribe/Model/SpectralKey.hpp"
-#include <Acousmoscribe/Presenter.hpp>
-#include <Acousmoscribe/View.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
+#include <Acousmoscribe/View/View.hpp>
 
 namespace Acousmoscribe
 {

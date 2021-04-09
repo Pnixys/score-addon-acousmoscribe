@@ -4,7 +4,7 @@
 
 #include <ossia/dataflow/port.hpp>
 
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 namespace Acousmoscribe
 {
 class node final : public ossia::nonowning_graph_node

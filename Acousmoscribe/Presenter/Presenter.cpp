@@ -1,13 +1,13 @@
 #include <score/command/Dispatchers/CommandDispatcher.hpp>
 
 /* View */
-#include <Acousmoscribe/View.hpp>
-#include <Acousmoscribe/SignView.hpp>
-#include <Acousmoscribe/MelodicKeyView.hpp>
-#include <Acousmoscribe/SpectralKeyView.hpp>
+#include <Acousmoscribe/View/View.hpp>
+#include <Acousmoscribe/View/SignView.hpp>
+#include <Acousmoscribe/View/SpectralKeyView.hpp>
+#include <Acousmoscribe/View/MelodicKeyView.hpp>
 
 /* Presenter */
-#include <Acousmoscribe/Presenter.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
 
 /* Commands */
 #include <Acousmoscribe/Commands/AddKey.hpp>
@@ -17,7 +17,7 @@
 
 
 /* Model */
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 #include <Acousmoscribe/Model/Sign.hpp>
 #include <Acousmoscribe/Model/Grain.hpp>
 #include <Acousmoscribe/Model/MelodicKey.hpp>

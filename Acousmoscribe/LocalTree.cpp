@@ -1,7 +1,7 @@
 #include "LocalTree.hpp"
 
 #include <LocalTree/Property.hpp>
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 
 namespace Acousmoscribe
 {

@@ -7,7 +7,7 @@
 #include <Acousmoscribe/Inspector/Inspector.hpp>
 #include <Acousmoscribe/Layer.hpp>
 #include <Acousmoscribe/LocalTree.hpp>
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 #include <score_addon_acousmoscribe_commands_files.hpp>
 
 score_addon_acousmoscribe::score_addon_acousmoscribe()

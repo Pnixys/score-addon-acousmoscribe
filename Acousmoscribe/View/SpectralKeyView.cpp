@@ -7,9 +7,9 @@
 #include <QPainter>
 #include <QPoint>
 
-#include <Acousmoscribe/Presenter.hpp>
-#include <Acousmoscribe/SpectralKeyView.hpp>
-#include <Acousmoscribe/View.hpp>
+#include <Acousmoscribe/Presenter/Presenter.hpp>
+#include <Acousmoscribe/View/SpectralKeyView.hpp>
+#include <Acousmoscribe/View/View.hpp>
 
 namespace Acousmoscribe
 {

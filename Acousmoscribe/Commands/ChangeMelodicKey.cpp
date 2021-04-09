@@ -1,6 +1,6 @@
 #include "ChangeMelodicKey.hpp"
 
-#include <Acousmoscribe/Process.hpp>
+#include <Acousmoscribe/Model/Process.hpp>
 #include <Process/TimeValueSerialization.hpp>
 
 #include <score/model/path/PathSerialization.hpp>

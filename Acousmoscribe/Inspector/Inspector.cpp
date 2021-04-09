@@ -1,5 +1,5 @@
 #include "Inspector.hpp"
-//#include "../View.hpp" 
+//#include "../View/View.hpp" 
 
 #include <score/document/DocumentContext.hpp>
 

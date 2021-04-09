@@ -22,10 +22,10 @@
 #include <Acousmoscribe/Commands/RemoveSigns.hpp>
 #include <Acousmoscribe/Commands/ScaleSigns.hpp>
 
-#include <Acousmoscribe/View.hpp>
-#include <Acousmoscribe/SignView.hpp>
-#include <Acousmoscribe/MelodicKeyView.hpp>
-#include <Acousmoscribe/SpectralKeyView.hpp>
+#include <Acousmoscribe/View/View.hpp>
+#include <Acousmoscribe/View/SignView.hpp>
+#include <Acousmoscribe/View/SpectralKeyView.hpp>
+#include <Acousmoscribe/View/MelodicKeyView.hpp>
 
 #include <QPainter>
 #include <QPainterPath>
