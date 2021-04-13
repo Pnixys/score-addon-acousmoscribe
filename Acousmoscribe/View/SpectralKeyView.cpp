@@ -230,7 +230,7 @@ QRectF SpectralKeyView::computeRect() const noexcept
   const QRectF rect{
       0, // 35 à changer (instant de départ)
       0,
-      60,
+      0.1*w,
       h};
 
   return rect;

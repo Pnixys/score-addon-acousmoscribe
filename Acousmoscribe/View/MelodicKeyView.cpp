@@ -93,9 +93,9 @@ QRectF MelodicKeyView::computeRect() const noexcept
   const auto h = view.height();
   const auto w = view.defaultWidth();
   const QRectF rect{
-      60, 
+      0.1*w, 
       0,
-      60,
+      0.1*w,
       h};
 
   return rect;

@@ -77,16 +77,16 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
   switch (grain)
   {
     case smooth:
-      p.setStyle(Qt::DotLine);
+      p.setStyle(Qt::SolidLine);
       break;
     case fine:
-      p.setStyle(Qt::DashDotLine);
+      p.setStyle(Qt::DotLine);
       break;
     case sharp:
-      p.setStyle(Qt::DashLine);
+      p.setStyle(Qt::DashDotLine);
       break;
     case big:
-      p.setStyle(Qt::SolidLine);
+      p.setStyle(Qt::DashLine);
       break;
   }
 
@@ -135,6 +135,7 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 
   /* MELODIC */
 
+  /* it doesn't work for now, so we let it hidden :)
   float h_pitch = volumeUsed * 0.65;
   float y_pitch;
 
@@ -234,7 +235,7 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
       break;
   }
 
-  painter->drawLine(firstP, secondP);
+  painter->drawLine(firstP, secondP);*/
 }
 
 QPointF SignView::closestPos(QPointF newPos) const noexcept
@@ -244,7 +245,7 @@ QPointF SignView::closestPos(QPointF newPos) const noexcept
   const auto height = rect.height();
 
   const auto w = view.defaultWidth();
-  double offset = 80; // corresponds to the space of the 2 keys
+  double offset = 0.2 * w; // corresponds to the space of the 2 keys
 
   newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left() + offset)));
   newPos.setY(0);
