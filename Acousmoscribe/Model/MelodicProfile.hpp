@@ -19,8 +19,6 @@ enum Pitch
 enum Variation
 {
     none = 0,
-    ascending,
-    descending,
     random_variation
 };
 

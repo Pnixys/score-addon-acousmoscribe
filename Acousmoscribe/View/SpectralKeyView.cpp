@@ -49,11 +49,11 @@ void SpectralKeyView::paint(
   painter->setBrush(Qt::white);
   painter->drawRect(boundingRect().adjusted(0., 0., 0., 0));
 
+
   if (hybrid)
   {
     switch (nature)
     {
-
       case tonic_inharmonic:
         p.setStyle(Qt::DashLine);
         nature = inharmonic;
@@ -243,8 +243,6 @@ bool SpectralKeyView::canEdit() const
 
 void SpectralKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-  std::cout << "in SPECTRAL mousePressEvent\n";
-
   const auto mods = QGuiApplication::keyboardModifiers();
   if (!(mods & Qt::ControlModifier) && !isSelected())
     m_presenter.on_deselectOtherSigns();
@@ -256,37 +254,45 @@ void SpectralKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
   if (canEdit())
   {
-    if (event->pos().x() <= w/2 && event->pos().y() >= h / 2 && mods & Qt::NoModifier)
+    if (event->pos().x() <= w/2 && event->pos().y() >= h / 2)
     {
-      m_action = ChangeNature;
+      if (mods & Qt::AltModifier)
+      {
+        m_action = ChangeNature2;
+      }
+      else{
+        m_action = ChangeNature;
+      }
     }
-    else if (event->pos().x() <= w/2 && event->pos().y() <= h / 2 && mods & Qt::NoModifier)
+    else if (event->pos().x() <= w/2 && event->pos().y() <= h / 2)
     {
-      m_action = ChangeRich;
+      if (mods & Qt::AltModifier)
+      {
+        m_action = ChangeRich2;
+      }
+      else{
+        m_action = ChangeRich;
+      }
     }
-    else if (event->pos().x() >= w/2 && event->pos().y() <= h / 2 && mods & Qt::NoModifier)
+    else if (event->pos().x() >= w/2 && event->pos().y() <= h / 2)
     {
-      m_action = ChangeHybrid;
+      if (mods & Qt::AltModifier)
+      {
+        m_action = ChangeHybrid2;
+      }
+      else{
+        m_action = ChangeHybrid;
+      }
     }
-    else if (event->pos().x() >= w/2 && event->pos().y() >= h / 2 && mods & Qt::NoModifier)
+    else if (event->pos().x() >= w/2 && event->pos().y() >= h / 2)
     {
-      m_action = ChangeWarped;
-    }
-    else if (event->pos().x() <= w/2 && event->pos().y() >= h / 2 && mods & Qt::AltModifier)
-    {
-      m_action = ChangeNature2;
-    }
-    else if (event->pos().x() <= w/2 && event->pos().y() <= h / 2 && mods & Qt::AltModifier)
-    {
-      m_action = ChangeRich2;
-    }
-    else if (event->pos().x() >= w/2 && event->pos().y() <= h / 2 && mods & Qt::AltModifier)
-    {
-      m_action = ChangeHybrid2;
-    }
-    else if (event->pos().x() >= w/2 && event->pos().y() >= h / 2 && mods & Qt::AltModifier)
-    {
-      m_action = ChangeWarped2;
+      if (mods & Qt::AltModifier)
+      {
+        m_action = ChangeWarped2;
+      }
+      else{
+        m_action = ChangeWarped;
+      }
     }
     else
     {
@@ -298,8 +304,6 @@ void SpectralKeyView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void SpectralKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-  std::cout << "in  SPECTRAL mouseReleaseEvent\n";
-
   if (canEdit())
   {
     switch (m_action)
@@ -307,13 +311,11 @@ void SpectralKeyView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
       case ChangeNature:{
         Nature n = (Nature) (((int) spectralKey.nature() + 1)%7);
         m_presenter.on_spectralKeyNatureChanged(spectralKey, n);
-        std::cout << "in changeNature\n";
         break;
       }
       case ChangeNature2:{
         Nature n = (Nature) (((int) spectralKey.nature2() + 1)%7);
         m_presenter.on_spectralKeyNature2Changed(spectralKey, n);
-        std::cout << "in changeNature2\n";
         break;
       }
       case ChangeRich:{

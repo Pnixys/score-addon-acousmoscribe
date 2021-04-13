@@ -97,7 +97,7 @@ private:
 
 class ChangeSpectralKeyWarped final : public score::Command
 {
-  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeSpectralKeyWarped, "Change the isRich of a spectral key")
+  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeSpectralKeyWarped, "Change the isWarped of a spectral key")
 public:
   ChangeSpectralKeyWarped(const Model& model, const Id<SpectralKey>& to_update, bool isWarped);
 
@@ -119,7 +119,7 @@ private:
 
 class ChangeSpectralKeyWarped2 final : public score::Command
 {
-  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeSpectralKeyWarped2, "Change the isRich of a spectral key")
+  SCORE_COMMAND_DECL(Acousmoscribe::CommandFactoryName(), ChangeSpectralKeyWarped2, "Change the isWarped2 of a spectral key")
 public:
   ChangeSpectralKeyWarped2(const Model& model, const Id<SpectralKey>& to_update, bool isWarped2);
 

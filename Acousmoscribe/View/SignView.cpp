@@ -64,11 +64,11 @@ void SignView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 
   p.setStyle(Qt::DotLine);
   painter->setBrush(Qt::white);
-  p.setWidth(0);
+  p.setColor(Qt::white);
   painter->setPen(p);
   QPointF points[4] = {a, b, c, d};
   painter->drawPolygon(points, 4);
-
+  p.setColor(Qt::black);
   p.setCapStyle(Qt::RoundCap);
   p.setWidth(1);
   painter->setPen(p);
@@ -503,7 +503,7 @@ void SignView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
       }
       case ChangeMelodicProfileVariation:
       {
-        Variation v = (Variation)(((int)sign.melodicProfile().variation() + 1) % 4);
+        Variation v = (Variation)(((int)sign.melodicProfile().variation() + 1) % 2);
         m_presenter.on_signMelodicProfileVariationChanged(sign, v);
         std::cout << "done on_signVariationChanged\n";
         break;

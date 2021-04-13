@@ -229,7 +229,7 @@ void ChangeSpectralKeyWarped::redo(const score::DocumentContext& ctx) const
   auto& model = m_model.find(ctx);
   auto& sKey = m_after;
   auto& m = model.spectralKey.at(sKey.first);
-  m.setIsRich2(sKey.second.isRich2());
+  m.setIsWarped(sKey.second.isWarped());
 }
 
 void ChangeSpectralKeyWarped::serializeImpl(DataStreamInput& s) const
@@ -276,7 +276,7 @@ void ChangeSpectralKeyWarped2::redo(const score::DocumentContext& ctx) const
   auto& model = m_model.find(ctx);
   auto& sKey = m_after;
   auto& m = model.spectralKey.at(sKey.first);
-  m.setIsRich2(sKey.second.isRich2());
+  m.setIsWarped2(sKey.second.isWarped2());
 }
 
 void ChangeSpectralKeyWarped2::serializeImpl(DataStreamInput& s) const

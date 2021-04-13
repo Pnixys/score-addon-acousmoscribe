@@ -105,9 +105,7 @@ void JSONWriter::write(Acousmoscribe::MelodicProfile& mp)
   Acousmoscribe::Variation var;
   switch (arr[1].GetInt())
   {
-  case 1: var = Acousmoscribe::ascending; break;
-  case 2: var = Acousmoscribe::descending; break;
-  case 3: var = Acousmoscribe::random_variation; break;
+  case 1: var = Acousmoscribe::random_variation; break;
   default: var = Acousmoscribe::none;
       break;
   }
